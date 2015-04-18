@@ -4,3 +4,9 @@
 *.index
 
 *.zip
+
+*.snap
+
+.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps
+
+*.resources
