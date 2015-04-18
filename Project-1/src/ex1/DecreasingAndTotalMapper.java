@@ -26,7 +26,8 @@ public class DecreasingAndTotalMapper extends MapReduceBase implements Mapper<Lo
 		
 		while(lineTokenized.hasMoreTokens()){
 			word.set(lineTokenized.nextToken());
-			output.collect(word,one);	
+			output.collect(word,one);
+			
 		};
 	}
 
