@@ -617,3 +617,17 @@
 2015-04-18 14:19:19,136 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
 2015-04-18 14:19:19,156 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2015-04-18 14:19:19,157 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 14:21:29,694 [Worker-7] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for org.apache.hadoop:hadoop-core:jar:2.6.0 is missing, no dependency information available
+2015-04-18 14:21:29,865 [Worker-4] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: wordcount:wordcount:0.0.1-SNAPSHOT @ /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/pom.xml.
+2015-04-18 14:21:29,868 [Worker-4] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for org.apache.hadoop:hadoop-core:jar:2.6.0 is missing, no dependency information available
+2015-04-18 14:21:29,921 [Worker-4] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 14:21:29,922 [Worker-4] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 14:21:29,924 [Worker-4] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 14:21:29,925 [Worker-4] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 14:22:40,110 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for org.apache.hadoop:hadoop-core:jar:2.6.0 is missing, no dependency information available
+2015-04-18 14:22:41,417 [Worker-0] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: wordcount:wordcount:0.0.1-SNAPSHOT @ /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/pom.xml.
+2015-04-18 14:22:41,421 [Worker-0] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for org.apache.hadoop:hadoop-core:jar:2.6.0 is missing, no dependency information available
+2015-04-18 14:22:41,909 [Worker-0] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 14:22:41,910 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 14:22:41,913 [Worker-0] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 14:22:41,914 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
