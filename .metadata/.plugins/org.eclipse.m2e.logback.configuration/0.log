@@ -1130,3 +1130,103 @@
 2015-04-18 16:09:19,213 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
 2015-04-18 16:09:19,214 [Worker-16] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2015-04-18 16:09:19,215 [Worker-16] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 17:16:30,998 [Worker-25] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 17:16:31,016 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 17:16:31,018 [Worker-25] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 17:16:31,019 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 17:16:43,622 [Worker-33] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 17:16:43,622 [Worker-33] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 17:16:43,624 [Worker-33] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 17:16:43,669 [Worker-33] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:03:54,806 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:03:54,813 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:03:54,817 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:03:54,817 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:04:02,856 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:04:02,857 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:04:02,860 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:04:02,861 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:05:11,446 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:05:11,447 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:05:11,449 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:05:11,450 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:05:56,540 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:05:56,616 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:05:56,618 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:05:56,618 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:06:30,932 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:06:30,932 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:06:30,933 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:06:31,001 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:06:33,054 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:06:33,055 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:06:33,057 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:06:33,057 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:06:36,601 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:06:36,602 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:06:36,604 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:06:36,604 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:07:44,438 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:07:44,438 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:07:44,442 [Worker-8] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:07:44,509 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:08:39,138 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:08:39,140 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:08:39,142 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:08:39,143 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:08:46,114 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:08:46,115 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:08:46,117 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:08:46,117 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:09:33,127 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:09:33,128 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:09:33,129 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:09:33,130 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:09:44,831 [Worker-11] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:09:44,832 [Worker-11] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:09:44,834 [Worker-11] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:09:44,835 [Worker-11] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:09:47,366 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:09:47,366 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:09:47,368 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:09:47,368 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:12:13,894 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:12:13,895 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:12:13,897 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:12:13,898 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:14:20,993 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:14:20,995 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:14:20,997 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:14:20,997 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:14:24,431 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:14:24,432 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:14:24,435 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:14:24,436 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:14:32,438 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:14:32,439 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:14:32,440 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:14:32,441 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:15:16,043 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:16,043 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:15:16,045 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:16,046 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:15:18,234 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:18,235 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:15:18,237 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:18,237 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:15:21,162 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:21,162 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:15:21,164 [Worker-9] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:21,164 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:15:39,784 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:39,784 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:15:39,786 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:15:39,787 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:16:01,837 [Worker-12] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:16:01,837 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:16:01,839 [Worker-12] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:16:01,839 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
+2015-04-18 22:19:46,299 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:19:46,323 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/main/resources
+2015-04-18 22:19:46,324 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2015-04-18 22:19:46,399 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Volumes/Dati/Workspace/GitHub Repo/big-data-projects/Project-1/src/test/resources
