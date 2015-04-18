@@ -78,7 +78,6 @@ INDEX VERSION 1.127+/Volumes/Dati/Workspace/GitHub Repo/big-data-projects/.metad
 219212267.index
 1614133799.index
 312047813.index
-1328008457.index
 964775500.index
 792764405.index
 2522688960.index
