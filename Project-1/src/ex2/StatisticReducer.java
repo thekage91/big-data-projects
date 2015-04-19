@@ -11,14 +11,19 @@ import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
-public class StatisticReducer extends MapReduceBase implements Reducer<Text, IntWritable, Text, DoubleWritable>{
+public class StatisticReducer extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable>{
 
 	@Override
-	public void reduce(Text arg0, Iterator<IntWritable> arg1,
-			OutputCollector<Text, DoubleWritable> arg2, Reporter arg3)
-			throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void reduce(Text key, Iterator<IntWritable> values,
+			OutputCollector<Text, IntWritable> output, Reporter arg3)
+					throws IOException {
+		int sum = 0;
+		while (values.hasNext()) {
+			sum += values.next().get();
+		}
+		output.collect(key, new IntWritable(sum));
 	}
+
+}
 
 }
