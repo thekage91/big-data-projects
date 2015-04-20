@@ -27,6 +27,7 @@ public class TopTenMapper extends MapReduceBase implements Mapper<LongWritable, 
 		StringTokenizer tokenizer2;
 		int pos1 = 0; 
 		int pos2 = 0;
+		String pair = "";
 		
 		while(tokenizer1.hasMoreTokens()){
 			word1.set(tokenizer1.nextToken());
@@ -36,9 +37,10 @@ public class TopTenMapper extends MapReduceBase implements Mapper<LongWritable, 
 			while(tokenizer2.hasMoreTokens()){
 				if(pos1 < pos2){
 					word2.set(tokenizer2.nextToken());
+					pair = word1.toString() + "," + word2.toString();
 					pos2 += 1;
+					output.collect(new Text(pair), new IntWritable(1));
 				}
-				output.collect(arg0, arg1);
 			}
 		}
 	}
