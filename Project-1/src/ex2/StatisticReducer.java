@@ -6,12 +6,25 @@ import java.util.Iterator;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reducer;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.*;
 
-public class StatisticReducer extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable>{
+public class StatisticReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
+
+	  private IntWritable result = new IntWritable();
+
+	  @Override
+	    public void reduce(Text key, Iterable<IntWritable> values,
+	                       Context context
+	                       ) throws IOException, InterruptedException {
+	      int sum = 0;
+	      for (IntWritable val : values) {
+	        sum += val.get();
+	      }
+	      result.set(sum);
+	      context.write(key, result);
+	    }
+}
+/*public class StatisticReducer extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable>{
 
 	@Override
 	public void reduce(Text key, Iterator<IntWritable> values,
@@ -26,4 +39,6 @@ public class StatisticReducer extends MapReduceBase implements Reducer<Text, Int
 
 }
 
-}
+
+*/
+
