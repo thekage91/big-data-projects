@@ -11,7 +11,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 
 public class StatisticMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-//public class StatisticMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
 	private final static IntWritable one = new IntWritable(1); 
 	private Text word = new Text();
