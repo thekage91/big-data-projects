@@ -9,41 +9,31 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.tools.CLI;
+import org.apache.hadoop.mapred.JobClient;
 
 import ex2.StatisticMapper;
 import ex2.StatisticReducer;
 
 
-//public class BillingJobs extends Configured implements Tool{
-public class BillingJobs {
-	/* public int run(String[] args) throws Exception {
-		return 0;/*
-         // Configuration processed by ToolRunner
-         Configuration conf = getConf();
-         
-         // Create a JobConf using the processed conf
-         JobConf job = new JobConf(conf, BillingJobs.class);
-         
-         // Process custom command-line options
-         
-         // Specify various job-specific parameters     
-         job.setJobName("statistic-mapper");
-         job.setInputFormat(TextInputFormat.class);
-         job.setOutputFormat(TextOutputFormat.class);
-         FileInputFormat.setInputPaths(job, new Path(args[0]));
-         FileOutputFormat.setOutputPath(job, new Path(args[1]));
-         
-         job.setOutputKeyClass(Text.class);
-         job.setOutputValueClass(IntWritable.class);
-         
-         job.setMapOutputKeyClass(Text.class);
-         job.setMapOutputValueClass(IntWritable.class);
-         
+public class BillingJobs extends Configured implements Tool{
+	//public class BillingJobs {
+	public int run(String[] args) throws Exception {
 
-         // Submit the job, then poll for progress until the job is complete
-         JobClient.runJob(job);
-         return 0;
-		 /*Configuration conf = new Configuration();
+		Configuration conf = getConf();
+		Job job = Job.getInstance(conf, "Trimester Statistics");
+		JobClient c = new JobClient();
+		job.setJarByClass(BillingJobs.class);
+		job.setMapperClass(StatisticMapper.class);
+		job.setReducerClass(StatisticReducer.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		// Submit the job, then poll for progress until the job is complete
+		job.waitForCompletion(true);
+		return 0;
+		/*Configuration conf = new Configuration();
          Job job = Job.getInstance(conf, "billing");
          job.setJarByClass(BillingJobs.class);
          job.setMapperClass(StatisticMapper.class);
@@ -52,18 +42,15 @@ public class BillingJobs {
          job.setOutputValueClass(IntWritable.class);
          FileInputFormat.addInputPath(job, new Path(args[0]));
          FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		return 0;
-       }*/
-	 
-	public static void main(String[] args) throws Exception{
+		return 0;*/
+       }
 
-		/* Qui vanno creati i tre job, uno per ogni esercizio obbligatorio
-		 * Li avviamo uno dopo l'altro
-		 */
-	     /* int res = ToolRunner.run(new Configuration(), new BillingJobs(), args);
-	      return ;*/
-	      
-		Job job = new Job(new Configuration(), "WordCount");
+		public static void main(String[] args) throws Exception{
+		    int res = ToolRunner.run(new Configuration(), new BillingJobs(), args);
+	         
+	         System.exit(res);
+
+			/*Job job = new Job(new Configuration(), "WordCount");
 		job.setJarByClass(BillingJobs.class);
 		job.setMapperClass(StatisticMapper.class);
 		job.setReducerClass(StatisticReducer.class);
@@ -71,6 +58,8 @@ public class BillingJobs {
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
-		job.waitForCompletion(true);
+		job.waitForCompletion(true);*/
+
+
+		}
 	}
-}
