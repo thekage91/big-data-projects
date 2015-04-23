@@ -15,13 +15,13 @@ import ex2.*;
 
 
 public class BillingJobs extends Configured implements Tool{
-	//public class BillingJobs {
+	//public class sBillingJobs {
 	public int run(String[] args) throws Exception {
 
 		Configuration conf = getConf();
 		Job job1 = Job.getInstance(conf, "Trimester Statistics 1 step");
 		Job job2 = Job.getInstance(conf, "Trimester Statistics 2 step");
-		
+
 		job1.setJarByClass(BillingJobs.class);
 		job1.setMapperClass(StatisticMapper.class);
 		job1.setReducerClass(StatisticReducer.class);
@@ -39,11 +39,11 @@ public class BillingJobs extends Configured implements Tool{
 		FileOutputFormat.setOutputPath(job2,new Path(args[1]));
 		job2.waitForCompletion(true);
 		return 0;
-		
-       }
 
-		public static void main(String[] args) throws Exception{
-		    int res = ToolRunner.run(new Configuration(), new BillingJobs(), args);
-	        System.exit(res);
-		}
 	}
+
+	public static void main(String[] args) throws Exception{
+		int res = ToolRunner.run(new Configuration(), new BillingJobs(), args);
+		System.exit(res);
+	}
+}
