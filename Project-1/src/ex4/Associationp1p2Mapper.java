@@ -20,8 +20,8 @@ public class Associationp1p2Mapper extends Mapper<LongWritable, Text, Text, IntW
 		// TODO Auto-generated method stub
 		products = line.toString().split(",");
 	 	for(int i = 1; i < products.length; i++) 
-			for(int j = 1; j < products.length; i++)
-				context.write(new Text(products[i]+","+products[j]),one );
+			for(int j = 1; j < products.length; j++)
+				context.write(new Text(products[i]+"\t"+products[j]),one );
 	 	
 		}
 		

@@ -18,8 +18,10 @@ public class BillingJobs extends Configured implements Tool{
 		Configuration conf = getConf();
 		Job job1 = Job.getInstance(conf, "Trimester Statistics 1 step");
 		Job job2 = Job.getInstance(conf, "Trimester Statistics 2 step");
-		Job job3 = Job.getInstance(conf, "Associative p1->p2 statistic");
+		Job job3 = Job.getInstance(conf, "Associative p1->p2 statistic 1 step");
+		Job job4 = Job.getInstance(conf, "Associative p1->p2 statistic 2 step");
 
+		
 		job1.setJarByClass(BillingJobs.class);
 		job1.setMapperClass(StatisticMapper.class);
 		job1.setReducerClass(StatisticReducer.class);
@@ -39,13 +41,21 @@ public class BillingJobs extends Configured implements Tool{
 		job3.setMapperClass(Associationp1p2Mapper.class);
 		job3.setReducerClass(Associationp1p2Reducer.class);
 		job3.setOutputKeyClass(Text.class);
-		job3.setOutputValueClass(Text.class);
+		job3.setOutputValueClass(IntWritable.class);
 		FileInputFormat.addInputPath(job3, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job3,new Path(args[1]));
+		FileOutputFormat.setOutputPath(job3,new Path("temp"));
+		
+		job4.setMapperClass(Association2ndMapper.class);
+		job4.setReducerClass(Association2ndReducer.class);
+		job4.setOutputKeyClass(Text.class);
+		job4.setOutputValueClass(Text.class);
+		FileInputFormat.addInputPath(job4, new Path("temp"));
+		FileOutputFormat.setOutputPath(job4,new Path(args[1]));
 		
 		//job1.waitForCompletion(true);
 		//job2.waitForCompletion(true);
 		job3.waitForCompletion(true);
+		job4.waitForCompletion(true);
 		return 0;
 		
 		
