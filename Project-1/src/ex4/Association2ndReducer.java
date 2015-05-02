@@ -2,6 +2,9 @@ package ex4;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,23 +28,27 @@ public class Association2ndReducer extends Reducer<Text, Text, Text, Text>{
 		int total=0;
 		int current=0;
 		String product;
+		List<String> cache = new ArrayList<String>();
 		DecimalFormat df = new DecimalFormat("#.##");
-
+		
 		for (Text val : values) {
+			cache.add(val.toString());
 			product = val.toString().split("\\s+")[0];
 			if(product.equals("total"))
 				total = Integer.parseInt(val.toString().split("\\s+")[1]);
 		}
-
-		context.write(new Text("Tot. transaction of "+key+": "), new Text(""+total) );
 		
-		for (Text val : values) {
-			product = val.toString().split("\\s+")[0];
-			if(!product.equals("total")) {
+		
+		context.write(new Text("Tot. transactions of "+key+": "), new Text(""+total) );
+	
+		for (String val : cache) {
+			product = val.split("\\s+")[0];
+			if(!product.equals("total")) {	
 				current = Integer.parseInt(val.toString().split("\\s+")[1]);
-				context.write(new Text(key + " -> " + product + ": "), new Text(df.format(current/total)));
+				context.write(new Text(key + " -> " + product + ": "), new Text(df.format((double)current/(double)total)));
 			}
 		}
+		
 
 	}
 

@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 
 public class Association2ndMapper extends Mapper<LongWritable, Text, Text, Text> {
-	
+	public static final Log LOG = LogFactory.getLog(Association2ndMapper.class);
+
 	@Override
 	public void map(LongWritable key, Text line,
 			Context context)
@@ -28,6 +31,7 @@ public class Association2ndMapper extends Mapper<LongWritable, Text, Text, Text>
 			out="total " + quanto;
 		else
 			out=prodottoRight + " " + quanto;
+		//OG.info("MAPPER ROW OUT KEY =  " + prodottoLeft+ "; VALUE = " + out);
 		context.write(new Text(prodottoLeft),new Text(out));
 	 	
 		}
