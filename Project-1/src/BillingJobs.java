@@ -31,6 +31,7 @@ public class BillingJobs extends Configured implements Tool{
 		FileOutputFormat.setOutputPath(job1, new Path("temp"));
 		job1.waitForCompletion(true);
 
+		job2.setJarByClass(BillingJobs.class);
 		job2.setMapperClass(SecondStepMapper.class);
 		job2.setReducerClass(SecondStepReducer.class);
 		job2.setOutputKeyClass(Text.class);
