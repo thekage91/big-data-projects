@@ -1,4 +1,4 @@
-package util;
+package dataGenerator.src.util;
 
 import java.io.BufferedReader;
 import java.io.File;

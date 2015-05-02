@@ -1,4 +1,4 @@
-package util;
+package dataGenerator.src.util;
 
 import java.util.GregorianCalendar;
 

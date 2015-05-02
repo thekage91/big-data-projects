@@ -1,8 +1,8 @@
-package main;
+package dataGenerator.src.main;
 
 import java.io.IOException;
 
-import util.ItemBillingGenerator;
+import dataGenerator.src.util.ItemBillingGenerator;
 
 public class BillingMain {
 	
@@ -19,7 +19,7 @@ public static void main(String[] args) throws IOException {
 		 * cibi (uno per riga)
 		 */
 
-		ItemBillingGenerator IB = new ItemBillingGenerator("billing/food");
+		ItemBillingGenerator IB = new ItemBillingGenerator("/home/ugo/git/big-data-projects/Project-1/src/dataGenerator/src/main/data/foods.txt");
 		
 		/* quindi bisogna richiamare la funzione generate in cui bisogna passare:
 		 * - il nome del file in cui generare il dataset
@@ -27,7 +27,10 @@ public static void main(String[] args) throws IOException {
 		 * - il numero massimo di cibi per scontrino (nell'esempio 5)
 		 * - la data viene generata in modo randomico nel formato yyyy-mm-dd
 		 */
-		IB.generate("data/esempio.txt", 30, 5);
+		IB.generate("/home/ugo/git/big-data-projects/Project-1/src/dataGenerator/src/main/data/esempio30righe.txt", 30, 5);
+		IB.generate("/home/ugo/git/big-data-projects/Project-1/src/dataGenerator/src/main/data/esempio100righe.txt", 100, 7);
+		IB.generate("/home/ugo/git/big-data-projects/Project-1/src/dataGenerator/src/main/data/esempio10000righe.txt", 10000, 9);
+		IB.generate("/home/ugo/git/big-data-projects/Project-1/src/dataGenerator/src/main/data/esempio1000000righe.txt", 1000000, 11);
 
 	}
 
