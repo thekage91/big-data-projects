@@ -8,7 +8,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 
-public class Associationp1p2Mapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class ExerciseAFirstMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
 	private final static IntWritable one = new IntWritable(1); 
 	private String [] products;

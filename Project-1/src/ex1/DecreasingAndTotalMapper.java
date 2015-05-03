@@ -1,22 +1,34 @@
 package ex1;
 
+
 import java.io.IOException;
+import java.util.StringTokenizer;
+
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.Mapper;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Mapper;
 
-public class DecreasingAndTotalMapper extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable> {
+public class DecreasingAndTotalMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
+	private static final IntWritable one = new IntWritable(1);
+	private static final Text word = new Text();
+	
 	@Override
-	public void map(LongWritable arg0, Text arg1,
-			OutputCollector<Text, IntWritable> arg2, Reporter arg3)
-			throws IOException {
-		// TODO Auto-generated method stub
+	public void map(LongWritable key, Text value,
+			Context context)
+			throws IOException, InterruptedException {
+
+		String line = value.toString();
+		StringTokenizer lineTokenized = new StringTokenizer(line, ",");
 		
+		lineTokenized.nextToken();
+		
+		while(lineTokenized.hasMoreTokens()){
+			word.set(lineTokenized.nextToken());
+			context.write(word,one);
+			
+		};
 	}
 
 }

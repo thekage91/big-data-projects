@@ -11,8 +11,8 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 
-public class Association2ndMapper extends Mapper<LongWritable, Text, Text, Text> {
-	public static final Log LOG = LogFactory.getLog(Association2ndMapper.class);
+public class ExerciseASecondMapper extends Mapper<LongWritable, Text, Text, Text> {
+	public static final Log LOG = LogFactory.getLog(ExerciseASecondMapper.class);
 
 	@Override
 	public void map(LongWritable key, Text line,

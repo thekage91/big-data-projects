@@ -7,7 +7,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.Reducer.Context;
 
-public class Associationp1p2Reducer extends Reducer<Text, IntWritable, Text, IntWritable>{
+public class EserciseAFirstReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
 
 	private IntWritable result = new IntWritable();
 
