@@ -10,36 +10,34 @@
 
 var fs = require('fs'),
 	parse = require('csv-parser'),
-	moviesPath = './dataset/u.item',
-	userPath = './dataset/u.user',
-	genrePath = './dataset/u.genre',
-	dataPath = './dataset/u.data';
+	filmPath = './dataset/movies.list',
+	actorPath = './dataset/actors.list',
+	directorPath = './dataset/directors.list',
+	genrePath = './dataset/genres.list';
 
 var moviesApi = ""
 
-var parserMovie = parse({delimiter: '|' }, function(err, data){
+var parserDataAndSave = parse({delimiter: '|' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
 	data.forEach(function(elem){
-		console.log("[DEBUG] Print movie information -> " +
-					  "id " + data[0][0] + 
-					  " title " + data[0][1] + 
-					  " release-date " + data[0][2] + 
-					  " video-release-date " + data[0][3] + 
-					  " url " + data[0][4])
+		
 	})
 
 	request(app)
-    .post('/api/movie')
+    .post('/film')
     .set('Accept', 'application/json')
-    .send({"movie": {"id": data[0][0], "title": data[0][1],"release-date": data[0][2], "video-release-date": data[0][3], "url": data[0][4]}})
+    .send({"film": {"title": data[0][1],"release-date": data[0][2], "writer": data[0][3], 
+    				"starts": data[0][4]}, "ratings": data[][], "actors": data[][], 
+					"certificate": data[][], "country": data[][], "writers": data[][],
+					"distributors": data[][]})
     .end(function(err, res) {
       if (err) {
       	console.log(err);
         throw err;
       }
       _id = res.body._id;
-      console.log("[SUCCESS POST] Insert movie with id --> ", _id);
+      console.log("[SUCCESS POST] Insert film with id --> ", _id);
       done();
     });
   });

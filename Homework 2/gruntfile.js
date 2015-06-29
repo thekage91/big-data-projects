@@ -87,7 +87,7 @@ module.exports = function(grunt) {
   grunt.registerTask('seeding', 'Seeding Database', function(){
 
     var parser = require('./parser.js');
-    parser.parsingMovies();
+    parser.parserDataAndSave();
     console.log("[DEBUG] Seeding database with Movie's record");
 
   });
