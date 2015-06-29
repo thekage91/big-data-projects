@@ -63,7 +63,7 @@ var parserDirectors = parse({delimiter: '|' }, function(err, data){
 });
 */
 
-var parserGenres = parse({delimiter: '					' }, function(err, data){
+var parserGenres = parse({delimiter: '"' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
 	data.forEach(function(elem){
@@ -121,7 +121,7 @@ module.exports = {
 						genresPath + " | " + directorsPath + " | " + actorsPath + " |");
 
 		//var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
-		var genresStream = fs.createReadStream(genresPath).pipe(parserGenres);
+		var genresStream = fs.createReadStream(genresPath, {start: 381}).pipe(parserGenres);
 		//var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
 		//var directorsStream = fs.createReadStream(directorsPath).pipe(parserDirectors);
 
