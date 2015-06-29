@@ -10,39 +10,98 @@
 
 var fs = require('fs'),
 	parse = require('csv-parser'),
-	moviesPath = './dataset/u.item',
-	userPath = './dataset/u.user',
-	genrePath = './dataset/u.genre',
-	dataPath = './dataset/u.data';
+	moviesPath = './dataset/movies.list',
+	directorsPath = './dataset/directors.list',
+	genresPath = './dataset/genres.list',
+	actorsPath = './dataset/actors.list';
 
-var moviesApi = ""
+var moviePostApi = "/api/film"
+var genrePostApi = "/api/genre"
+var directorPostApi = "/api/director"
+var actorPostApi = "/api/actor"
 
-var parserMovie = parse({delimiter: '|' }, function(err, data){
+var parserMovies = parse({delimiter: '|' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
 	data.forEach(function(elem){
-		console.log("[DEBUG] Print movie information -> " +
-					  "id " + data[0][0] + 
-					  " title " + data[0][1] + 
-					  " release-date " + data[0][2] + 
-					  " video-release-date " + data[0][3] + 
-					  " url " + data[0][4])
 	})
 
 	request(app)
-    .post('/api/movie')
+    .post(moviePostApi)
     .set('Accept', 'application/json')
-    .send({"movie": {"id": data[0][0], "title": data[0][1],"release-date": data[0][2], "video-release-date": data[0][3], "url": data[0][4]}})
+    .send({"film": {"title": data[0][0], "release_date": data[0][1], "writer": data[0][2], 
+    					"stars": data[0][3], "ratings": data[0][4], "actors": data[][], 
+    					"certificate": data[][], "country": data[][], "writers": data[][], 
+    					"distributors": data[][]}})
     .end(function(err, res) {
       if (err) {
       	console.log(err);
         throw err;
       }
       _id = res.body._id;
-      console.log("[SUCCESS POST] Insert movie with id --> ", _id);
+      console.log("[SUCCESS POST] Insert film with id --> ", _id);
       done();
     });
-  });
+});
+
+var parserDirectors = parse({delimiter: '|' }, function(err, data){
+
+	request(app)
+    .post(directorPostApi)
+    .set('Accept', 'application/json')
+    .send({"director": {"name": data[0][0]}})
+    .end(function(err, res) {
+      if (err) {
+      	console.log(err);
+        throw err;
+      }
+      _id = res.body._id;
+      console.log("[SUCCESS POST] Insert director with id --> ", _id);
+      done();
+    });
+});
+
+var parserGenres = parse({delimiter: '|' }, function(err, data){
+
+	console.log("[DEBUG] In parserMovie");
+	data.forEach(function(elem){
+	})
+
+	request(app)
+    .post(genrePostApi)
+    .set('Accept', 'application/json')
+    .send({"genre": {"name": data[0][0}})
+    .end(function(err, res) {
+      if (err) {
+      	console.log(err);
+        throw err;
+      }
+      _id = res.body._id;
+      console.log("[SUCCESS POST] Insert film with id --> ", _id);
+      done();
+    });
+});
+
+var parserActors = parse({delimiter: '|' }, function(err, data){
+
+	console.log("[DEBUG] In parserMovie");
+	data.forEach(function(elem){
+	})
+
+	request(app)
+    .post(actorPostApi)
+    .set('Accept', 'application/json')
+    .send({"actor": {"name": data[0][0}})
+    .end(function(err, res) {
+      if (err) {
+      	console.log(err);
+        throw err;
+      }
+      _id = res.body._id;
+      console.log("[SUCCESS POST] Insert actor with id --> ", _id);
+      done();
+    });
+});
 
 var moviesOutput = [];
 var userOutput = [];
@@ -51,11 +110,17 @@ var dataOutput = [];
 
 module.exports = {
 
-	parsingMovies : function(){
+	parsingDataAndSave : function(){
 
-		console.log("[+] Create Stream and read " + moviesPath);
+		console.log("[+] Create Stream and read | " + moviePath + " | " + 
+						genresPath + " | " + directorsPath + " | " + actorsPath + " |");
+
 		var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
-		console.log("[DEBUG] moviesStream --> ", moviesStream);
+		var genresStream = fs.createReadStream(genresPath).pipe(parserGenres);
+		var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
+		var directorsStream = fs.createReadStream(directorsPath).pipe(parserDirectors);
+
+		console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
 	}
 } 
 
