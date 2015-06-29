@@ -13,7 +13,7 @@ describe('POST New Genre', function(){
     .post('/api/genre')
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({"genre": {"Id":"Since the 1970s Wintjiya had created artefacts such as ininti seed necklaces, mats and baskets, using traditional artistic techniques including weaving of spinifex grass.","Name":"On either side are portraits of Sir Walter Raleigh and Joseph Butler."}})
+    .send({"genre": {&#34;name&#34;:&#34;Rejections of candidates by the Provost continued, fueling discontent among the Fellows, until a writ of attachment against the Bishop of Lincoln was heard between 1724 and 1726.&#34;}})
     .expect(201)
     .end(function(err, res) {
       if (err) {

@@ -8,6 +8,6 @@ var fields = {
 	name: { type: String }
 };
 
-var genreSchema = new Schema(fields);
+var actorSchema = new Schema(fields);
 
-module.exports = mongoose.model('Genre', genreSchema);
+module.exports = mongoose.model('Actor', actorSchema);
