@@ -3,29 +3,31 @@
   "description": "homework-2 app description here",
   "version": "0.0.1",
   "private": true,
-	"dependencies": {
-		"ejs": "latest",
-		"express": "latest",
-		"mongoose": "latest",
+  "dependencies": {
+    "ejs": "latest",
+    "express": "latest",
+    "mongoose": "latest",
     "morgan": "latest",
     "method-override": "latest",
     "body-parser": "latest",
+    "csv-parser": "latest",
     "errorhandler": "latest"
-	},
-	"devDependencies": {
-    "grunt": "latest",
-    "grunt-mocha-test": "latest",
+  },
+  "devDependencies": {
     "bower": "latest",
-    "supertest": "latest",
-    "mocha": "latest",
-    "grunt-open": "^0.2.3",
+    "grunt": "latest",
+    "grunt-auto-install": "^0.2.4",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.4.17",
-    "load-grunt-tasks": "^0.4.0"
-	},
+    "grunt-mocha-test": "latest",
+    "grunt-open": "^0.2.3",
+    "load-grunt-tasks": "^0.4.0",
+    "mocha": "latest",
+    "supertest": "latest"
+  },
   "scripts": {
     "postinstall": "grunt test",
-    "test" : "grunt test",
+    "test": "grunt test",
     "start": "app.js"
   }
 }

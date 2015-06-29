@@ -20,6 +20,7 @@ var genrePostApi = "/api/genre"
 var directorPostApi = "/api/director"
 var actorPostApi = "/api/actor"
 
+/*
 var parserMovies = parse({delimiter: '|' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
@@ -60,17 +61,19 @@ var parserDirectors = parse({delimiter: '|' }, function(err, data){
       done();
     });
 });
+*/
 
-var parserGenres = parse({delimiter: '|' }, function(err, data){
+var parserGenres = parse({delimiter: '					' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
 	data.forEach(function(elem){
+		console.log(data[0]);
 	})
 
 	request(app)
     .post(genrePostApi)
     .set('Accept', 'application/json')
-    .send({"genre": {"name": data[0][0}})
+    .send({"genre": {"name": data[0][0]}})
     .end(function(err, res) {
       if (err) {
       	console.log(err);
@@ -82,6 +85,7 @@ var parserGenres = parse({delimiter: '|' }, function(err, data){
     });
 });
 
+/*
 var parserActors = parse({delimiter: '|' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
@@ -102,6 +106,7 @@ var parserActors = parse({delimiter: '|' }, function(err, data){
       done();
     });
 });
+*/
 
 var moviesOutput = [];
 var userOutput = [];
@@ -112,13 +117,13 @@ module.exports = {
 
 	parsingDataAndSave : function(){
 
-		console.log("[+] Create Stream and read | " + moviePath + " | " + 
+		console.log("[+] Create Stream and read | " + moviesPath + " | " + 
 						genresPath + " | " + directorsPath + " | " + actorsPath + " |");
 
-		var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
+		//var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
 		var genresStream = fs.createReadStream(genresPath).pipe(parserGenres);
-		var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
-		var directorsStream = fs.createReadStream(directorsPath).pipe(parserDirectors);
+		//var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
+		//var directorsStream = fs.createReadStream(directorsPath).pipe(parserDirectors);
 
 		console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
 	}
