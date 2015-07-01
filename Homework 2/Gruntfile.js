@@ -56,7 +56,7 @@ module.exports = function(grunt) {
           npm: false
         }
       }
-    }      
+    }
   });
 
   grunt.registerTask('test', 'mochaTest');
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
   });
   grunt.registerTask('default', [ 'server' ]);
   grunt.registerTask('dist', [ 'server:prod' ]);
-  grunt.registerTask('seeding', 'Seeding Database', function(){
+  grunt.registerTask('seed', 'Seeding Database', function(){
 
     var parser = require('./parser.js');
     parser.parsingDataAndSave();

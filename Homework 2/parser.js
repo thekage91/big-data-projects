@@ -1,6 +1,6 @@
-/*
+/*         
 	Movie structure:
-
+	
 	movie id | movie title | release date | video release date |
 	IMDb URL | unknown | Action | Adventure | Animation |
 	Children's | Comedy | Crime | Documentary | Drama | Fantasy |
@@ -13,7 +13,8 @@ var fs = require('fs'),
 	moviesPath = './dataset/movies.list',
 	directorsPath = './dataset/directors.list',
 	genresPath = './dataset/genres.list',
-	actorsPath = './dataset/actors.list';
+	actorsPath = './dataset/actors.list',
+    provaPath = './dataset/prova.list';
 
 var moviePostApi = "/api/film"
 var genrePostApi = "/api/genre"
@@ -30,9 +31,9 @@ var parserMovies = parse({delimiter: '|' }, function(err, data){
 	request(app)
     .post(moviePostApi)
     .set('Accept', 'application/json')
-    .send({"film": {"title": data[0][0], "release_date": data[0][1], "writer": data[0][2],
-    					"stars": data[0][3], "ratings": data[0][4], "actors": data[][],
-    					"certificate": data[][], "country": data[][], "writers": data[][],
+    .send({"film": {"title": data[0][0], "release_date": data[0][1], "writer": data[0][2], 
+    					"stars": data[0][3], "ratings": data[0][4], "actors": data[][], 
+    					"certificate": data[][], "country": data[][], "writers": data[][], 
     					"distributors": data[][]}})
     .end(function(err, res) {
       if (err) {
@@ -115,18 +116,27 @@ var dataOutput = [];
 
 module.exports = {
 
-	parsingDataAndSave : function(){
-
-		console.log("[+] Create Stream and read | " + moviesPath + " | " +
-						genresPath + " | " + directorsPath + " | " + actorsPath + " |");
-
-		//var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
-		var genresStream = fs.createReadStream(genresPath, {start: 381}).pipe(parserGenres);
-		//var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
-		//var directorsStream = fs.createReadStream(directorsPath).pipe(parserDirectors);
-
-		console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
-	}
+	parsingDataAndSave :parseAndSave
 }
 
 
+var parseAndSave =  function(){
+
+    console.log("[+] Create Stream and read | " + moviesPath + " | " +
+    genresPath + " | " + directorsPath + " | " + actorsPath + " |");
+
+    //var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
+    //var genresStream = fs.createReadStream(provaPath).pipe(process.stdout);
+    //var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
+    //var directorsStream = fs.createReadStream(directorsPath).pipe(parserDirectors
+
+    console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
+
+
+    var input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"';
+    parse(input, {comment: '#'}, function(err, output){
+        console.log(output + err);
+    });
+}
+
+parseAndSave();
