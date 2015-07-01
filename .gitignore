@@ -24,3 +24,5 @@
 *.txt
 
 *.list
+
+.idea/
