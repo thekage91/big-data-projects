@@ -26,3 +26,5 @@
 *.list
 
 .idea/
+
+node_modules/

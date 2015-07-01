@@ -1,6 +1,6 @@
-/*         
+/*
 	Movie structure:
-	
+
 	movie id | movie title | release date | video release date |
 	IMDb URL | unknown | Action | Adventure | Animation |
 	Children's | Comedy | Crime | Documentary | Drama | Fantasy |
@@ -9,7 +9,7 @@
 */
 
 var fs = require('fs'),
-	parse = require('csv-parser'),
+	parse = require('csv-parse'),
 	moviesPath = './dataset/movies.list',
 	directorsPath = './dataset/directors.list',
 	genresPath = './dataset/genres.list',
@@ -30,9 +30,9 @@ var parserMovies = parse({delimiter: '|' }, function(err, data){
 	request(app)
     .post(moviePostApi)
     .set('Accept', 'application/json')
-    .send({"film": {"title": data[0][0], "release_date": data[0][1], "writer": data[0][2], 
-    					"stars": data[0][3], "ratings": data[0][4], "actors": data[][], 
-    					"certificate": data[][], "country": data[][], "writers": data[][], 
+    .send({"film": {"title": data[0][0], "release_date": data[0][1], "writer": data[0][2],
+    					"stars": data[0][3], "ratings": data[0][4], "actors": data[][],
+    					"certificate": data[][], "country": data[][], "writers": data[][],
     					"distributors": data[][]}})
     .end(function(err, res) {
       if (err) {
@@ -63,7 +63,7 @@ var parserDirectors = parse({delimiter: '|' }, function(err, data){
 });
 */
 
-var parserGenres = parse({delimiter: '"' }, function(err, data){
+var parserGenres = parse({delimiter: '\t' }, function(err, data){
 
 	console.log("[DEBUG] In parserMovie");
 	data.forEach(function(elem){
@@ -117,7 +117,7 @@ module.exports = {
 
 	parsingDataAndSave : function(){
 
-		console.log("[+] Create Stream and read | " + moviesPath + " | " + 
+		console.log("[+] Create Stream and read | " + moviesPath + " | " +
 						genresPath + " | " + directorsPath + " | " + actorsPath + " |");
 
 		//var moviesStream = fs.createReadStream(moviesPath).pipe(parserMovie);
@@ -127,6 +127,6 @@ module.exports = {
 
 		console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
 	}
-} 
+}
 
 

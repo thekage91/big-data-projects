@@ -10,7 +10,7 @@
     "morgan": "latest",
     "method-override": "latest",
     "body-parser": "latest",
-    "csv-parser": "latest",
+    "csv-parse": "latest",
     "errorhandler": "latest"
   },
   "devDependencies": {
