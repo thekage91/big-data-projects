@@ -5,7 +5,9 @@ var mongoose = require('mongoose'),
 		ObjectId = Schema.ObjectId;
 
 var fields = {
-	name: { type: String }
+	first_name: { type: String },
+    last_name: { type: String },
+    movies : [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 };
 
 var actorSchema = new Schema(fields);

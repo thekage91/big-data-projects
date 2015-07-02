@@ -23,7 +23,7 @@
 
 *.txt
 
-*.list
+*.list*
 
 .idea/
 
