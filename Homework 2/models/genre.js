@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 		ObjectId = Schema.ObjectId;
 
 var fields = {
-	name: { type: String },
+	name: { type: String,unique: true },
     movies : [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 };
 

@@ -2,8 +2,8 @@
 var mongoose = require('mongoose');
 
 var config = {
-  "db": "imdb-nosql",  
-  "host": "localhost",  
+  "db": "imdb-nosql",
+  "host": "localhost",
   "user": "",
   "pw": "",
   "port": 27017

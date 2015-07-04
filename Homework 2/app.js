@@ -14,7 +14,7 @@ var app = module.exports = exports.app = express();
 app.locals.siteName = "Homework 2";
 
 // Connect to database
-var db = require('./config/db');
+var db = module.exports = exports.mongoose = require('./config/db');
 app.use(express.static(__dirname + '/public'));
 
 
