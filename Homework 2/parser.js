@@ -270,4 +270,4 @@ var parseAndSave = function () {
 
 }
 
-parseAndSave();
+//setTimeout(parseAndSave,10000);
