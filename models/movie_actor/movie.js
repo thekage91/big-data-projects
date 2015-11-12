@@ -14,8 +14,8 @@ var fields = {
 	county: { type: String },
 	writers: { type: String },
 	distributors: { type: String },
-    genres : [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
-    directors : [{ type: Schema.Types.ObjectId, ref: 'Director' }],
+    genres : [{ type: String }],
+    directors : [{ type: String }],
     actors : [{ type: Schema.Types.ObjectId, ref: 'Actor' }]
 };
 
