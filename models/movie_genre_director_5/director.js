@@ -6,10 +6,10 @@ var mongoose = require('mongoose'),
 
 var fields = {
 	first_name: { type: String },
-    last_name: { type: String },
+    last_name: String,
     movies : [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 };
 
-var actorSchema = new Schema(fields);
+var directorSchema = new Schema(fields);
 
-module.exports = mongoose.model('Actor', actorSchema);
+module.exports = mongoose.model('Director5', directorSchema);

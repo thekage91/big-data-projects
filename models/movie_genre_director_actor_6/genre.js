@@ -11,4 +11,4 @@ var fields = {
 
 var genreSchema = new Schema(fields);
 
-module.exports = mongoose.model('Genre', genreSchema);
+module.exports = mongoose.model('Genre6', genreSchema);

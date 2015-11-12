@@ -21,4 +21,4 @@ var fields = {
 
 var movieSchema = new Schema(fields);
 
-module.exports = mongoose.model('Movie', movieSchema);
+module.exports = mongoose.model('Movie4', movieSchema);

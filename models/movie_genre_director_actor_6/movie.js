@@ -14,11 +14,11 @@ var fields = {
 	county: { type: String },
 	writers: { type: String },
 	distributors: { type: String },
-    genres : [{ type: String }],
+    genres : [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
     directors : [{ type: Schema.Types.ObjectId, ref: 'Director' }],
-    actors : [{ type: String }]
+    actors : [{ type: Schema.Types.ObjectId, ref: 'Actor' }]
 };
 
 var movieSchema = new Schema(fields);
 
-module.exports = mongoose.model('Movie', movieSchema);
+module.exports = mongoose.model('Movie6', movieSchema);

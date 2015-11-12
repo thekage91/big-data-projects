@@ -1,15 +1,14 @@
-'use strict';
+"use strict";
 
 var mongoose = require('mongoose'),
 		Schema = mongoose.Schema,
 		ObjectId = Schema.ObjectId;
 
 var fields = {
-	first_name: { type: String },
-    last_name: String,
+	name: { type: String,unique: true },
     movies : [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 };
 
-var directorSchema = new Schema(fields);
+var genreSchema = new Schema(fields);
 
-module.exports = mongoose.model('Director', directorSchema);
+module.exports = mongoose.model('Genre5', genreSchema);

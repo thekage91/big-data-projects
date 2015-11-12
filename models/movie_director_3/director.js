@@ -12,4 +12,4 @@ var fields = {
 
 var directorSchema = new Schema(fields);
 
-module.exports = mongoose.model('Director', directorSchema);
+module.exports = mongoose.model('Director3', directorSchema);

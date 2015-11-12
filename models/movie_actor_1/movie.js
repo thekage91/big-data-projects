@@ -15,10 +15,10 @@ var fields = {
 	writers: { type: String },
 	distributors: { type: String },
     genres : [{ type: String }],
-    directors : [{ type: Schema.Types.ObjectId, ref: 'Director' }],
+    directors : [{ type: String }],
     actors : [{ type: Schema.Types.ObjectId, ref: 'Actor' }]
 };
 
 var movieSchema = new Schema(fields);
 
-module.exports = mongoose.model('Movie', movieSchema);
+module.exports = mongoose.model('Movie1', movieSchema);

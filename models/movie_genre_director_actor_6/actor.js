@@ -12,4 +12,4 @@ var fields = {
 
 var actorSchema = new Schema(fields);
 
-module.exports = mongoose.model('Actor', actorSchema);
+module.exports = mongoose.model('Actor6', actorSchema);
