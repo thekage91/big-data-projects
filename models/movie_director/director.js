@@ -5,10 +5,11 @@ var mongoose = require('mongoose'),
 		ObjectId = Schema.ObjectId;
 
 var fields = {
-	name: { type: String,unique: true },
+	first_name: { type: String },
+    last_name: String,
     movies : [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 };
 
-var genreSchema = new Schema(fields);
+var directorSchema = new Schema(fields);
 
-module.exports = mongoose.model('Genre', genreSchema);
+module.exports = mongoose.model('Director', directorSchema);
