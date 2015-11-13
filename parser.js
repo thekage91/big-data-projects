@@ -10,18 +10,18 @@
 
  var fs = require('fs'),
  parse = require('csv-parse'),
+
  moviesPath = './dataset/movies.list',
- directorsPath = './dataset/directors.list.tsv',
- genresPath = './dataset/genres.list.tsv',
- actorsPath = './dataset/actors.list.tsv',
- moviesMatrix = './dataset/movies.matrix.list',
- directorsMatrix = './dataset/registi.matrix.list.solonontrova',
- genresMatrix = './dataset/generi.matrix.list',
- actorsMatrix = './dataset/attori.matrix.list',
- actressesMatrix = './dataset/attrici.matrix.list',
- provaPath = './dataset/prova.list.tsv',
+ directorsPath = './dataset/directors.list',
+ genresPath = './dataset/genres.list',
+ actorsPath = './dataset/actors.list',
+ provaPath = './dataset/prova.list',
+
+ moviesPathShort = './dataset/movies.short.list',
+
  app = require('./app.js'),
  mongoose = app.mongoose,
+
  Actor = mongoose.model('Actor'),
  Director = mongoose.model('Director'),
  Movie = mongoose.model('Movie'),
@@ -85,9 +85,10 @@ var parserDirectors = parse({
 });
 
 
-var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', '', 'release_date']}, function (err, data) {
+var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']}, function (err, data) {
 
-    var film;
+    var films = [];
+    var temp_title = "";
 
     console.log("[DEBUG] Parsing movies");
     if (err) {
@@ -98,23 +99,32 @@ var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', '', '
     //Per ogni riga, filtra via gli elementi vuoti
     data.forEach(function (elem) {
 
-        console.log("[DEBUG] Print movie element --> " + elem);
-        if (elem.undefined !== '' && elem.undefined !== undefined) {
-            elem.release_date = elem.undefined;
-            delete elem.undefined;
-        }
-        else if (elem[''] !== '') {
-            elem.release_date = elem[''];
-            if (elem.release_date === '????')
-                delete elem.release_date;
-            delete elem[''];
-        }
+        var film = {};
 
-        Movie.create(elem, function (err, movie) {
-            if (err) throw new Error(err);
-            /*console.log('Saved in database: ' + JSON.stringify(movie))*/
-        });
+        film.title = elem.title.split(" (")[0].replace(/"/g, "");
 
+        /* Essendo il film ordinati in maniera crescente, effettuo un controllo del precendete
+        * Se il precedente è uguale al corrente allora sto aggiungendo un duplicato, 
+        * quindi salto la fase di salvataggio 
+        */
+        if(temp_title !== film.title){
+
+            var temp_date = elem.undefined;
+    
+            if(temp_date != undefined && temp_date.includes("-????")){
+                film.release_date = temp_date.replace("-????", "");
+            }
+            else{
+                film.release_date = temp_date;
+            }
+
+            Movie.create(film, function (err, movie) {
+                if (err) throw new Error(err);
+                console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
+            });
+
+            temp_title = film.title;
+        }
     });
 
 });
@@ -137,16 +147,11 @@ var parseAndSave = function () {
 
     console.log("[+] Dropping Database ");
 
-    console.log("[+] Create Stream and read | " + moviesPath + " | " +
-        genresPath + " | " + directorsPath + " | " + actorsPath + " |");
-    var moviesStream = fs.createReadStream(moviesMatrix).pipe(parserMovies);
+    console.log("[+] Create Stream and read | " + moviesPathShort );
+    var moviesStream = fs.createReadStream(moviesPathShort).pipe(parserMovies);
     //var genresStream = fs.createReadStream(genresMatrix).pipe(parseGenres);
     //var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
     //var directorsStream = fs.createReadStream(directorsMatrix).pipe(parserDirectors);
-
-
-    console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
-
 }
 
-//setTimeout(parseAndSave,10000);
+parseAndSave();

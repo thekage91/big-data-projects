@@ -5,8 +5,9 @@ var mongoose = require('mongoose'),
 		ObjectId = Schema.ObjectId;
 
 var fields = {
-	title: { type: String ,unique: true,trim: true},
-	release_date: { type: Number , default: Date.now },
+	title: { type: String ,unique: true, trim: true},
+	//release_date: { type: Number , default: Date.now },
+	release_date: { type: String },
 	writer: { type: String },
 	stars: { type: String },
 	ratings: { type: String },
