@@ -25,6 +25,8 @@
     "grunt-open": "^0.2.3",
     "load-grunt-tasks": "^0.4.0",
     "mocha": "latest",
+    "should": "^7.1.1",
+    "should-promised": "^0.3.1",
     "supertest": "latest"
   },
   "scripts": {
