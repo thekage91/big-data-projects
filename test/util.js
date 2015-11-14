@@ -8,7 +8,7 @@ module.exports.fakeMovie = function () {
         title: faker.company.companyName(),
         release_date: faker.date.recent(),
         writer: faker.name.findName(),
-        stars: faker.helpers.randomize(),
+        stars: faker.random.number(),
         ratings: faker.name.findName(),
         certificate: faker.lorem.words(),
         country: faker.address.country(),
@@ -20,7 +20,7 @@ module.exports.fakeMovie = function () {
     }
 }
 
-console.log(module.exports.fakeMovie());
+//console.log(module.exports.fakeMovie());
 
 
 /*

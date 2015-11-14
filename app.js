@@ -19,8 +19,14 @@ app.use(express.static(__dirname + '/public'));
 
 
 // Bootstrap models
+// Two levels of directory traversal
 var modelsPath = path.join(__dirname, 'models');
 fs.readdirSync(modelsPath).forEach(function (file) {
+  if(fs.statSync(modelsPath +'/'+ file).isDirectory())
+      fs.readdirSync(modelsPath +'/'+ file).forEach(function (file_deep) {
+        require(modelsPath + '/' + file + '/' +  file_deep);
+      })
+  else
   require(modelsPath + '/' + file);
 });
 

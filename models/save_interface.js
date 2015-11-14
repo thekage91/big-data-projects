@@ -2,10 +2,7 @@
  * Created by ugo on 13/11/15.
  */
 
-
-/**
- * Created by ugo on 13/11/15.
- */
+'use strict';
 
 var mongoose = require('mongoose'),
     q = require('q'),
@@ -26,19 +23,24 @@ module.exports = {
      * @param {object} [data.actor] - Actor data to save
      * @param {object} [data.director] - Director data to save
      * @param {object} [data.genre] - Genre data to save
+     *
+     * @return {promise} - Promise either resolved with saved data or rejected with error
      */
     save: function (version, data) {
         let result = q.defer();
+
+        let movie_to_save = q.defer();
+        let actor_to_save = q.defer();
+
         switch (version) {
             case 0:
-                let movie_to_save = new Movie0(data.movie);
+                movie_to_save = new Movie0(data.movie);
                 movie_to_save.save(function (err, movie) {
                     if (err) result.reject(err);
                     result.resolve(movie);
                 })
                 break;
             case 1:
-                let movie_to_save = q.defer(), actor_to_save = q.defer();
 
                 Movie1.findOne({name: data.movie.name}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
@@ -72,9 +74,6 @@ module.exports = {
 
                 })
 
-                movie.save(function (err, movie) {
-                    if (err) throw new Error(err);
-                });
                 break;
             case 2:
             case 3:
@@ -83,5 +82,8 @@ module.exports = {
             case 6:
                 break;
         }
+        return result.promise;
     }
+
+
 }
