@@ -11,7 +11,7 @@ var fields = {
 	stars: { type: String },
 	ratings: { type: String },
 	certificate: { type: String },
-	county: { type: String },
+	country: { type: String },
 	writers: { type: String },
 	distributors: { type: String },
     genres : [{ type: String }],

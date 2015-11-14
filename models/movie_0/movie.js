@@ -11,7 +11,7 @@ var fields = {
 	stars: { type: String },
 	ratings: { type: String },
 	certificate: { type: String },
-	county: { type: String },
+	country: { type: String },
 	writers: { type: String },
 	distributors: { type: String },
     genres : [{ type: String }],
@@ -21,4 +21,5 @@ var fields = {
 
 var movieSchema = new Schema(fields);
 
-module.exports = mongoose.model('Movie', movieSchema);
+
+module.exports = mongoose.model('Movie0', movieSchema);

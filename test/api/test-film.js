@@ -3,7 +3,7 @@ var request = require('supertest'),
 
 process.env.NODE_ENV = 'test';
 
-var app = require('../app.js');
+var app = require('../../app.js');
 var _id = '';
 
 
@@ -52,7 +52,7 @@ describe('PUT Film by ID', function(){
     .put('/api/film/'+ _id )
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({ "film": { "title": "Hell Is Where There Are No Robots" } })    
+    .send({ "film": { "title": "Hell Is Where There Are No Robots" } })
     .expect(200, done);
   });
 });
@@ -60,7 +60,7 @@ describe('PUT Film by ID', function(){
 describe('DELETE Film by ID', function(){
   it('should delete film and return 200 status code', function(done){
     request(app)
-    .del('/api/film/'+ _id) 
+    .del('/api/film/'+ _id)
     .expect(204, done);
   });
 });

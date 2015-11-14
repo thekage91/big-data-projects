@@ -1,8 +1,14 @@
 'use strict';
 var mongoose = require('mongoose');
 
+var db_name;
+if(process.env.NODE_ENV == 'test')
+    db_name = 'imdb-nosql-test'
+else
+    db_name = 'imdb-nosql'
+
 var config = {
-  "db": "imdb-nosql",
+  "db": db_name,
   "host": "localhost",
   "user": "",
   "pw": "",

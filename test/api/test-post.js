@@ -3,7 +3,7 @@ var request = require('supertest'),
 
 process.env.NODE_ENV = 'test';
 
-var app = require('../app.js');
+var app = require('../../app.js');
 var _id = '';
 
 
@@ -57,7 +57,7 @@ describe('PUT Post by ID', function(){
     .put('/api/post/'+ _id )
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({ "post": { "title": "Hell Is Where There Are No Robots" } })    
+    .send({ "post": { "title": "Hell Is Where There Are No Robots" } })
     .expect(200, done);
   });
 });
@@ -65,7 +65,7 @@ describe('PUT Post by ID', function(){
 describe('DELETE Post by ID', function(){
   it('should delete post and return 204 status code', function(done){
     request(app)
-    .del('/api/post/'+ _id) 
+    .del('/api/post/'+ _id)
     .expect(204, done);
   });
 });

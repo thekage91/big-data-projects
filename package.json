@@ -4,17 +4,19 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "ejs": "latest",
-    "express": "latest",
-    "mongoose": "latest",
-    "morgan": "latest",
-    "method-override": "latest",
     "body-parser": "latest",
     "csv-parse": "latest",
-    "errorhandler": "latest"
+    "ejs": "latest",
+    "errorhandler": "latest",
+    "express": "latest",
+    "method-override": "latest",
+    "mongoose": "latest",
+    "morgan": "latest",
+    "q": "^1.4.1"
   },
   "devDependencies": {
     "bower": "latest",
+    "faker": "^3.0.1",
     "grunt": "latest",
     "grunt-auto-install": "^0.2.4",
     "grunt-contrib-watch": "^0.6.1",

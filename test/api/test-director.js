@@ -3,7 +3,7 @@ var request = require('supertest'),
 
 process.env.NODE_ENV = 'test';
 
-var app = require('../app.js');
+var app = require('../../app.js');
 var _id = '';
 
 
@@ -52,7 +52,7 @@ describe('PUT Director by ID', function(){
     .put('/api/director/'+ _id )
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({ "director": { "title": "Hell Is Where There Are No Robots" } })    
+    .send({ "director": { "title": "Hell Is Where There Are No Robots" } })
     .expect(200, done);
   });
 });
@@ -60,7 +60,7 @@ describe('PUT Director by ID', function(){
 describe('DELETE Director by ID', function(){
   it('should delete director and return 200 status code', function(done){
     request(app)
-    .del('/api/director/'+ _id) 
+    .del('/api/director/'+ _id)
     .expect(204, done);
   });
 });
