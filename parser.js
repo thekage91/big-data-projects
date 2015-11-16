@@ -8,6 +8,8 @@
  Thriller | War | Western |
  */
 
+'use strict';
+
  var fs = require('fs'),
  parse = require('csv-parse'),
 
@@ -18,6 +20,9 @@
  provaPath = './dataset/prova.list',
 
  moviesPathShort = './dataset/movies.short.list',
+ genresPathShort = './dataset/genres.short.list',
+ directorsPathShort = './dataset/directors.short.list',
+ actorsPathShort = './dataset/actors.short.list',
 
  app = require('./app.js'),
  mongoose = app.mongoose,
@@ -44,12 +49,7 @@
     console.log('Succesfully saved')
 }
 
-var parserDirectors = parse({
-    delimiter: '\t',
-    relax: true,
-    columns: ['first_name', 'last_name', 'film']
-}, function (err, data) {
-
+var parserDirectors = parse({ delimiter: '\t', relax: true, columns: ['first_name', 'last_name', 'film'] }, function (err, data) {
 
     var film;
 
@@ -84,6 +84,11 @@ var parserDirectors = parse({
 
 });
 
+var regexMovie = function(title){
+
+    return title.split(" (")[0].replace(/"/g, "");
+}
+
 
 var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']}, function (err, data) {
 
@@ -101,7 +106,7 @@ var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'rele
 
         var film = {};
 
-        film.title = elem.title.split(" (")[0].replace(/"/g, "");
+        film.title = regexMovie(elem.title);
 
         /* Essendo il film ordinati in maniera crescente, effettuo un controllo del precendete
         * Se il precedente è uguale al corrente allora sto aggiungendo un duplicato, 
@@ -110,7 +115,7 @@ var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'rele
         if(temp_title !== film.title){
 
             var temp_date = elem.undefined;
-    
+
             if(temp_date != undefined && temp_date.includes("-????")){
                 film.release_date = temp_date.replace("-????", "");
             }
@@ -129,8 +134,58 @@ var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'rele
 
 });
 
+var parseGenres = parse({ delimiter: '\t', relax: true}, function(err, data){
+
+    if(err){
+        console.error(err);
+        return;
+    }
+
+    var objGenres = {};
+    var i = 0;
+
+    data.forEach(function (elem){
+
+        if(objGenres[elem[elem.length - 1]] === undefined ){
+
+            objGenres[elem[elem.length - 1]] = [];
+        }
+
+        objGenres[elem[elem.length - 1]].push(regexMovie(elem[0]));
+    });
+
+    console.log(objGenres['Horror']);
+
+    for(var key in objGenres){
+
+        var genre = {};
+
+        genre.name = key;
+        genre.movies = objGenres[key];
+
+        /*Genre.create(genre, function(err, data){
+
+            if(err) throw new Error(err);
+
+            console.log("[SUCCESS] Save");
+        });*/
+    }
+});
 
 
+var parseActors = parse({ delimiter: '\n\n', relax: true }, function(err, data){
+
+    if(err){
+
+        console.error(err);
+        return;
+    }
+
+    data.forEach(function(elem){
+
+        console.log(elem)
+    })
+})
 
 var moviesOutput = [];
 var userOutput = [];
@@ -148,9 +203,9 @@ var parseAndSave = function () {
     console.log("[+] Dropping Database ");
 
     console.log("[+] Create Stream and read | " + moviesPathShort );
-    var moviesStream = fs.createReadStream(moviesPathShort).pipe(parserMovies);
-    //var genresStream = fs.createReadStream(genresMatrix).pipe(parseGenres);
-    //var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
+    //var moviesStream = fs.createReadStream(moviesPathShort).pipe(parserMovies);
+    //var genresStream = fs.createReadStream(genresPathShort).pipe(parseGenres);
+    var actorsStream = fs.createReadStream(actorsPathShort).pipe(parseActors);
     //var directorsStream = fs.createReadStream(directorsMatrix).pipe(parserDirectors);
 }
 
