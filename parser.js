@@ -173,7 +173,7 @@ var parseGenres = parse({ delimiter: '\t', relax: true}, function(err, data){
 });
 
 
-var parseActors = parse({ delimiter: '\n\n', relax: true }, function(err, data){
+var parseActors = parse({ delimiter: '\n', relax: true }, function(err, data){
 
     if(err){
 
@@ -181,9 +181,16 @@ var parseActors = parse({ delimiter: '\n\n', relax: true }, function(err, data){
         return;
     }
 
+    //console.log(data);
+
+    var actors = {};
+    var actorCurrent = "";
+
     data.forEach(function(elem){
 
-        console.log(elem)
+        if(elem[0].includes('\t')){
+            actors[actorCurrent].push(elem[0]);
+        }
     })
 })
 
