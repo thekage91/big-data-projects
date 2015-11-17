@@ -14,11 +14,20 @@ module.exports.fakeMovie = function () {
         country: faker.address.country(),
         writers:  faker.lorem.words(),
         distributors: faker.lorem.words(),
-        genres :faker.lorem.words(),
-        directors : faker.lorem.words(),
-        actors : faker.lorem.words()
+        genres : [],
+        directors : [],
+        actors : []
     }
 }
+
+module.exports.fakeActor = function () {
+    return {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        movies: []
+    }
+}
+
 
 //console.log(module.exports.fakeMovie());
 

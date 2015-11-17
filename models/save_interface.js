@@ -38,7 +38,7 @@ module.exports = {
                 movie_to_save.save(function (err, movie) {
                     if (err) result.reject(err);
                     result.resolve(movie);
-                })
+                });
                 break;
             case 1:
 
@@ -58,19 +58,35 @@ module.exports = {
                 });
 
                 movie_to_save.resolve(new Movie1(data.movie));
-                actor_to_save.resolve(new Movie1(data.actor));
+                actor_to_save.resolve(new Actor1(data.actor));
 
-                q.all([movie_to_save, actor_to_save]).then(function (movie, actor) {
-                    movies.actors = movie.actors || [];
+                q.all([movie_to_save.promise, actor_to_save.promise]).then(function (data) {
+                    let movie = data[0];
+                    let actor = data[1];
+
+                    let movie_promise = q.defer();
+                    let actor_promise = q.defer();
+
+                    movie.actors = movie.actors || [];
                     actor.movies = actor.movies || [];
 
                     movie.actors.push(actor._id);
-                    actor.movies.push(movies._id);
+                    actor.movies.push(movie._id);
 
-                    movie.save(() => {
+                    movie.save( (err,movie) => {
+                        if(err) throw new Error(err);
+                        movie_promise.resolve(movie);
                     });
-                    actor.save(() => {
+                    actor.save( (err,actor) => {
+                        if(err) throw new Error(err);
+                        actor_promise.resolve(actor);
                     });
+
+                    console.log('mona ca seu');
+                    q.all([movie_promise.promise,actor_promise.promise]).then( (mov_act) => {
+                        result.resolve(mov_act);
+                    });
+                   // result.resolve([movie,actor])
 
                 })
 
