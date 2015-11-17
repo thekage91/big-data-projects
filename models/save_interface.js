@@ -82,7 +82,6 @@ module.exports = {
                         actor_promise.resolve(actor);
                     });
 
-                    console.log('mona ca seu');
                     q.all([movie_promise.promise,actor_promise.promise]).then( (mov_act) => {
                         result.resolve(mov_act);
                     });
