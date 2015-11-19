@@ -183,14 +183,31 @@ var parseActors = parse({ delimiter: '\n', relax: true }, function(err, data){
 
     //console.log(data);
 
-    var actors = {};
-    var actorCurrent = "";
+    // actors: { nomeAttore: arrayFilms }
+    
+    var actors = {},
+        currentRecord = [],
+        currentActor = "";
 
     data.forEach(function(elem){
 
-        if(elem[0].includes('\t')){
-            actors[actorCurrent].push(elem[0]);
+        if(elem[0].indexOf('\t') !== 0){
+            currentRecord = elem[0].split(',')[1].replace(' ', '').split('\t');
+
+            currentActor = currentRecord[0];
+            actors[currentActor] = [ currentRecord[currentRecord.length - 1].replace('"', '') ];
         }
+        else{
+            var movie = elem[0].replace('\t', '');
+
+            actors[currentActor].push(movie);
+        }
+    })
+
+    console.log("current actor: " + currentActor + "\nmovies: ");
+
+    actors[currentActor].forEach(function(elem){
+        console.log(elem);
     })
 })
 
