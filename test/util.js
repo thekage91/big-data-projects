@@ -28,6 +28,31 @@ module.exports.fakeActor = function () {
     }
 }
 
+module.exports.sameMovie = function () {
+    return {
+        title: 'Matrix',
+        release_date: 'Tue Nov 17 2015 14:24:27 GMT+0100 (CET)',
+        writer: 'Lana & Andy Wachowski',
+        stars: 5,
+        ratings: '5',
+        certificate: 'PEGI5',
+        country: 'Italy',
+        writers:  'Ciccio Paduccio',
+        distributors: 'SONY',
+        genres : [],
+        directors : [],
+        actors : []
+    }
+}
+
+module.exports.sameActor = function () {
+    return {
+        first_name: 'Keanu',
+        last_name: 'Reeves',
+        movies: []
+    }
+}
+
 
 //console.log(module.exports.fakeMovie());
 

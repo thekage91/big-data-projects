@@ -41,11 +41,14 @@ module.exports = {
                 });
                 break;
             case 1:
-
                 Movie1.findOne({name: data.movie.name}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
+                    else (new Movie1(data.movie)).save((err,movie) => {
+                        if(err) throw new Error(err);
+                        movie_to_save.resolve(movie);
+                    });
                 });
 
                 Actor1.findOne({
@@ -55,10 +58,11 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_actor !== 'undefined' && retrieved_actor)
                         actor_to_save.resolve(retrieved_actor)
+                    else (new Actor1(data.actor)).save((err,actor) => {
+                        if(err) throw new Error(err);
+                        actor_to_save.resolve(actor);
+                    });
                 });
-
-                movie_to_save.resolve(new Movie1(data.movie));
-                actor_to_save.resolve(new Actor1(data.actor));
 
                 q.all([movie_to_save.promise, actor_to_save.promise]).then(function (data) {
                     let movie = data[0];
@@ -70,9 +74,19 @@ module.exports = {
                     movie.actors = movie.actors || [];
                     actor.movies = actor.movies || [];
 
-                    movie.actors.push(actor._id);
-                    actor.movies.push(movie._id);
+                    console.log(`ID movie:${movie._id}`);
+                    Movie1.findByIdAndUpdate(movie._id, {$push : { actors: actor._id} }, {new: true},
+                        (err,movie) => {
+                            if(err) throw new Error(err);
+                            movie_promise.resolve(movie);
+                    });
 
+                    Actor1.findByIdAndUpdate(actor._id, {$push : { movies: movie._id} }, {new: true},
+                        (err,actor) => {
+                            if(err) throw new Error(err);
+                            actor_promise.resolve(actor);
+                        });
+/*
                     movie.save( (err,movie) => {
                         if(err) throw new Error(err);
                         movie_promise.resolve(movie);
@@ -81,7 +95,7 @@ module.exports = {
                         if(err) throw new Error(err);
                         actor_promise.resolve(actor);
                     });
-
+*/
                     q.all([movie_promise.promise,actor_promise.promise]).then( (mov_act) => {
                         result.resolve(mov_act);
                     });
