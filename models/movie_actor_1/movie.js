@@ -16,7 +16,7 @@ var fields = {
 	distributors: { type: String },
     genres : [{ type: String }],
     directors : [{ type: String }],
-    actors : [{ type: Schema.Types.ObjectId, ref: 'Actor' }]
+    actors : [{ type: Schema.Types.ObjectId, ref: 'Actor1' ,unique: true}]
 };
 
 var movieSchema = new Schema(fields);

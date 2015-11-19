@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var fields = {
 	name: { type: String,unique: true },
-    movies : [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
+    movies : [{ type: Schema.Types.ObjectId, ref: 'Movie5' }]
 };
 
 var genreSchema = new Schema(fields);

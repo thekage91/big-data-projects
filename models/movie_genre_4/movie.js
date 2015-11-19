@@ -14,7 +14,7 @@ var fields = {
 	country: { type: String },
 	writers: { type: String },
 	distributors: { type: String },
-    genres : [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
+    genres : [{ type: Schema.Types.ObjectId, ref: 'Genre4' }],
     directors : [{ type: String }],
     actors : [{ type: String }]
 };

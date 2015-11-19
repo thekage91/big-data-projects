@@ -41,6 +41,7 @@ module.exports = {
                 });
                 break;
             case 1:
+            case 1:
                 Movie1.findOne({name: data.movie.name}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
@@ -74,7 +75,7 @@ module.exports = {
                     movie.actors = movie.actors || [];
                     actor.movies = actor.movies || [];
 
-                    console.log(`ID movie:${movie._id}`);
+
                     Movie1.findByIdAndUpdate(movie._id, {$push : { actors: actor._id} }, {new: true},
                         (err,movie) => {
                             if(err) throw new Error(err);
