@@ -42,7 +42,8 @@ module.exports = {
                 break;
             case 1:
                 console.log('cerco: ' + data.movie.title);
-                Movie1.findOne({name: data.movie.title}, function (err, retrieved_movie) {
+                Movie1.findOne({title: data.movie.title}, function (err, retrieved_movie) {
+                    console.log('trovato qualcosa?' + retrieved_movie);
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie) {
                         console.log('Trovato ' + retrieved_movie.title)

@@ -210,15 +210,11 @@ describe('Save interface', function () {
 
         describe('Overwrite existing data', function () {
 
-           /* afterEach('Clear database', function (done) {
+            afterEach('Clear database', function (done) {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
-                delete mongoose.models.Actor1;
-                delete mongoose.modelSchemas.Actor1;
-                delete mongoose.models.Movie1;
-                delete mongoose.modelSchemas.Movie1;
-            });*/
+            });
 
             beforeEach('Save film and actor',  function (done) {
                 var movie_to_save = util.sameMovie();
