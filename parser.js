@@ -49,40 +49,6 @@
     console.log('Succesfully saved')
 }
 
-var parserDirectors = parse({ delimiter: '\t', relax: true, columns: ['first_name', 'last_name', 'film'] }, function (err, data) {
-
-    var film;
-
-    if (err) {
-        console.error(err);
-        return;
-    }
-
-    //console.info('INFOFOSDIF ' + JSON.stringify(data));
-    data.forEach(function (elem) {
-        //Per ogni riga, filtra via gli elementi vuoti
-        console.log("[DEBUG] " + data);
-        Movie.find({title: elem.film.trim()}, function (err, movies) {
-            if (err) throw new Error(err);
-            if (movies.length === 0) {
-                console.log('No movie with title: ' + elem.film);
-                return;
-            }
-            movies.forEach(function (movie) {
-                console.log('adding director to film: ' + elem.film);
-                var director = new Director({first_name: elem.first_name, last_name: elem.last_name});
-                director.movies.push(movie.id);
-                movie.directors.push(director.id);
-                director.save(callbackSave);
-                movie.save(callbackSave);
-
-            });
-
-        })
-
-    });
-
-});
 
 var regexMovie = function(title){
 
@@ -191,13 +157,14 @@ var parseActors = parse({ delimiter: '\n', relax: true }, function(err, data){
 
     data.forEach(function(elem){
 
-        if(elem[0].indexOf('\t') !== 0){
+        if( elem[0].indexOf('\t') !== 0 ){
+            
             currentRecord = elem[0].split(',')[1].replace(' ', '').split('\t');
-
             currentActor = currentRecord[0];
             actors[currentActor] = [ currentRecord[currentRecord.length - 1].replace('"', '') ];
         }
         else{
+
             var movie = elem[0].replace('\t', '');
 
             actors[currentActor].push(movie);
@@ -210,6 +177,46 @@ var parseActors = parse({ delimiter: '\n', relax: true }, function(err, data){
         console.log(elem);
     })
 })
+
+var parseDirectors = parse({ delimiter: '\n', relax: true }, function (err, data) {
+
+    if (err) {
+        console.error(err);
+        return;
+    }
+
+    var directors = {},
+        currentRecord = [],
+        currentDirector = "";
+
+    data.forEach(function (elem) {
+
+        if( elem[0].indexOf('\t') !== 0 ){
+
+            currentRecord = elem[0].split('\t');
+            currentDirector = currentRecord[0].replace(',', '');
+
+            directors[currentDirector] = [ currentRecord[1] ];
+        }
+        else{
+
+            var movie = elem[0].replace('\t', '');
+            directors[currentDirector].push(movie);
+        }
+    });
+
+    console.log(JSON.stringify(directors[currentDirector]));
+
+    for(var key in directors){
+
+        console.log("Director: " + key + "\nmovies: ")
+
+        directors[key].forEach(function(elem){
+            console.log(elem);
+        });
+    }
+
+});
 
 var moviesOutput = [];
 var userOutput = [];
@@ -229,8 +236,8 @@ var parseAndSave = function () {
     console.log("[+] Create Stream and read | " + moviesPathShort );
     //var moviesStream = fs.createReadStream(moviesPathShort).pipe(parserMovies);
     //var genresStream = fs.createReadStream(genresPathShort).pipe(parseGenres);
-    var actorsStream = fs.createReadStream(actorsPathShort).pipe(parseActors);
-    //var directorsStream = fs.createReadStream(directorsMatrix).pipe(parserDirectors);
+    //var actorsStream = fs.createReadStream(actorsPathShort).pipe(parseActors);
+    var directorsStream = fs.createReadStream(directorsPathShort).pipe(parseDirectors);
 }
 
 parseAndSave();
