@@ -41,13 +41,16 @@ module.exports = {
                 });
                 break;
             case 1:
-            case 1:
-                Movie1.findOne({name: data.movie.name}, function (err, retrieved_movie) {
+                console.log('cerco: ' + data.movie.title);
+                Movie1.findOne({name: data.movie.title}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
-                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
+                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie) {
+                        console.log('Trovato ' + retrieved_movie.title)
                         movie_to_save.resolve(retrieved_movie)
+                    }
                     else (new Movie1(data.movie)).save((err,movie) => {
                         if(err) throw new Error(err);
+                        console.log(`Salvato nuovo ${movie.title}`)
                         movie_to_save.resolve(movie);
                     });
                 });

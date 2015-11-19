@@ -214,6 +214,10 @@ describe('Save interface', function () {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
+                delete mongoose.models.Actor1;
+                delete mongoose.modelSchemas.Actor1;
+                delete mongoose.models.Movie1;
+                delete mongoose.modelSchemas.Movie1;
             });*/
 
             beforeEach('Save film and actor',  function (done) {
@@ -338,9 +342,10 @@ describe('Save interface', function () {
                 var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
 
                 movie_saved.then((movie_actor_array) => {
+                    //console.log(`finding: ${movie_to_save.title}`)
                     Movie1.findOne({title: movie_to_save.title}, function (err, movie) {
                         movie.actors.length.should.be.equal(1);
-                        movie.actors.indexOf(movie_actor_array[2]._id).should.not.eql(-1);
+                        movie.actors.indexOf(movie_actor_array[1]._id).should.not.eql(-1);
                         done();
                     })
                 }, (err) => {
