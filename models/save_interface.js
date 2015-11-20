@@ -381,9 +381,9 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_director !== 'undefined' && retrieved_director)
                         director_to_save.resolve(retrieved_director)
-                    else (new Director6(data.director)).save((err,genre) => {
+                    else (new Director6(data.director)).save((err,director) => {
                         if(err) throw new Error(err);
-                        director_to_save.resolve(genre);
+                        director_to_save.resolve(director);
                     });
                 });
 

@@ -117,104 +117,104 @@ describe('Save interface', function () {
 
     describe('Version 1', function () {
 
-       describe('No existing data', function () {
+        describe('No existing data', function () {
 
-           afterEach('Clear database', function (done) {
-               mongoose.connection.db.dropDatabase(function (err, ww) {
-                   done();
-               })
-           });
+            afterEach('Clear database', function (done) {
+                mongoose.connection.db.dropDatabase(function (err, ww) {
+                    done();
+                })
+            });
 
 
-           it('Saves one movie', function (done) {
+            it('Saves one movie', function (done) {
 
-               var movie_to_save = util.fakeMovie();
-               var actor_to_save = util.fakeActor();
+                var movie_to_save = util.fakeMovie();
+                var actor_to_save = util.fakeActor();
 
-               var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
+                var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
 
-               movie_saved.then(() => {
-                   Movie1.find({title: movie_to_save.title}, function (err, movie) {
-                       movie.should.not.be.null();
-                       movie.should.not.be.empty();
-                       movie.length.should.be.equal(1);
-                       done();
-                   })
-               }, (err) => {
-                   throw new AssertionError(err)
-               });
+                movie_saved.then(() => {
+                    Movie1.find({title: movie_to_save.title}, function (err, movie) {
+                        movie.should.not.be.null();
+                        movie.should.not.be.empty();
+                        movie.length.should.be.equal(1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
 
-           })
+            })
 
-           it('Saves one actor', function (done) {
+            it('Saves one actor', function (done) {
 
-               var movie_to_save = util.fakeMovie();
-               var actor_to_save = util.fakeActor();
+                var movie_to_save = util.fakeMovie();
+                var actor_to_save = util.fakeActor();
 
-               var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
+                var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
 
-               movie_saved.then(() => {
-                   Actor1.find({
-                       first_name: actor_to_save.first_name,
-                       last_name: actor_to_save.last_name
-                   }, function (err, actor) {
-                       actor.should.not.be.null();
-                       actor.should.not.be.empty();
-                       actor.length.should.be.equal(1);
-                       done();
-                   })
-               }, (err) => {
-                   throw new AssertionError(err)
-               });
-           });
+                movie_saved.then(() => {
+                    Actor1.find({
+                        first_name: actor_to_save.first_name,
+                        last_name: actor_to_save.last_name
+                    }, function (err, actor) {
+                        actor.should.not.be.null();
+                        actor.should.not.be.empty();
+                        actor.length.should.be.equal(1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+            });
 
-           it('Saves the correct movie -> actor association', function (done) {
+            it('Saves the correct movie -> actor association', function (done) {
 
-               var movie_to_save = util.fakeMovie();
-               var actor_to_save = util.fakeActor();
+                var movie_to_save = util.fakeMovie();
+                var actor_to_save = util.fakeActor();
 
-               var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
+                var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
 
-               movie_saved.then((data) => {
-                   Movie1.findOne({title: movie_to_save.title}, function (err, movie) {
-                       movie.actors.should.not.be.empty();
-                       Actor1.findById(movie.actors[0], function (err, actor) {
-                           actor.should.not.be.empty();
-                           done();
-                       })
+                movie_saved.then((data) => {
+                    Movie1.findOne({title: movie_to_save.title}, function (err, movie) {
+                        movie.actors.should.not.be.empty();
+                        Actor1.findById(movie.actors[0], function (err, actor) {
+                            actor.should.not.be.empty();
+                            done();
+                        })
 
-                   })
-               }, (err) => {
-                   throw new AssertionError(err)
-               });
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
 
-           });
+            });
 
-           it('Saves the correct actor -> movie association', function (done) {
+            it('Saves the correct actor -> movie association', function (done) {
 
-               var movie_to_save = util.fakeMovie();
-               var actor_to_save = util.fakeActor();
+                var movie_to_save = util.fakeMovie();
+                var actor_to_save = util.fakeActor();
 
-               var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
+                var movie_saved = save_interface.save(1, {movie: movie_to_save, actor: actor_to_save});
 
-               movie_saved.then(() => {
-                   Actor1.findOne({
-                       first_name: actor_to_save.first_name,
-                       last_name: actor_to_save.last_name
-                   }, function (err, actor) {
-                       actor.movies.should.not.be.empty();
-                       Movie1.findById(actor.movies[0], function (err, movie) {
-                           movie.should.not.be.empty();
-                           done();
-                       })
-                   })
-               }, (err) => {
-                   throw new AssertionError(err)
-               });
+                movie_saved.then(() => {
+                    Actor1.findOne({
+                        first_name: actor_to_save.first_name,
+                        last_name: actor_to_save.last_name
+                    }, function (err, actor) {
+                        actor.movies.should.not.be.empty();
+                        Movie1.findById(actor.movies[0], function (err, movie) {
+                            movie.should.not.be.empty();
+                            done();
+                        })
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
 
-           });
+            });
 
-       });
+        });
 
 
         describe('Overwrite existing data', function () {
@@ -281,13 +281,13 @@ describe('Save interface', function () {
 
                 movie_saved.then((movie_actor_array) => {
                     Actor1.findOne({
-                    first_name: actor_to_save.first_name,
-                    last_name: actor_to_save.last_name
-                }, function (err, actor) {
+                        first_name: actor_to_save.first_name,
+                        last_name: actor_to_save.last_name
+                    }, function (err, actor) {
                         actor.movies.length.should.be.eql(1);
                         actor.movies.indexOf(movie_actor_array[0]._id).should.not.eql(-1);
                         done();
-                })
+                    })
                 }, (err) => {
                     throw new AssertionError(err)
                 });
@@ -1678,13 +1678,13 @@ describe('Save interface', function () {
             var movie_saved;
 
             beforeEach('Initialize variables', function (done) {
-                 movie_to_save = util.fakeMovie();
-                 genre_to_save = util.fakeGenre();
-                 director_to_save = util.fakeDirector();
-                 actor_to_save = util.fakeActor();
-                 movie_saved = save_interface.save(6,
+                movie_to_save = util.fakeMovie();
+                genre_to_save = util.fakeGenre();
+                director_to_save = util.fakeDirector();
+                actor_to_save = util.fakeActor();
+                movie_saved = save_interface.save(6,
                     {movie: movie_to_save, genre: genre_to_save, director: director_to_save,actor: actor_to_save});
-                 done();
+                done();
             });
             afterEach('Clear database', function (done) {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
@@ -1867,34 +1867,40 @@ describe('Save interface', function () {
 
         describe('Overwrite existing data', function () {
 
+            var movie_to_save ;
+            var genre_to_save ;
+            var director_to_save ;
+            var actor_to_save ;
+
             afterEach('Clear database', function (done) {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
             });
 
-            beforeEach('Save film, genre and director',  function (done) {
-                var movie_to_save = util.sameMovie();
-                var genre_to_save = util.sameGenre();
-                var director_to_save = util.sameDirector() ;
+            beforeEach('Save film, genre, director and actor',  function (done) {
+                movie_to_save = util.sameMovie();
+                genre_to_save = util.sameGenre();
+                director_to_save = util.sameDirector() ;
+                actor_to_save = util.sameActor();
 
-                save_interface.save(6,{movie: movie_to_save, genre: genre_to_save, director: director_to_save})
+                save_interface
+                    .save(6,{movie: movie_to_save, genre: genre_to_save, director: director_to_save,actor: actor_to_save})
                     .then(() => done());
             });
 
 
             it('Does not create another identical movie', function (done) {
 
-                var movie_to_save = util.sameMovie();
                 var genre_to_save = util.fakeGenre();
                 var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
                 movie_saved.then(() => {
                     Movie6.find({title: movie_to_save.title}, function (err, movies) {
-                        movies.should.not.be.null();
                         movies.should.not.be.empty();
                         movies.length.should.be.equal(1);
                         done();
@@ -1907,12 +1913,13 @@ describe('Save interface', function () {
 
             it('Adds (movie -> genre) association correctly to the same movie', function (done) {
 
-                var movie_to_save = util.sameMovie();
                 var genre_to_save = util.fakeGenre();
                 var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
 
                 movie_saved.then((movie_genre_director_array) => {
                     Movie6.findOne({title: movie_to_save.title}, function (err, movie) {
@@ -1928,12 +1935,12 @@ describe('Save interface', function () {
 
             it('Adds the correct (genre -> movie) association to a new genre', function (done) {
 
-                var movie_to_save = util.sameMovie();
                 var genre_to_save = util.fakeGenre();
                 var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
                 movie_saved.then((movie_genre_director_array) => {
                     Genre6.findOne({name: genre_to_save.name}, function (err, genre) {
@@ -1950,12 +1957,12 @@ describe('Save interface', function () {
 
             it('Adds the correct (director -> movie) association to a new director', function (done) {
 
-                var movie_to_save = util.sameMovie();
                 var genre_to_save = util.fakeGenre();
                 var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
                 movie_saved.then((movie_genre_director_array) => {
                     Director6.findOne({
@@ -1973,15 +1980,41 @@ describe('Save interface', function () {
 
             });
 
+            it('Adds the correct (actor -> movie) association to a new director', function (done) {
+
+                var genre_to_save = util.fakeGenre();
+                var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
+
+                var movie_saved = save_interface.save(6,
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
+                movie_saved.then((movie_genre_director_array) => {
+                    Actor6.findOne({
+                        first_name: actor_to_save.first_name,
+                        last_name: actor_to_save.last_name
+                    }, function (err, actor) {
+                        actor.movies.length.should.be.eql(1);
+                        actor.movies.indexOf(movie_genre_director_array[0]._id).should.not.eql(-1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+
+            });
+
 
             it('Does not create another identical genre', function (done) {
 
                 var movie_to_save = util.fakeMovie();
-                var genre_to_save = util.sameGenre();
+                var actor_to_save = util.fakeActor();
                 var director_to_save = util.fakeDirector();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
 
                 movie_saved.then(() => {
                     Genre6.find({name: genre_to_save.name}, (err,genres) => {
@@ -1999,16 +2032,16 @@ describe('Save interface', function () {
             it('Adds (genre -> movie) association correctly to the same genre', function (done) {
 
                 var movie_to_save = util.fakeMovie();
-                var genre_to_save = util.sameGenre();
                 var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
-                movie_saved.then((movie_genre_director_array) => {
+                movie_saved.then((movie_genre_director_actor_array) => {
                     Genre6.findOne({name: genre_to_save.name}, (err,genres) => {
                         genres.movies.length.should.be.equal(2);
-                        genres.movies.indexOf(movie_genre_director_array[0]._id).should.not.eql(-1);
+                        genres.movies.indexOf(movie_genre_director_actor_array[0]._id).should.not.eql(-1);
                         done();
                     })
                 }, (err) => {
@@ -2019,16 +2052,16 @@ describe('Save interface', function () {
             it('Adds (movie -> genre) association correctly to a film', function (done) {
 
                 var movie_to_save = util.fakeMovie();
-                var genre_to_save = util.sameGenre();
                 var director_to_save = util.fakeDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
-                movie_saved.then((movie_genre_array) => {
+                movie_saved.then((movie_genre_director_actor_array) => {
                     Movie6.findOne({title: movie_to_save.title}, function (err, movie) {
                         movie.genres.length.should.be.equal(1);
-                        movie.genres.indexOf(movie_genre_array[1]._id).should.not.eql(-1);
+                        movie.genres.indexOf(movie_genre_director_actor_array[1]._id).should.not.eql(-1);
                         done();
                     })
                 }, (err) => {
@@ -2040,10 +2073,11 @@ describe('Save interface', function () {
 
                 var movie_to_save = util.fakeMovie();
                 var genre_to_save = util.fakeGenre();
-                var director_to_save = util.sameDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
 
                 movie_saved.then(() => {
                     Director6.find({
@@ -2064,18 +2098,18 @@ describe('Save interface', function () {
 
                 var movie_to_save = util.fakeMovie();
                 var genre_to_save = util.fakeGenre();
-                var director_to_save = util.sameDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
-                movie_saved.then((movie_genre_director_array) => {
+                movie_saved.then((movie_genre_director_actor_array) => {
                     Director6.findOne({
                         first_name: director_to_save.first_name,
                         last_name: director_to_save.last_name
                     }, (err,directors) => {
                         directors.movies.length.should.be.equal(2);
-                        directors.movies.indexOf(movie_genre_director_array[0]._id).should.not.eql(-1);
+                        directors.movies.indexOf(movie_genre_director_actor_array[0]._id).should.not.eql(-1);
                         done();
                     })
                 }, (err) => {
@@ -2087,15 +2121,86 @@ describe('Save interface', function () {
 
                 var movie_to_save = util.fakeMovie();
                 var genre_to_save = util.fakeGenre();
-                var director_to_save = util.sameDirector();
+                var actor_to_save = util.fakeActor();
 
                 var movie_saved = save_interface.save(6,
-                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save});
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
 
-                movie_saved.then((movie_genre_director_array) => {
+
+                movie_saved.then((movie_genre_director_actor_array) => {
                     Movie6.findOne({title: movie_to_save.title}, function (err, movie) {
                         movie.directors.length.should.be.equal(1);
-                        movie.directors.indexOf(movie_genre_director_array[2]._id).should.not.eql(-1);
+                        movie.directors.indexOf(movie_genre_director_actor_array[2]._id).should.not.eql(-1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+            });
+
+            it('Does not create another identical actor', function (done) {
+
+                var movie_to_save = util.fakeMovie();
+                var genre_to_save = util.fakeGenre();
+                var director_to_save = util.fakeDirector();
+
+                var movie_saved = save_interface.save(6,
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
+
+                movie_saved.then(() => {
+                    Actor6.find({
+                        first_name: actor_to_save.first_name,
+                        last_name: actor_to_save.last_name
+                    }, (err,actors) => {
+                        actors.should.not.be.empty();
+                        actors.length.should.be.equal(1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+            it('Adds (actor -> movie) association correctly to the same actor', function (done) {
+
+                var movie_to_save = util.fakeMovie();
+                var genre_to_save = util.fakeGenre();
+                var director_to_save = util.fakeDirector();
+
+                var movie_saved = save_interface.save(6,
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
+                movie_saved.then((movie_genre_director_actor_array) => {
+                    Actor6.findOne({
+                        first_name: actor_to_save.first_name,
+                        last_name: actor_to_save.last_name
+                    }, (err,actors) => {
+                        if(err) throw err;
+                        actors.movies.length.should.be.equal(2);
+                        actors.movies.indexOf(movie_genre_director_actor_array[0]._id).should.not.eql(-1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+            });
+
+            it('Adds (movie -> actor) association correctly to a movie', function (done) {
+
+                var movie_to_save = util.fakeMovie();
+                var genre_to_save = util.fakeGenre();
+                var director_to_save = util.fakeDirector();
+
+                var movie_saved = save_interface.save(6,
+                    {movie: movie_to_save, genre: genre_to_save, director: director_to_save, actor: actor_to_save});
+
+
+                movie_saved.then((movie_genre_director_actor_array) => {
+                    Movie6.findOne({title: movie_to_save.title}, function (err, movie) {
+                        movie.actors.length.should.be.equal(1);
+                        movie.actors.indexOf(movie_genre_director_actor_array[3]._id).should.not.eql(-1);
                         done();
                     })
                 }, (err) => {
