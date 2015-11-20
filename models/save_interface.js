@@ -9,7 +9,9 @@ var mongoose = require('mongoose'),
     Movie0 = mongoose.model('Movie0'),
     Movie1 = mongoose.model('Movie1'),
     Actor1 = mongoose.model('Actor1'),
-    Movie0 = mongoose.model('Movie0');
+    Movie2 = mongoose.model('Movie2'),
+    Director2 = mongoose.model('Director2'),
+    Actor2 = mongoose.model('Actor2');
 
 
 
@@ -31,6 +33,7 @@ module.exports = {
 
         let movie_to_save = q.defer();
         let actor_to_save = q.defer();
+        let director_to_save = q.defer();
 
         switch (version) {
             case 0:
@@ -41,17 +44,13 @@ module.exports = {
                 });
                 break;
             case 1:
-                console.log('cerco: ' + data.movie.title);
+
                 Movie1.findOne({title: data.movie.title}, function (err, retrieved_movie) {
-                    console.log('trovato qualcosa?' + retrieved_movie);
                     if (err) result.reject(err);
-                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie) {
-                        console.log('Trovato ' + retrieved_movie.title)
+                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    }
                     else (new Movie1(data.movie)).save((err,movie) => {
                         if(err) throw new Error(err);
-                        console.log(`Salvato nuovo ${movie.title}`)
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -91,25 +90,86 @@ module.exports = {
                             if(err) throw new Error(err);
                             actor_promise.resolve(actor);
                         });
-/*
-                    movie.save( (err,movie) => {
-                        if(err) throw new Error(err);
-                        movie_promise.resolve(movie);
-                    });
-                    actor.save( (err,actor) => {
-                        if(err) throw new Error(err);
-                        actor_promise.resolve(actor);
-                    });
-*/
+
                     q.all([movie_promise.promise,actor_promise.promise]).then( (mov_act) => {
                         result.resolve(mov_act);
                     });
-                   // result.resolve([movie,actor])
 
                 })
 
                 break;
             case 2:
+
+                Movie2.findOne({title: data.movie.title}, function (err, retrieved_movie) {
+                    if (err) result.reject(err);
+                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
+                        movie_to_save.resolve(retrieved_movie)
+                    else (new Movie2(data.movie)).save((err,movie) => {
+                        if(err) throw new Error(err);
+                        movie_to_save.resolve(movie);
+                    });
+                });
+
+                Actor2.findOne({
+                    last_name: data.actor.last_name,
+                    first_name: data.actor.first_name
+                }, function (err, retrieved_actor) {
+                    if (err) result.reject(err);
+                    if (typeof retrieved_actor !== 'undefined' && retrieved_actor)
+                        actor_to_save.resolve(retrieved_actor)
+                    else (new Actor2(data.actor)).save((err,actor) => {
+                        if(err) throw new Error(err);
+                        actor_to_save.resolve(actor);
+                    });
+                });
+
+                Director2.findOne({
+                    last_name: data.director.last_name,
+                    first_name: data.director.first_name
+                }, function (err, retrieved_director) {
+                    if (err) result.reject(err);
+                    if (typeof retrieved_director !== 'undefined' && retrieved_director)
+                        director_to_save.resolve(retrieved_director)
+                    else (new Director2(data.director)).save((err,actor) => {
+                        if(err) throw new Error(err);
+                        director_to_save.resolve(actor);
+                    });
+                });
+
+
+                q.all([movie_to_save.promise, actor_to_save.promise, director_to_save.promise]).then(function (data) {
+                    let movie = data[0];
+                    let actor = data[1];
+                    let director = data[2];
+
+                    let movie_promise = q.defer();
+                    let actor_promise = q.defer();
+                    let director_promise = q.defer();
+
+
+                    Movie2.findByIdAndUpdate(movie._id, {$push : { actors: actor._id, directors: director._id} }, {new: true},
+                        (err,movie) => {
+                            if(err) throw new Error(err);
+                            movie_promise.resolve(movie);
+                        });
+
+                    Actor2.findByIdAndUpdate(actor._id, {$push : { movies: movie._id} }, {new: true},
+                        (err,actor) => {
+                            if(err) throw new Error(err);
+                            actor_promise.resolve(actor);
+                        });
+                    Director2.findByIdAndUpdate(director._id, {$push : { movies: movie._id} }, {new: true},
+                        (err,director) => {
+                            if(err) throw new Error(err);
+                            director_promise.resolve(director);
+                        });
+
+                    q.all([movie_promise.promise,actor_promise.promise, director_promise.promise]).then( (mov_act_dir) => {
+                        result.resolve(mov_act_dir);
+                    });
+
+                })
+                break;
             case 3:
             case 4:
             case 5:

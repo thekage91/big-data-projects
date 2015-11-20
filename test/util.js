@@ -28,6 +28,15 @@ module.exports.fakeActor = function () {
     }
 }
 
+module.exports.fakeDirector = function () {
+    return {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        movies: []
+    }
+}
+
+
 module.exports.sameMovie = function () {
     return {
         title: 'Matrix',
@@ -53,11 +62,25 @@ module.exports.sameActor = function () {
     }
 }
 
+module.exports.sameDirector = function () {
+    return {
+        first_name: 'Woody',
+        last_name: 'Allen',
+        movies: []
+    }
+}
+
 
 //console.log(module.exports.fakeMovie());
 
 
 /*
+ var fields = {
+ first_name: { type: String },
+ last_name: String,
+ movies : [{ type: Schema.Types.ObjectId, ref: 'Movie2' }]
+ };
+
  var fields = {
  title: { type: String ,unique: true,trim: true},
  release_date: { type: Number , default: Date.now },
