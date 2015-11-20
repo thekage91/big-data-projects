@@ -36,6 +36,12 @@ module.exports.fakeDirector = function () {
     }
 }
 
+module.exports.fakeGenre = function () {
+    return {
+        name: faker.name.firstName(),
+        movies: []
+    }
+}
 
 module.exports.sameMovie = function () {
     return {
@@ -70,11 +76,24 @@ module.exports.sameDirector = function () {
     }
 }
 
+module.exports.sameGenre = function () {
+    return {
+        name: 'Horror',
+        movies: []
+    }
+}
+
 
 //console.log(module.exports.fakeMovie());
 
 
 /*
+ var fields = {
+ name: { type: String,unique: true },
+ movies : [{ type: Schema.Types.ObjectId, ref: 'Movie4' }]
+ };
+
+
  var fields = {
  first_name: { type: String },
  last_name: String,
