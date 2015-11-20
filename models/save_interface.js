@@ -11,7 +11,8 @@ var mongoose = require('mongoose'),
     Actor1 = mongoose.model('Actor1'),
     Movie2 = mongoose.model('Movie2'),
     Director2 = mongoose.model('Director2'),
-    Actor2 = mongoose.model('Actor2');
+    Movie3 = mongoose.model('Movie3'),
+    Director3 = mongoose.model('Director3');
 
 
 
@@ -171,6 +172,58 @@ module.exports = {
                 })
                 break;
             case 3:
+
+                Movie3.findOne({title: data.movie.title}, function (err, retrieved_movie) {
+                    if (err) result.reject(err);
+                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
+                        movie_to_save.resolve(retrieved_movie)
+                    else (new Movie3(data.movie)).save((err,movie) => {
+                        if(err) throw new Error(err);
+                        movie_to_save.resolve(movie);
+                    });
+                });
+
+                Director3.findOne({
+                    last_name: data.director.last_name,
+                    first_name: data.director.first_name
+                }, function (err, retrieved_director) {
+                    if (err) result.reject(err);
+                    if (typeof retrieved_director !== 'undefined' && retrieved_director)
+                        director_to_save.resolve(retrieved_director)
+                    else (new Director3(data.director)).save((err,actor) => {
+                        if(err) throw new Error(err);
+                        director_to_save.resolve(actor);
+                    });
+                });
+
+
+                q.all([movie_to_save.promise,director_to_save.promise]).then(function (data) {
+                    let movie = data[0];
+                    let director = data[1];
+
+                    let movie_promise = q.defer();
+                    let director_promise = q.defer();
+
+
+                    Movie3.findByIdAndUpdate(movie._id, {$push : {directors: director._id} }, {new: true},
+                        (err,movie) => {
+                            if(err) throw new Error(err);
+                            movie_promise.resolve(movie);
+                        });
+
+                    Director3.findByIdAndUpdate(director._id, {$push : { movies: movie._id} }, {new: true},
+                        (err,director) => {
+                            if(err) throw new Error(err);
+                            director_promise.resolve(director);
+                        });
+
+                    q.all([movie_promise.promise, director_promise.promise]).then( (mov_dir) => {
+                        result.resolve(mov_dir);
+                    });
+
+                })
+                break;
+
             case 4:
             case 5:
             case 6:
