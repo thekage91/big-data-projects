@@ -7,13 +7,16 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 module.exports = {
+
+    // Tutti i film di un attore
     all_films_one_actor : function (version,actor) {
         switch(version) {
             case 3:
             case 4:
             case 5:
             case 0:
-                return mongoose.model('Movie' + version).find({ratings : { $elemMatch : actor}});
+                return mongoose.model('Movie' + version)
+                    .find({actors : { $elemMatch : actor}});
                 break;
             case 1:
             case 2:

@@ -9,19 +9,21 @@ process.env.NODE_ENV = 'test';
 
 var app = require('../../app.js');
 var mongoose = app.mongoose;
-var queries = require('../../models/query_interface.js');
+var query_interface = require('../../models/query_interface.js');
+var save_interface = require('../../models/save_interface.js');
+var util = require('../util.js');
 
 var _id = '';
 
 describe('Version 0', function(){
-    describe('Retrieve movies acted by an actor', function(){
+    describe('Retrieve one movie acted by one actor', function(){
         beforeEach('Populate database',function() {
-            mongoose.model('Movie0')
-            // runs before each test in this block
+
+            save_interface.save(0,{movie: util.fakeMovie())};
         });
 
         it('retrieves one movie', function(done){
-            queries.all_films_one_actor()
+            queries.all_films_one_actor();
         })
     });
 });
