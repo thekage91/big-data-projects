@@ -16,21 +16,24 @@ var query_interface = require('../../models/query_interface.js'),
 
 describe('Query: Retrieve all movies acted by one actor', function () {
 
+
+    it("fails with wrong 'version' argument", function (done) {
+       /* (query_interface.all_films_one_actor('a', (util.fakeMovie()))).should.throw(Error);
+        (query_interface.all_films_one_actor(null, (util.fakeMovie()))).should.throw(Error);
+        (query_interface.all_films_one_actor(undefined, (util.fakeMovie()))).should.throw(Error);*/
+        ( () => {throw new Error('prova'); return 0;}).should.throw(Error);
+      //  (query_interface.all_films_one_actor('a', (util.fakeMovie()))).should.throw(Error);
+        done();
+    });
+
+    it("fails with wrong 'actor' argument", function (done) {
+        query_interface.all_films_one_actor(1, undefined).should.throw(Error);
+        query_interface.all_films_one_actor(1, null).should.throw(Error);
+        done();
+    });
+
+
     describe('Version 0', function () {
-
-        it('fails with wrong version argument', function (done) {
-            query_interface.all_films_one_actor('a', (util.fakeMovie())).should.throw(Error);
-            query_interface.all_films_one_actor(null, (util.fakeMovie())).should.throw(Error);
-            query_interface.all_films_one_actor(undefined, (util.fakeMovie())).should.throw(Error);
-            done();
-        });
-
-        it('fails with wrong actor argument', function (done) {
-            query_interface.all_films_one_actor(1, undefined).should.throw(Error);
-            query_interface.all_films_one_actor(1, null).should.throw(Error);
-            done();
-        });
-
 
         describe('Retrieve one movie acted by one actor', function () {
             var saved_movie;
@@ -55,7 +58,7 @@ describe('Query: Retrieve all movies acted by one actor', function () {
                 })
             });
 
-            it('retrieves one movie', function (done) {
+            it('Retrieves one movie', function (done) {
 
                 // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
                 // Version 0 model does not have relationships, only embedded documents.

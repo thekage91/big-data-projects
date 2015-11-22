@@ -44,7 +44,7 @@ describe('Save interface', function () {
 
         it('saves one movie', function (done) {
             var movie_to_save = util.fakeMovie();
-
+            ( () => {throw new Error('mona')}).should.throw(Error);
             var movie_saved = save_interface.save(0, {movie: movie_to_save});
 
             movie_saved.then(() => {
@@ -52,7 +52,6 @@ describe('Save interface', function () {
                     movie.should.not.be.null();
                     movie.should.not.be.empty();
                     movie.length.should.be.equal(1);
-                    '1'.should.eql(2);
                     done();
                 })
             });
