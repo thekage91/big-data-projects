@@ -21,7 +21,7 @@ var fields = {
         last_name: String }],
     directors : [{
         first_name:String ,
-        last_name: String }],
+        last_name: String }]
 };
 
 var movieSchema = new Schema(fields);

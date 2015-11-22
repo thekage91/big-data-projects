@@ -36,7 +36,7 @@ describe('Save interface', function () {
 
     describe('Version 0', function () {
         afterEach('Clear database', function (done) {
-            mongoose.connection.db.dropDatabase(function (err, ww) {
+            mongoose.connection.db.dropDatabase(function () {
                 done();
             })
         });
@@ -52,6 +52,7 @@ describe('Save interface', function () {
                     movie.should.not.be.null();
                     movie.should.not.be.empty();
                     movie.length.should.be.equal(1);
+                    '1'.should.eql(2);
                     done();
                 })
             });
