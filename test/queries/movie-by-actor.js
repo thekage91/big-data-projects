@@ -18,18 +18,19 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
 
     it("fails with wrong 'version' argument", function (done) {
-       /* (query_interface.all_films_one_actor('a', (util.fakeMovie()))).should.throw(Error);
-        (query_interface.all_films_one_actor(null, (util.fakeMovie()))).should.throw(Error);
-        (query_interface.all_films_one_actor(undefined, (util.fakeMovie()))).should.throw(Error);*/
-        ( () => {throw new Error('prova'); return 0;}).should.throw(Error);
-      //  (query_interface.all_films_one_actor('a', (util.fakeMovie()))).should.throw(Error);
-        done();
+
+        //(query_interface.all_films_one_actor('a', (util.fakeMovie()))).should.throw(Error);
+
+        try {query_interface.all_films_one_actor('A', (util.fakeMovie()));  }
+        catch (err) {err.should.be.Error();  done();}
     });
 
-    it("fails with wrong 'actor' argument", function (done) {
-        query_interface.all_films_one_actor(1, undefined).should.throw(Error);
-        query_interface.all_films_one_actor(1, null).should.throw(Error);
-        done();
+    it("fails with undefined 'actor' argument", function (done) {
+
+        //query_interface.all_films_one_actor(1, null).should.throw(Error);
+
+        try {query_interface.all_films_one_actor(1, undefined);  }
+        catch (err) {err.should.be.Error();  done();}
     });
 
 
