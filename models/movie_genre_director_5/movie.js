@@ -5,8 +5,14 @@ var mongoose = require('mongoose'),
 		ObjectId = Schema.ObjectId;
 
 var fields = {
+<<<<<<< HEAD:models/movie_genre_director_5/movie.js
 	title: { type: String ,unique: true,trim: true},
 	release_date: { type: Date , default: Date.now },
+=======
+	title: { type: String ,unique: true, trim: true},
+	//release_date: { type: Number , default: Date.now },
+	release_date: { type: String },
+>>>>>>> dev-parsing:models/movie.js
 	writer: { type: String },
 	stars: { type: String },
 	ratings: { type: String },

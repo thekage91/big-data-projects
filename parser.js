@@ -8,20 +8,25 @@
  Thriller | War | Western |
  */
 
+'use strict';
+
  var fs = require('fs'),
  parse = require('csv-parse'),
+
  moviesPath = './dataset/movies.list',
- directorsPath = './dataset/directors.list.tsv',
- genresPath = './dataset/genres.list.tsv',
- actorsPath = './dataset/actors.list.tsv',
- moviesMatrix = './dataset/movies.matrix.list',
- directorsMatrix = './dataset/registi.matrix.list.solonontrova',
- genresMatrix = './dataset/generi.matrix.list',
- actorsMatrix = './dataset/attori.matrix.list',
- actressesMatrix = './dataset/attrici.matrix.list',
- provaPath = './dataset/prova.list.tsv',
+ directorsPath = './dataset/directors.list',
+ genresPath = './dataset/genres.list',
+ actorsPath = './dataset/actors.list',
+ provaPath = './dataset/prova.list',
+
+ moviesPathShort = './dataset/movies.short.list',
+ genresPathShort = './dataset/genres.short.list',
+ directorsPathShort = './dataset/directors.short.list',
+ actorsPathShort = './dataset/actors.short.list',
+
  app = require('./app.js'),
  mongoose = app.mongoose,
+
  Actor = mongoose.model('Actor'),
  Director = mongoose.model('Director'),
  Movie = mongoose.model('Movie'),
@@ -44,50 +49,17 @@
     console.log('Succesfully saved')
 }
 
-var parserDirectors = parse({
-    delimiter: '\t',
-    relax: true,
-    columns: ['first_name', 'last_name', 'film']
-}, function (err, data) {
+
+var regexMovie = function(title){
+
+    return title.split(" (")[0].replace(/"/g, "");
+}
 
 
-    var film;
+var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']}, function (err, data) {
 
-    if (err) {
-        console.error(err);
-        return;
-    }
-
-    //console.info('INFOFOSDIF ' + JSON.stringify(data));
-    data.forEach(function (elem) {
-        //Per ogni riga, filtra via gli elementi vuoti
-        console.log("[DEBUG] " + data);
-        Movie.find({title: elem.film.trim()}, function (err, movies) {
-            if (err) throw new Error(err);
-            if (movies.length === 0) {
-                console.log('No movie with title: ' + elem.film);
-                return;
-            }
-            movies.forEach(function (movie) {
-                console.log('adding director to film: ' + elem.film);
-                var director = new Director({first_name: elem.first_name, last_name: elem.last_name});
-                director.movies.push(movie.id);
-                movie.directors.push(director.id);
-                director.save(callbackSave);
-                movie.save(callbackSave);
-
-            });
-
-        })
-
-    });
-
-});
-
-
-var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', '', 'release_date']}, function (err, data) {
-
-    var film;
+    var films = [];
+    var temp_title = "";
 
     console.log("[DEBUG] Parsing movies");
     if (err) {
@@ -98,29 +70,153 @@ var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', '', '
     //Per ogni riga, filtra via gli elementi vuoti
     data.forEach(function (elem) {
 
-        console.log("[DEBUG] Print movie element --> " + elem);
-        if (elem.undefined !== '' && elem.undefined !== undefined) {
-            elem.release_date = elem.undefined;
-            delete elem.undefined;
-        }
-        else if (elem[''] !== '') {
-            elem.release_date = elem[''];
-            if (elem.release_date === '????')
-                delete elem.release_date;
-            delete elem[''];
-        }
+        var film = {};
 
-        Movie.create(elem, function (err, movie) {
-            if (err) throw new Error(err);
-            /*console.log('Saved in database: ' + JSON.stringify(movie))*/
-        });
+        film.title = regexMovie(elem.title);
 
+        /* Essendo il film ordinati in maniera crescente, effettuo un controllo del precendete
+        * Se il precedente è uguale al corrente allora sto aggiungendo un duplicato, 
+        * quindi salto la fase di salvataggio 
+        */
+        if(temp_title !== film.title){
+
+            var temp_date = elem.undefined;
+
+            if(temp_date != undefined && temp_date.includes("-????")){
+                film.release_date = temp_date.replace("-????", "");
+            }
+            else{
+                film.release_date = temp_date;
+            }
+
+            Movie.create(film, function (err, movie) {
+                if (err) throw new Error(err);
+                console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
+            });
+
+            temp_title = film.title;
+        }
     });
 
 });
 
+var parseGenres = parse({ delimiter: '\t', relax: true}, function(err, data){
+
+    if(err){
+        console.error(err);
+        return;
+    }
+
+    var objGenres = {};
+    var i = 0;
+
+    data.forEach(function (elem){
+
+        if(objGenres[elem[elem.length - 1]] === undefined ){
+
+            objGenres[elem[elem.length - 1]] = [];
+        }
+
+        objGenres[elem[elem.length - 1]].push(regexMovie(elem[0]));
+    });
+
+    console.log(objGenres['Horror']);
+
+    for(var key in objGenres){
+
+        var genre = {};
+
+        genre.name = key;
+        genre.movies = objGenres[key];
+
+        /*Genre.create(genre, function(err, data){
+
+            if(err) throw new Error(err);
+
+            console.log("[SUCCESS] Save");
+        });*/
+    }
+});
 
 
+var parseActors = parse({ delimiter: '\n', relax: true }, function(err, data){
+
+    if(err){
+
+        console.error(err);
+        return;
+    }
+
+    //console.log(data);
+
+    // actors: { nomeAttore: arrayFilms }
+    
+    var actors = {},
+        currentRecord = [],
+        currentActor = "";
+
+    data.forEach(function(elem){
+
+        if( elem[0].indexOf('\t') !== 0 ){
+            
+            currentRecord = elem[0].split(',')[1].replace(' ', '').split('\t');
+            currentActor = currentRecord[0];
+            actors[currentActor] = [ currentRecord[currentRecord.length - 1].replace('"', '') ];
+        }
+        else{
+
+            var movie = elem[0].replace('\t', '');
+
+            actors[currentActor].push(movie);
+        }
+    })
+
+    console.log("current actor: " + currentActor + "\nmovies: ");
+
+    actors[currentActor].forEach(function(elem){
+        console.log(elem);
+    })
+})
+
+var parseDirectors = parse({ delimiter: '\n', relax: true }, function (err, data) {
+
+    if (err) {
+        console.error(err);
+        return;
+    }
+
+    var directors = {},
+        currentRecord = [],
+        currentDirector = "";
+
+    data.forEach(function (elem) {
+
+        if( elem[0].indexOf('\t') !== 0 ){
+
+            currentRecord = elem[0].split('\t');
+            currentDirector = currentRecord[0].replace(',', '');
+
+            directors[currentDirector] = [ currentRecord[1] ];
+        }
+        else{
+
+            var movie = elem[0].replace('\t', '');
+            directors[currentDirector].push(movie);
+        }
+    });
+
+    console.log(JSON.stringify(directors[currentDirector]));
+
+    for(var key in directors){
+
+        console.log("Director: " + key + "\nmovies: ")
+
+        directors[key].forEach(function(elem){
+            console.log(elem);
+        });
+    }
+
+});
 
 var moviesOutput = [];
 var userOutput = [];
@@ -137,16 +233,11 @@ var parseAndSave = function () {
 
     console.log("[+] Dropping Database ");
 
-    console.log("[+] Create Stream and read | " + moviesPath + " | " +
-        genresPath + " | " + directorsPath + " | " + actorsPath + " |");
-    var moviesStream = fs.createReadStream(moviesMatrix).pipe(parserMovies);
-    //var genresStream = fs.createReadStream(genresMatrix).pipe(parseGenres);
-    //var actorsStream = fs.createReadStream(actorsPath).pipe(parserActors);
-    //var directorsStream = fs.createReadStream(directorsMatrix).pipe(parserDirectors);
-
-
-    console.log("[DEBUG] Save | Actors | Films | Directors | Genres | on db")
-
+    console.log("[+] Create Stream and read | " + moviesPathShort );
+    //var moviesStream = fs.createReadStream(moviesPathShort).pipe(parserMovies);
+    //var genresStream = fs.createReadStream(genresPathShort).pipe(parseGenres);
+    //var actorsStream = fs.createReadStream(actorsPathShort).pipe(parseActors);
+    var directorsStream = fs.createReadStream(directorsPathShort).pipe(parseDirectors);
 }
 
-//setTimeout(parseAndSave,10000);
+parseAndSave();
