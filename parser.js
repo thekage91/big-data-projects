@@ -89,15 +89,16 @@ var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'rele
                 film.release_date = temp_date;
             }
 
-            Movie.create(film, function (err, movie) {
+            /*Movie.create(film, function (err, movie) {
                 if (err) throw new Error(err);
                 console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
-            });
+            });*/
 
             temp_title = film.title;
         }
     });
 
+    return films;
 });
 
 var parseGenres = parse({ delimiter: '\t', relax: true}, function(err, data){
@@ -107,22 +108,20 @@ var parseGenres = parse({ delimiter: '\t', relax: true}, function(err, data){
         return;
     }
 
-    var objGenres = {};
+    var genres = {};
     var i = 0;
 
     data.forEach(function (elem){
 
-        if(objGenres[elem[elem.length - 1]] === undefined ){
+        if(genres[elem[elem.length - 1]] === undefined ){
 
-            objGenres[elem[elem.length - 1]] = [];
+            genres[elem[elem.length - 1]] = [];
         }
 
-        objGenres[elem[elem.length - 1]].push(regexMovie(elem[0]));
+        genres[elem[elem.length - 1]].push(regexMovie(elem[0]));
     });
 
-    console.log(objGenres['Horror']);
-
-    for(var key in objGenres){
+    /*for(var key in objGenres){
 
         var genre = {};
 
@@ -134,8 +133,10 @@ var parseGenres = parse({ delimiter: '\t', relax: true}, function(err, data){
             if(err) throw new Error(err);
 
             console.log("[SUCCESS] Save");
-        });*/
-    }
+        });
+    }*/
+
+    return genres;
 });
 
 
@@ -176,6 +177,8 @@ var parseActors = parse({ delimiter: '\n', relax: true }, function(err, data){
     actors[currentActor].forEach(function(elem){
         console.log(elem);
     })
+
+    return actors;
 })
 
 var parseDirectors = parse({ delimiter: '\n', relax: true }, function (err, data) {
@@ -205,7 +208,7 @@ var parseDirectors = parse({ delimiter: '\n', relax: true }, function (err, data
         }
     });
 
-    console.log(JSON.stringify(directors[currentDirector]));
+    /*console.log(JSON.stringify(directors[currentDirector]));
 
     for(var key in directors){
 
@@ -214,14 +217,11 @@ var parseDirectors = parse({ delimiter: '\n', relax: true }, function (err, data
         directors[key].forEach(function(elem){
             console.log(elem);
         });
-    }
+    }*/
+
+    return directors;
 
 });
-
-var moviesOutput = [];
-var userOutput = [];
-var genreOutput = [];
-var dataOutput = [];
 
 module.exports = {
 
@@ -229,15 +229,16 @@ module.exports = {
 }
 
 
-var parseAndSave = function () {
+var parseDB = function () {
 
-    console.log("[+] Dropping Database ");
+    console.log("[DEBUG] Start | movies | actors | directors | genres |  parsing...")
 
-    console.log("[+] Create Stream and read | " + moviesPathShort );
-    //var moviesStream = fs.createReadStream(moviesPathShort).pipe(parserMovies);
-    //var genresStream = fs.createReadStream(genresPathShort).pipe(parseGenres);
-    //var actorsStream = fs.createReadStream(actorsPathShort).pipe(parseActors);
-    var directorsStream = fs.createReadStream(directorsPathShort).pipe(parseDirectors);
+    var movies = fs.createReadStream(moviesPathShort).pipe(parserMovies);
+    var genres = fs.createReadStream(genresPathShort).pipe(parseGenres);
+    var actors = fs.createReadStream(actorsPathShort).pipe(parseActors);
+    var directors = fs.createReadStream(directorsPathShort).pipe(parseDirectors);
+
+    console.log("[DEBUG] Finish parsing...")
 }
 
-parseAndSave();
+parseDB();
