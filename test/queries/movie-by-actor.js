@@ -37,20 +37,22 @@ describe('Query: Retrieve all movies acted by one actor', function () {
     describe('Version 0', function () {
 
         describe('Retrieve one movie acted by one actor', function () {
-            var saved_movie;
+            var saved_movie_1_actor;
+            var saved_movie_10_actor;
+            var saved_movie_100_actor;
             var saved_actor;
             var saved_director;
             var saved_genre;
 
             before('Populate database', function () {
-                saved_movie = util.fakeMovie();
+                saved_movie_1_actor = util.fakeMovie();
                 saved_actor = util.fakeActor();
                 saved_director = util.fakeDirector();
                 saved_genre = util.fakeGenre();
-                saved_movie.actors.push(saved_actor);
-                saved_movie.directors.push(saved_director);
-                saved_movie.genres.push(saved_genre);
-                save_interface.save(0, {movie: saved_movie});
+                saved_movie_1_actor.actors.push(saved_actor);
+                saved_movie_1_actor.directors.push(saved_director);
+                saved_movie_1_actor.genres.push(saved_genre);
+                save_interface.save(0, {movie: saved_movie_1_actor});
             });
 
             after('Clear database', function (done) {
@@ -68,7 +70,7 @@ describe('Query: Retrieve all movies acted by one actor', function () {
                 query_interface.all_films_one_actor(0, saved_actor)
                     .then((movies) => {
                         movies.length.should.eql(1);
-                        movies[0].title.should.eql(saved_movie.title);
+                        movies[0].title.should.eql(saved_movie_1_actor.title);
                         done();
                     });
             })

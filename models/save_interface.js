@@ -48,11 +48,52 @@ module.exports = {
 
         switch (version) {
             case 0:
-                movie_to_save = new Movie0(data.movie);
-                movie_to_save.save(function (err, movie) {
+                /*
+                 movie_to_save = new Movie0(data.movie);
+                 movie_to_save.save(function (err, movie) {
+                 if (err) result.reject(err);
+                 result.resolve(movie);
+                 });
+                 */
+                Movie0.findOne({title: data.movie.title}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
-                    result.resolve(movie);
+                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
+                        movie_to_save.resolve(retrieved_movie)
+                    else (new Movie0(data.movie)).save((err,movie) => {
+                        console.log('calcola che è nuovo')
+                        if(err) throw new Error(err);
+                        console.log('salvato:')
+                        console.log(movie)
+                        movie_to_save.resolve(movie);
+                    });
                 });
+
+                movie_to_save.promise.then((movie) => {
+
+                    // Model fields are plural, function argument not.
+                    // In order to update model, we first pluralize field names.
+                    let update = {};
+
+                    if(data.genre ) update.genres = data.genre;
+                    if(data.actor ) update.actors = data.actor;
+                    if(data.director ) update.directors = data.director;
+
+                   /* if( update.genres === undefined &&
+                        update.actors === undefined &&
+                        update.directors === undefined)
+                    {
+                        console.log('no aggiornamento')
+                        result.resolve(movie);
+                    }*/
+                   // else {
+                        console.log(`query: { $push : ${JSON.stringify(update)} }`)
+                        Movie0.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                            (err, movie) => {
+                                if (err) throw new Error(err);
+                                result.resolve(movie);
+                            });
+                   // }
+                })
                 break;
             case 1:
 
@@ -85,10 +126,6 @@ module.exports = {
 
                     let movie_promise = q.defer();
                     let actor_promise = q.defer();
-
-                    movie.actors = movie.actors || [];
-                    actor.movies = actor.movies || [];
-
 
                     Movie1.findByIdAndUpdate(movie._id, {$push : { actors: actor._id} }, {new: true},
                         (err,movie) => {
