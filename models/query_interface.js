@@ -18,7 +18,7 @@ module.exports = {
             case 4:
             case 5:
             case 0:
-                console.log(`query: find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`)
+                console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`)
                 return mongoose.model('Movie' + version)
                     .find({actors : { $elemMatch : actor}});
                 break;

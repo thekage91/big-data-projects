@@ -119,7 +119,7 @@ describe('Save interface', function () {
                 var movie_saved = save_interface.save(0, { movie: movie_to_save });
 
                 movie_saved.then(() => {
-                    console.log(`finding ${ movie_to_save.title}`)
+                    console.log(`finding ${ movie_to_save.title}`);
                     Movie0.find({title: movie_to_save.title}, function (err, movies) {
                         movies.should.not.be.null();
                         movies.should.not.be.empty();
@@ -143,6 +143,28 @@ describe('Save interface', function () {
                         console.log(movie)
                         movie.actors.length.should.be.equal(1);
                         movie.actors[0].first_name.should.eql(actor_to_save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+
+            it('Adds 2 new actors to existing movie', function (done) {
+
+                var actor_to_save_1 = util.fakeActor();
+                var actor_to_save_2 = util.fakeActor();
+
+                save_interface.save(0, {movie: util.sameMovie(), actor: actor_to_save_1});
+                var movie_saved = save_interface.save(0, {movie: util.sameMovie(), actor: actor_to_save_2});
+
+                movie_saved.then(() => {
+                    Movie0.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        console.log(movie)
+                        movie.actors.length.should.be.equal(2);
+                        //movie.actors[0].first_name.should.eql(actor_to_save.first_name);
                         done();
                     })
                 }, (err) => {

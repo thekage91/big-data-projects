@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 		ObjectId = Schema.ObjectId;
 
 var fields = {
-	title: { type: String ,unique: true,trim: true, required: true},
+	title: { type: String ,trim: true, required: true},
 	release_date: { type: Date , default: Date.now },
 	writer: { type: String },
 	stars: { type: String },
@@ -15,7 +15,7 @@ var fields = {
 	writers: { type: String },
 	distributors: { type: String },
     genres : [{
-        name: { type: String,unique: true }}],
+        name: { type: String}}],
     actors : [{
         first_name:String ,
         last_name: String }],
