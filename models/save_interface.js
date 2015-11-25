@@ -113,7 +113,13 @@ module.exports = {
                     let movie_promise = q.defer();
                     let actor_promise = q.defer();
 
-                    Movie1.findByIdAndUpdate(movie._id, {$push: {actors: actor._id}}, {new: true},
+                    let update = {};
+                    update.actors = actor._id;
+
+                    if (data.genre) update.genres = data.genre;
+                    if (data.director) update.directors = data.director;
+
+                    Movie1.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);

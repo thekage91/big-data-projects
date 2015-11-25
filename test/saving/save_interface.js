@@ -119,7 +119,7 @@ describe('Save interface', function () {
                 var movie_saved = save_interface.save(0, { movie: movie_to_save });
 
                 movie_saved.then(() => {
-                    console.log(`finding ${ movie_to_save.title}`);
+
                     Movie0.find({title: movie_to_save.title}, function (err, movies) {
                         movies.should.not.be.null();
                         movies.should.not.be.empty();
@@ -455,6 +455,41 @@ describe('Save interface', function () {
                 });
             });
 
+            it('Adds a new director to existing movie', function (done) {
+
+                var director_to_save = util.fakeDirector();
+
+                var movie_saved = save_interface.save(1, {movie: util.sameMovie(), director: director_to_save});
+
+                movie_saved.then(() => {
+                    Movie1.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.directors.length.should.be.eql(1);
+                        movie.directors[0].first_name.should.eql(director_to_save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+            it('Adds a new genre to existing movie', function (done) {
+
+                var genre_to_save = util.fakeGenre();
+
+                var movie_saved = save_interface.save(1, {movie: util.sameMovie(), genre: genre_to_save});
+
+                movie_saved.then(() => {
+                    Movie1.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.genres.length.should.be.eql(1);
+                        movie.genres[0].name.should.eql(genre_to_save.name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
         })
 
     });
