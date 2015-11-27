@@ -106,9 +106,9 @@ module.exports = {
                     });
                 });
 
-                q.all([movie_to_save.promise, actor_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let actor = data[1];
+                q.all([movie_to_save.promise, actor_to_save.promise]).then(function (movie_actor) {
+                    let movie = movie_actor[0];
+                    let actor = movie_actor[1];
 
                     let movie_promise = q.defer();
                     let actor_promise = q.defer();
@@ -177,10 +177,10 @@ module.exports = {
                 });
 
 
-                q.all([movie_to_save.promise, actor_to_save.promise, director_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let actor = data[1];
-                    let director = data[2];
+                q.all([movie_to_save.promise, actor_to_save.promise, director_to_save.promise]).then(function (mov_act_dir) {
+                    let movie = mov_act_dir[0];
+                    let actor = mov_act_dir[1];
+                    let director = mov_act_dir[2];
 
                     let movie_promise = q.defer();
                     let actor_promise = q.defer();
@@ -242,15 +242,21 @@ module.exports = {
                 });
 
 
-                q.all([movie_to_save.promise, director_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let director = data[1];
+                q.all([movie_to_save.promise, director_to_save.promise]).then(function (mov_dir) {
+                    let movie = mov_dir[0];
+                    let director = mov_dir[1];
 
                     let movie_promise = q.defer();
                     let director_promise = q.defer();
 
+                    let update = {};
 
-                    Movie3.findByIdAndUpdate(movie._id, {$push: {directors: director._id}}, {new: true},
+                    update.directors = director._id
+
+                    if (data.genre) update.genres = data.genre;
+                    if (data.actor) update.actors = data.actor;
+
+                    Movie3.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
@@ -291,15 +297,20 @@ module.exports = {
                 });
 
 
-                q.all([movie_to_save.promise, genre_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let genre = data[1];
+                q.all([movie_to_save.promise, genre_to_save.promise]).then(function (movie_genre) {
+                    let movie = movie_genre[0];
+                    let genre = movie_genre[1];
 
                     let movie_promise = q.defer();
                     let genre_promise = q.defer();
 
+                    let update = {};
+                    update.genres = genre._id;
 
-                    Movie4.findByIdAndUpdate(movie._id, {$push: {genres: genre._id}}, {new: true},
+                    if (data.director) update.directors = data.director;
+                    if (data.actor) update.actors = data.actor;
+
+                    Movie4.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
@@ -354,21 +365,24 @@ module.exports = {
                 });
 
 
-                q.all([movie_to_save.promise, genre_to_save.promise, director_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let genre = data[1];
-                    let director = data[2];
+                q.all([movie_to_save.promise, genre_to_save.promise, director_to_save.promise]).then(function (movie_genre_director) {
+                    let movie = movie_genre_director[0];
+                    let genre = movie_genre_director[1];
+                    let director = movie_genre_director[2];
 
                     let movie_promise = q.defer();
                     let genre_promise = q.defer();
                     let director_promise = q.defer();
 
 
+                    let update = {};
+                    update.genres = genre._id;
+                    update.directors =  director._id;
+
+                    if (data.actor) update.actors = data.actor;
+
                     Movie5.findByIdAndUpdate(movie._id, {
-                            $push: {
-                                genres: genre._id,
-                                directors: director._id
-                            }
+                            $push: update
                         }, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);

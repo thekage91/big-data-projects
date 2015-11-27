@@ -39,8 +39,8 @@ module.exports = {
 
                 query.exec((err, actors) => {
                         if (err) throw err;
-                        if(actors === undefined)
-                            return cb('Error: query returned undefined');
+                        if(actors === null)
+                            return cb('Error: query returned null');
                         var movies = [];
                         for (let i = 0; i < actors.length; i++)
                             movies = movies.concat(actors[i].movies);
