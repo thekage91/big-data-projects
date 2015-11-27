@@ -5,8 +5,7 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId,
-    Ac;
+    ObjectId = Schema.ObjectId;
 
 module.exports = {
 
@@ -15,6 +14,7 @@ module.exports = {
         if (isNaN(version) || actor == undefined)
             throw new Error('version and actor needed')
 
+        let query = new mongoose.Query();
         switch (version) {
             case 3:
             case 4:
@@ -27,9 +27,17 @@ module.exports = {
             case 1:
             case 2:
             case 6:
-                console.log(`query: Actor${version}.find(${JSON.stringify(actor)},'movies').populate('movies')`);
-                mongoose.model('Actor' + version).find(actor, 'movies').populate('movies')
-                    .exec((err, actors) => {
+
+                if(version === 2)
+                    query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies movies.directors');
+                else if(version === 1)
+                    query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies');
+                else if(version === 6)
+                    query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies  movies.directors  movies.directors  movies.genres');
+
+                console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
+
+                query.exec((err, actors) => {
                         if (err) throw err;
                         if(actors === undefined)
                             return cb('Error: query returned undefined');

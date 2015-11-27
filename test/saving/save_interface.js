@@ -455,7 +455,7 @@ describe('Save interface', function () {
                 });
             });
 
-            it('Adds a new director to existing movie', function (done) {
+           /* it('Adds a new director to existing movie', function (done) {
 
                 var director_to_save = util.fakeDirector();
 
@@ -489,7 +489,7 @@ describe('Save interface', function () {
                     throw new AssertionError(err)
                 });
 
-            });
+            });*/
         })
 
     });
@@ -924,6 +924,24 @@ describe('Save interface', function () {
                     throw new AssertionError(err)
                 });
             });
+
+           /* it('Adds a new genre to existing movie', function (done) {
+
+                var genre_to_Save = util.fakeGenre();
+
+                var movie_saved = save_interface.save(1, {movie: util.sameMovie(), director: genre_to_Save});
+
+                movie_saved.then(() => {
+                    Movie1.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.directors.length.should.be.eql(1);
+                        movie.directors[0].first_name.should.eql(genre_to_Save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });*/
 
         })
 
