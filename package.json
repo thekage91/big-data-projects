@@ -12,6 +12,7 @@
     "method-override": "latest",
     "mongoose": "latest",
     "morgan": "latest",
+    "promise": "^7.0.4",
     "q": "^1.4.1"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
  'use strict';
 
-var parse = require('csv-parse');
-
+var parse = require('csv-parse'),
+    q = require('q');
 /* 
 *   Return array di json di films
 *   film json --> { title: "foo", release_date: "33433" }
@@ -50,20 +50,17 @@ parserMovies.on('readable', function(){
     }
 })
 
+var result = q.defer();
+
 parserMovies.on('finish', function() {
 
-    console.log("[DEBUG] Movies");
-    films.forEach(function(elem){ 
-        console.log(elem); 
-    });
-
+    result.resolve(films);
     parserMovies.end();
 });
 
 
 module.exports = {
     
-    title: temp_title,
-    movies: films,
+    movies: result.promise,
     startParsing: parserMovies
 }
