@@ -28,24 +28,73 @@ module.exports = {
             case 2:
             case 6:
 
+                console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
+                let opts = {};
+                if(version === 2) opts = 'actors directors';
+                else if( version === 1) opts = 'actors';
+                else if( version === 6) opts = 'actors genres directors'
+
+                query.exec((err, docs) => {
+                    if (err) throw err;
+                    var movies = [];
+
+                    docs.forEach ( (doc) => {
+                        //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
+
+                        mongoose.model('Movie' + version).populate(doc.movies, opts, (err, movies) => {
+                            if(err) throw err;
+                            //console.log('Populated');
+                           // console.log(JSON.stringify(actor, null, 2));
+                            if (actor === null)
+                                return cb('Error: query returned null');
+                            return cb(undefined, movies);
+                        })
+                        });
+                    });
+
+                break;
+        }
+        //return result;
+    },
+
+    all_films_one_director: function (version, director, cb) {
+        if (isNaN(version) || actor == undefined)
+            throw new Error('version and actor needed')
+
+        let query = new mongoose.Query();
+        switch (version) {
+            case 4:
+            case 1:
+            case 0:
+                console.log(`query: Movie${version}.find({director : {$elemMatch : ${JSON.stringify(director)} } } )`);
+                mongoose.model('Movie' + version)
+                    .find({directors: {$elemMatch: director}}).then((movies) => cb(undefined, movies));
+                break;
+            case 3:
+            case 2:
+            case 6:
+            case 5:
+
                 if(version === 2)
-                    query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies movies.directors');
-                else if(version === 1)
-                    query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies');
+                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.actors movies.directors');
+                else if(version === 3)
+                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.directors');
+                else if(version === 5)
+                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.directors movies.genres');
                 else if(version === 6)
-                    query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies  movies.directors  movies.directors  movies.genres');
+                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.actors movies.directors movies.genres');
 
                 console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
 
-                query.exec((err, actors) => {
-                        if (err) throw err;
-                        if(actors === null)
-                            return cb('Error: query returned null');
-                        var movies = [];
-                        for (let i = 0; i < actors.length; i++)
-                            movies = movies.concat(actors[i].movies);
-                        return cb(undefined, movies);
-                    });
+                query.exec((err, directors) => {
+                    if (err) throw err;
+                    if(directors === null)
+                        return cb('Error: query returned null');
+                    var movies = [];
+                    for (let i = 0; i < directors.length; i++)
+                        movies = movies.concat(directors[i].movies);
+                    return cb(undefined, movies);
+                });
 
                 break;
         }
