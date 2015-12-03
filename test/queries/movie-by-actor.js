@@ -316,24 +316,6 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             // So we delete the field
             delete saved_actor_with_1_movie.movies;
 
-
-           /* mongoose.model('Actor2').find({ first_name: saved_actor_with_1_movie.first_name})
-                .populate('movies').then( (mov) => {
-
-                var opts = {
-                    path: 'movie.friends'
-                }
-
-                var movie = mov.movies[0];
-                mongoose.model('Movie2').populate(movie, 'directors', function (err,docs) {
-                    if(err) throw err;
-                    console.log(docs);
-                    done();
-                });
-
-            })*/
-
-
             query_interface.all_films_one_actor(2, saved_actor_with_1_movie, (err, movies) => {
                 console.log(movies);
                 movies.length.should.eql(1);

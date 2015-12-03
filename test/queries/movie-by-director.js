@@ -16,15 +16,15 @@ var app = require('../../app.js'),
 var query_interface = require('../../models/query_interface.js'),
     save_interface = require('../../models/save_interface.js');
 
-describe('Query: Retrieve all movies acted by one actor', function () {
+describe('Query: Retrieve all movies acted by one director', function () {
 
 
     it("fails with wrong 'version' argument", function (done) {
 
-        //(query_interface.all_films_one_actor('a', (util.fakeMovie()))).should.throw(Error);
+        //(query_interface.all_films_one_director('a', (util.fakeMovie()))).should.throw(Error);
 
         try {
-            query_interface.all_films_one_actor('A', (util.fakeMovie()));
+            query_interface.all_films_one_director('A', (util.fakeMovie()));
         }
         catch (err) {
             err.should.be.Error();
@@ -32,12 +32,12 @@ describe('Query: Retrieve all movies acted by one actor', function () {
         }
     });
 
-    it("fails with undefined 'actor' argument", function (done) {
+    it("fails with undefined 'director' argument", function (done) {
 
-        //query_interface.all_films_one_actor(1, null).should.throw(Error);
+        //query_interface.all_films_one_director(1, null).should.throw(Error);
 
         try {
-            query_interface.all_films_one_actor(1, undefined);
+            query_interface.all_films_one_director(1, undefined);
         }
         catch (err) {
             err.should.be.Error();
@@ -48,41 +48,41 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     describe('Version 0', function () {
 
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
         var saved_director;
         var saved_genre;
 
         before('Populate database', function (done) {
 
             let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
             saved_director = util.fakeDirector();
             saved_genre = util.fakeGenre();
 
 
             all_saved.push(save_interface.save(0,
                 {
-                    movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director: saved_director, genre: saved_genre
+                    movie: saved_movie_with_1_director, director: saved_director_with_1_movie,
+                    actor: util.fakeActor(), genre: saved_genre
                 }))
 
 
             all_saved.push(save_interface.save(0,
-                {movie: saved_movie_with_10_actor}))
+                {movie: saved_movie_with_10_director}))
 
 
             all_saved.push(save_interface.save(0,
-                {movie: saved_movie_with_100_actor}))
+                {movie: saved_movie_with_100_director}))
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
@@ -90,11 +90,11 @@ describe('Query: Retrieve all movies acted by one actor', function () {
                     if (i < 10)
                         all_saved.push(save_interface.save(0, {
                             movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie
+                            director: saved_director_with_10_movie
                         }));
                     all_saved.push(save_interface.save(0, {
                         movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie
+                        director: saved_director_with_100_movie
                     }));
                 }
                 q.all(all_saved).then(() => done())
@@ -111,44 +111,44 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 1 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_1_movie.movies;
+            delete saved_director_with_1_movie.movies;
 
-            query_interface.all_films_one_actor(0, saved_actor_with_1_movie, (err, movies) => {
+            query_interface.all_films_one_director(0, saved_director_with_1_movie, (err, movies) => {
                 movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
                 done();
             })
         });
 
         it('Retrieves 10 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
-            delete saved_actor_with_10_movie.movies;
+            delete saved_director_with_10_movie.movies;
 
-            query_interface.all_films_one_actor(0, saved_actor_with_10_movie, (err, movies) => {
+            query_interface.all_films_one_director(0, saved_director_with_10_movie, (err, movies) => {
                 movies.length.should.eql(10);
                 for (let i = 0; i < movies.length; i++)
-                    movies[i].actors[0].first_name.should.be.eql(saved_actor_with_10_movie.first_name);
+                    movies[i].directors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name);
                 done();
             });
         });
 
         it('Retrieves 100 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
-            delete saved_actor_with_100_movie.movies;
+            delete saved_director_with_100_movie.movies;
 
-            query_interface.all_films_one_actor(0, saved_actor_with_100_movie, (err, movies) => {
+            query_interface.all_films_one_director(0, saved_director_with_100_movie, (err, movies) => {
                 movies.length.should.eql(100);
                 for (let i = 0; i < movies.length; i++) {
-                    movies[i].actors[1] = movies[i].actors[1] || {};
-                    [movies[i].actors[0].first_name, movies[i].actors[1].first_name]
-                        .should.containEql(saved_actor_with_100_movie.first_name);
+                    movies[i].directors[1] = movies[i].directors[1] || {};
+                    [movies[i].directors[0].first_name, movies[i].directors[1].first_name]
+                        .should.containEql(saved_director_with_100_movie.first_name);
                 }
                 done();
             });
@@ -159,39 +159,50 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     describe('Version 1', function () {
 
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
 
 
         before('Populate database', function (done) {
 
             let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
 
 
             all_saved.push(save_interface.save(1,
-                {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie}))
+                {movie: saved_movie_with_1_director, director: saved_director_with_1_movie
+                , actor: util.fakeActor()}))
+
+            all_saved.push(save_interface.save(1,
+                {movie: util.fakeMovie(), director: saved_director_with_10_movie
+                    , actor: util.fakeActor()}))
+
+            all_saved.push(save_interface.save(1,
+                {movie: util.fakeMovie(), director: saved_director_with_100_movie
+                    , actor: util.fakeActor()}))
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(1, {
                             movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie
+                            director: saved_director_with_10_movie,
+                            actor: util.fakeActor()
                         }));
                     all_saved.push(save_interface.save(1, {
                         movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie
+                        director: saved_director_with_100_movie,
+                        actor: util.fakeActor()
                     }));
                 }
                 q.all(all_saved).then(() => done())
@@ -206,37 +217,41 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 1 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_1_movie.movies;
+            delete saved_director_with_1_movie.movies;
 
-            query_interface.all_films_one_actor(1, saved_actor_with_1_movie, (err, movies) => {
+            query_interface.all_films_one_director(1, saved_director_with_1_movie, (err, movies) => {
                 movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
                 done();
             });
         });
 
         it('Retrieves 10 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_10_movie.movies;
+            delete saved_director_with_10_movie.movies;
 
-            query_interface.all_films_one_actor(1, saved_actor_with_10_movie, (err, movies) => {
+            query_interface.all_films_one_director(1, saved_director_with_10_movie, (err, movies) => {
                 movies.length.should.eql(10);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
                 done();
             });
         });
 
         it('Retrieves 100 movie', function (done) {
 
-            delete saved_actor_with_100_movie.movies;
+            delete saved_director_with_100_movie.movies;
 
-            query_interface.all_films_one_actor(1, saved_actor_with_100_movie, (err, movies) => {
+            query_interface.all_films_one_director(1, saved_director_with_100_movie, (err, movies) => {
                 movies.length.should.eql(100);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_director_with_100_movie.first_name));
                 done();
             });
         });
@@ -246,42 +261,50 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     describe('Version 2', function () {
 
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
 
 
         before('Populate database', function (done) {
 
             let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
 
 
             all_saved.push(save_interface.save(2,
-                {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector()}))
+                {movie: saved_movie_with_1_director, director: saved_director_with_1_movie,
+                    actor : util.fakeActor()}));
+
+            all_saved.push(save_interface.save(2,
+                {movie: util.fakeMovie(), director: saved_director_with_10_movie
+                    , actor: util.fakeActor()}));
+
+            all_saved.push(save_interface.save(2,
+                {movie: util.fakeMovie(), director: saved_director_with_100_movie
+                    , actor: util.fakeActor()}));
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(2, {
                             movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie,
-                            director : util.fakeDirector()
+                            director: saved_director_with_10_movie,
+                            actor : util.fakeActor()
                         }));
                     all_saved.push(save_interface.save(2, {
                         movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie,
-                        director : util.fakeDirector()
+                        director: saved_director_with_100_movie,
+                        actor : util.fakeActor()
                     }));
                 }
                 q.all(all_saved).then(() => done())
@@ -296,37 +319,42 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 1 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_1_movie.movies;
+            delete saved_director_with_1_movie.movies;
 
-            query_interface.all_films_one_actor(2, saved_actor_with_1_movie, (err, movies) => {
+            query_interface.all_films_one_director(2, saved_director_with_1_movie, (err, movies) => {
                 movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
+
                 done();
             });
         });
 
         it('Retrieves 10 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_10_movie.movies;
+            delete saved_director_with_10_movie.movies;
 
-            query_interface.all_films_one_actor(2, saved_actor_with_10_movie, (err, movies) => {
+            query_interface.all_films_one_director(2, saved_director_with_10_movie, (err, movies) => {
                 movies.length.should.eql(10);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
                 done();
             });
         });
 
         it('Retrieves 100 movie', function (done) {
 
-            delete saved_actor_with_100_movie.movies;
+            delete saved_director_with_100_movie.movies;
 
-            query_interface.all_films_one_actor(2, saved_actor_with_100_movie, (err, movies) => {
+            query_interface.all_films_one_director(2, saved_director_with_100_movie, (err, movies) => {
                 movies.length.should.eql(100);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
                 done();
             });
         });
@@ -335,43 +363,46 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     describe('Version 3', function () {
 
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
 
 
         before('Populate database', function (done) {
 
             let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
 
 
             all_saved.push(save_interface.save(3,
-                {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector()}))
+                {movie: saved_movie_with_1_director, director: saved_director_with_1_movie }));
+
+            all_saved.push(save_interface.save(3,
+                {movie: util.fakeMovie(), director: saved_director_with_10_movie }));
+
+            all_saved.push(save_interface.save(3,
+                {movie: util.fakeMovie(), director: saved_director_with_100_movie }));
 
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(3, {
                             movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie,
-                            director : util.fakeDirector()
+                            director: saved_director_with_10_movie
                         }));
                     all_saved.push(save_interface.save(3, {
                         movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie,
-                        director : util.fakeDirector()
+                        director: saved_director_with_100_movie
                     }));
                 }
                 q.all(all_saved).then(() => done())
@@ -386,26 +417,28 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 1 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_1_movie.movies;
+            delete saved_director_with_1_movie.movies;
 
-            query_interface.all_films_one_actor(3, saved_actor_with_1_movie, (err, movies) => {
+            query_interface.all_films_one_director(3, saved_director_with_1_movie, (err, movies) => {
                 movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
                 done();
             });
         });
 
         it('Retrieves 10 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_10_movie.movies;
+            delete saved_director_with_10_movie.movies;
 
-            query_interface.all_films_one_actor(3, saved_actor_with_10_movie, (err, movies) => {
+            query_interface.all_films_one_director(3, saved_director_with_10_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
                 movies.length.should.eql(10);
                 done();
             });
@@ -413,9 +446,11 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 100 movie', function (done) {
 
-            delete saved_actor_with_100_movie.movies;
+            delete saved_director_with_100_movie.movies;
 
-            query_interface.all_films_one_actor(3, saved_actor_with_100_movie, (err, movies) => {
+            query_interface.all_films_one_director(3, saved_director_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });
@@ -425,41 +460,47 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     describe('Version 4', function () {
 
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
 
 
         before('Populate database', function (done) {
 
             let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
 
 
             all_saved.push(save_interface.save(4,
-                {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    genre : util.fakeGenre()}))
+                {movie: saved_movie_with_1_director, director: saved_director_with_1_movie,
+                    genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(4,
+                {movie: util.fakeMovie(), director: saved_director_with_10_movie,
+                    genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(4,
+                {movie: util.fakeMovie(), director: saved_director_with_100_movie,
+                    genre : util.fakeGenre()}));
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(4, {
                             movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie,
+                            director: saved_director_with_10_movie,
                             genre : util.fakeGenre()
                         }));
                     all_saved.push(save_interface.save(4, {
                         movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie,
+                        director: saved_director_with_100_movie,
                         genre : util.fakeGenre()
                     }));
                 }
@@ -475,26 +516,28 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 1 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_1_movie.movies;
+            delete saved_director_with_1_movie.movies;
 
-            query_interface.all_films_one_actor(4, saved_actor_with_1_movie, (err, movies) => {
+            query_interface.all_films_one_director(4, saved_director_with_1_movie, (err, movies) => {
                 movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
                 done();
             });
         });
 
         it('Retrieves 10 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_10_movie.movies;
+            delete saved_director_with_10_movie.movies;
 
-            query_interface.all_films_one_actor(4, saved_actor_with_10_movie, (err, movies) => {
+            query_interface.all_films_one_director(4, saved_director_with_10_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
                 movies.length.should.eql(10);
                 done();
             });
@@ -502,9 +545,11 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 100 movie', function (done) {
 
-            delete saved_actor_with_100_movie.movies;
+            delete saved_director_with_100_movie.movies;
 
-            query_interface.all_films_one_actor(4, saved_actor_with_100_movie, (err, movies) => {
+            query_interface.all_films_one_director(4, saved_director_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });
@@ -514,134 +559,48 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     describe('Version 5', function () {
 
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
 
 
         before('Populate database', function (done) {
 
             let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
 
 
             all_saved.push(save_interface.save(5,
-                {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector(), genre : util.fakeGenre()}))
+                {movie: saved_movie_with_1_director, director: saved_director_with_1_movie,
+                    genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(5,
+                {movie: util.fakeMovie(), director: saved_director_with_10_movie,
+                    genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(5,
+                {movie: util.fakeMovie(), director: saved_director_with_100_movie,
+                    genre : util.fakeGenre()}));
+
 
             q.all(all_saved).then(() => { done();
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(5, {
                             movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie,
-                            director : util.fakeDirector(),
+                            director: saved_director_with_10_movie,
                             genre : util.fakeGenre()
                         }));
                     all_saved.push(save_interface.save(5, {
                         movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie,
-                        director : util.fakeDirector(),
-                        genre : util.fakeGenre()
-                    }));
-                }
-                q.all(all_saved).then(() => done())
-            })
-        });
-
-        /* after('Clear database', function (done) {
-         mongoose.connection.db.dropDatabase(function () {
-         done();
-         })
-         });*/
-
-        it('Retrieves 1 movie', function (done) {
-
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
-            // Version 0 model does not have relationships, only embedded documents.
-            // So we delete the field
-            delete saved_actor_with_1_movie.movies;
-
-            query_interface.all_films_one_actor(5, saved_actor_with_1_movie, (err, movies) => {
-                movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
-                done();
-            });
-        });
-
-        it('Retrieves 10 movie', function (done) {
-
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
-            // Version 0 model does not have relationships, only embedded documents.
-            // So we delete the field
-            delete saved_actor_with_10_movie.movies;
-
-            query_interface.all_films_one_actor(5, saved_actor_with_10_movie, (err, movies) => {
-                movies.length.should.eql(10);
-                done();
-            });
-        });
-
-        it('Retrieves 100 movie', function (done) {
-
-            delete saved_actor_with_100_movie.movies;
-
-            query_interface.all_films_one_actor(5, saved_actor_with_100_movie, (err, movies) => {
-                movies.length.should.eql(100);
-                done();
-            });
-        });
-
-    });
-
-    describe('Version 6', function () {
-
-        var saved_movie_with_1_actor;
-        var saved_movie_with_10_actor;
-        var saved_movie_with_100_actor;
-        var saved_actor_with_1_movie;
-        var saved_actor_with_10_movie;
-        var saved_actor_with_100_movie;
-
-
-        before('Populate database', function (done) {
-
-            let all_saved = [];
-            saved_movie_with_1_actor = util.fakeMovie();
-            saved_movie_with_10_actor = util.fakeMovie();
-            saved_movie_with_100_actor = util.fakeMovie();
-            saved_actor_with_1_movie = util.fakeActor();
-            saved_actor_with_10_movie = util.fakeActor();
-            saved_actor_with_100_movie = util.fakeActor();
-
-
-            all_saved.push(save_interface.save(6,
-                {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector(),  genre : util.fakeGenre()}))
-
-            q.all(all_saved).then(() => {
-                let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
-                        all_saved.push(save_interface.save(6, {
-                            movie: util.fakeMovie(),
-                            actor: saved_actor_with_10_movie,
-                            director : util.fakeDirector(),
-                            genre : util.fakeGenre()
-                        }));
-                    all_saved.push(save_interface.save(6, {
-                        movie: util.fakeMovie(),
-                        actor: saved_actor_with_100_movie,
-                        director : util.fakeDirector(),
+                        director: saved_director_with_100_movie,
                         genre : util.fakeGenre()
                     }));
                 }
@@ -657,36 +616,40 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
         it('Retrieves 1 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_1_movie.movies;
+            delete saved_director_with_1_movie.movies;
 
-            query_interface.all_films_one_actor(6, saved_actor_with_1_movie, (err, movies) => {
+            query_interface.all_films_one_director(5, saved_director_with_1_movie, (err, movies) => {
                 movies.length.should.eql(1);
-                movies[0].title.should.eql(saved_movie_with_1_actor.title);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
                 done();
             });
         });
 
         it('Retrieves 10 movie', function (done) {
 
-            // util.fakeActor() adds 'movies' field to Actor object, used for relationships.
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
             // Version 0 model does not have relationships, only embedded documents.
             // So we delete the field
-            delete saved_actor_with_10_movie.movies;
+            delete saved_director_with_10_movie.movies;
 
-            query_interface.all_films_one_actor(6, saved_actor_with_10_movie, (err, movies) => {
+            query_interface.all_films_one_director(5, saved_director_with_10_movie, (err, movies) => {
                 movies.length.should.eql(10);
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
                 done();
             });
         });
 
         it('Retrieves 100 movie', function (done) {
 
-            delete saved_actor_with_100_movie.movies;
+            delete saved_director_with_100_movie.movies;
 
-            query_interface.all_films_one_actor(6, saved_actor_with_100_movie, (err, movies) => {
+            query_interface.all_films_one_director(5, saved_director_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });
@@ -694,7 +657,104 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
     });
 
+    describe('Version 6', function () {
+
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director_with_1_movie;
+        var saved_director_with_10_movie;
+        var saved_director_with_100_movie;
 
 
+        before('Populate database', function (done) {
 
+            let all_saved = [];
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_director_with_1_movie = util.fakeDirector();
+            saved_director_with_10_movie = util.fakeDirector();
+            saved_director_with_100_movie = util.fakeDirector();
+
+
+            all_saved.push(save_interface.save(6,
+                {movie: saved_movie_with_1_director, director: saved_director_with_1_movie,
+                    actor : util.fakeActor(),  genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(6,
+                {movie: util.fakeMovie(), director: saved_director_with_10_movie,
+                    actor : util.fakeActor(),genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(6,
+                {movie: util.fakeMovie(), director: saved_director_with_100_movie,
+                    actor : util.fakeActor(),genre : util.fakeGenre()}));
+
+            q.all(all_saved).then(() => {
+                let all_saved = [];
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
+                        all_saved.push(save_interface.save(6, {
+                            movie: util.fakeMovie(),
+                            director: saved_director_with_10_movie,
+                            actor : util.fakeActor(),
+                            genre : util.fakeGenre()
+                        }));
+                    all_saved.push(save_interface.save(6, {
+                        movie: util.fakeMovie(),
+                        director: saved_director_with_100_movie,
+                        actor : util.fakeActor(),
+                        genre : util.fakeGenre()
+                    }));
+                }
+                q.all(all_saved).then(() => done())
+            });
+        });
+
+        after('Clear database', function (done) {
+            mongoose.connection.db.dropDatabase(function () {
+                done();
+            })
+        });
+
+        it('Retrieves 1 movie', function (done) {
+
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
+            // Version 0 model does not have relationships, only embedded documents.
+            // So we delete the field
+            delete saved_director_with_1_movie.movies;
+
+            query_interface.all_films_one_director(6, saved_director_with_1_movie, (err, movies) => {
+                movies.length.should.eql(1);
+                movies[0].title.should.eql(saved_movie_with_1_director.title);
+                done();
+            });
+        });
+
+        it('Retrieves 10 movie', function (done) {
+
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
+            // Version 0 model does not have relationships, only embedded documents.
+            // So we delete the field
+            delete saved_director_with_10_movie.movies;
+
+            query_interface.all_films_one_director(6, saved_director_with_10_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_10_movie.first_name));
+                movies.length.should.eql(10);
+                done();
+            });
+        });
+
+        it('Retrieves 100 movie', function (done) {
+
+            delete saved_director_with_100_movie.movies;
+
+            query_interface.all_films_one_director(6, saved_director_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.directors[0].first_name.should.be.eql(saved_director_with_100_movie.first_name));
+                movies.length.should.eql(100);
+                done();
+            });
+        });
+
+    });
 });

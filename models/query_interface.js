@@ -14,20 +14,20 @@ module.exports = {
         if (isNaN(version) || actor == undefined)
             throw new Error('version and actor needed')
 
-        let query = new mongoose.Query();
+        let query;
         switch (version) {
             case 3:
             case 4:
             case 5:
             case 0:
-                console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
+               // console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
                 mongoose.model('Movie' + version)
                     .find({actors: {$elemMatch: actor}}).then((movies) => cb(undefined, movies));
                 break;
             case 1:
             case 2:
             case 6:
-                query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
+               // query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
                 console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
 
                 let population = {};
@@ -37,7 +37,6 @@ module.exports = {
 
                 query.exec((err, docs) => {
                     if (err) throw err;
-                    var movies = [];
 
                     docs.forEach ( (doc) => {
                         //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
@@ -59,10 +58,10 @@ module.exports = {
     },
 
     all_films_one_director: function (version, director, cb) {
-        if (isNaN(version) || actor == undefined)
-            throw new Error('version and actor needed')
+        if (isNaN(version) || (!director))
+            throw new Error('version and director needed')
 
-        let query = new mongoose.Query();
+        let query;
         switch (version) {
             case 4:
             case 1:
@@ -75,26 +74,30 @@ module.exports = {
             case 2:
             case 6:
             case 5:
+                query = mongoose.model('Director' + version).find(director, 'movies').populate('movies ');
+                console.log(`query: Director${version}.find(${JSON.stringify(query._conditions)})`);
 
-                if(version === 2)
-                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.actors movies.directors');
-                else if(version === 3)
-                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.directors');
-                else if(version === 5)
-                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.directors movies.genres');
-                else if(version === 6)
-                    query = mongoose.model('Director' + version).find(director, 'movies').populate('movies movies.actors movies.directors movies.genres');
-
-                console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
+                let population = {};
+                if(version === 2) population = 'directors actors';
+                else if( version === 3) population = 'directors';
+                else if( version === 5) population = 'directors genres';
+                else if( version === 6) population = 'directors genres actors';
 
                 query.exec((err, directors) => {
                     if (err) throw err;
-                    if(directors === null)
-                        return cb('Error: query returned null');
-                    var movies = [];
-                    for (let i = 0; i < directors.length; i++)
-                        movies = movies.concat(directors[i].movies);
-                    return cb(undefined, movies);
+
+                    directors.forEach ( (director) => {
+                        //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
+
+                        mongoose.model('Movie' + version).populate(director.movies, population, (err, movies) => {
+                            if(err) throw err;
+                            //console.log('Populated');
+                            // console.log(JSON.stringify(actor, null, 2));
+                            if (movies === null)
+                                return cb('Error: query returned null');
+                            return cb(undefined, movies);
+                        })
+                    });
                 });
 
                 break;
