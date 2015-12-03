@@ -103,5 +103,27 @@ module.exports = {
                 break;
         }
         //return result;
+    },
+    top_5_actors_of_a_director: function (version, director, cb) {
+        this.all_films_one_director( version, director, function (err,movies) {
+            let counter = {};
+            let sorted_ids = [];
+            for(let i=0; i < movies.length; i++) {
+                for( let j=0; j < movies.actors.length; j++) {
+                    let actor_id = movies.actors[j]._id;
+                    counter[actor_id] = ( counter[actor_id] + 1) || 1;
+                }
+            }
+            for (let id in counter) if(counter.hasOwnProperty(id)) {
+                let counter[id] = number_of_movies
+            }
+
+        })
+
+    },
+    top_5_directors_of_an_actor: function (version, actor, cb) {
+
+
+
     }
 };
