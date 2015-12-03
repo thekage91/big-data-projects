@@ -467,7 +467,6 @@ module.exports = {
                         let director_promise = q.defer();
                         let actor_promise = q.defer();
 
-
                         Movie6.findByIdAndUpdate(movie._id, {
                                 $push: {
                                     genres: genre._id,

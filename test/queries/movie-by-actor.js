@@ -181,10 +181,16 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             all_saved.push(save_interface.save(1,
                 {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie}))
 
+            all_saved.push(save_interface.save(1,
+                {movie: util.fakeMovie(), actor: saved_actor_with_10_movie}))
+
+            all_saved.push(save_interface.save(1,
+                {movie: util.fakeMovie(), actor: saved_actor_with_100_movie}))
+
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                        if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                        if (i < 9)
                             all_saved.push(save_interface.save(1, {
                                 movie: util.fakeMovie(),
                                 actor: saved_actor_with_10_movie
@@ -297,11 +303,11 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             })
         });
 
-       /* after('Clear database', function (done) {
+        after('Clear database', function (done) {
             mongoose.connection.db.dropDatabase(function () {
                 done();
             })
-        });*/
+        });
 
         it('Retrieves 1 movie', function (done) {
 
@@ -345,7 +351,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             query_interface.all_films_one_actor(2, saved_actor_with_10_movie, (err, movies) => {
                 movies.length.should.eql(10);
-                console.log(movies[0]);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_10_movie.first_name));
                 done();
             });
         });
@@ -356,6 +363,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             query_interface.all_films_one_actor(2, saved_actor_with_100_movie, (err, movies) => {
                 movies.length.should.eql(100);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_100_movie.first_name));
                 done();
             });
         });
@@ -385,13 +394,21 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             all_saved.push(save_interface.save(3,
                 {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector()}))
+                    director : util.fakeDirector()}));
+
+            all_saved.push(save_interface.save(3,
+                {movie: util.fakeMovie(), actor: saved_actor_with_10_movie,
+                    director : util.fakeDirector()}));
+
+            all_saved.push(save_interface.save(3,
+                {movie: util.fakeMovie(), actor: saved_actor_with_100_movie,
+                    director : util.fakeDirector()}));
 
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(3, {
                             movie: util.fakeMovie(),
                             actor: saved_actor_with_10_movie,
@@ -435,6 +452,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_10_movie.movies;
 
             query_interface.all_films_one_actor(3, saved_actor_with_10_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_10_movie.first_name));
                 movies.length.should.eql(10);
                 done();
             });
@@ -445,6 +464,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_100_movie.movies;
 
             query_interface.all_films_one_actor(3, saved_actor_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });
@@ -475,12 +496,18 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             all_saved.push(save_interface.save(4,
                 {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    genre : util.fakeGenre()}))
+                    genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(4,
+                {movie: util.fakeMovie(), actor: saved_actor_with_10_movie,
+                    genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(4,
+                {movie: util.fakeMovie(), actor: saved_actor_with_100_movie,
+                    genre : util.fakeGenre()}));
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(4, {
                             movie: util.fakeMovie(),
                             actor: saved_actor_with_10_movie,
@@ -524,6 +551,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_10_movie.movies;
 
             query_interface.all_films_one_actor(4, saved_actor_with_10_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_10_movie.first_name));
                 movies.length.should.eql(10);
                 done();
             });
@@ -534,6 +563,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_100_movie.movies;
 
             query_interface.all_films_one_actor(4, saved_actor_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });
@@ -564,12 +595,19 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             all_saved.push(save_interface.save(5,
                 {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector(), genre : util.fakeGenre()}))
+                    director : util.fakeDirector(), genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(5,
+                {movie: util.fakeMovie(), actor: saved_actor_with_10_movie,
+                    director : util.fakeDirector(),genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(5,
+                {movie: util.fakeMovie(), actor: saved_actor_with_100_movie,
+                    director : util.fakeDirector(),genre : util.fakeGenre()}));
+
 
             q.all(all_saved).then(() => { done();
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(5, {
                             movie: util.fakeMovie(),
                             actor: saved_actor_with_10_movie,
@@ -587,11 +625,11 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             })
         });
 
-       /* after('Clear database', function (done) {
+        after('Clear database', function (done) {
             mongoose.connection.db.dropDatabase(function () {
                 done();
             })
-        });*/
+        });
 
         it('Retrieves 1 movie', function (done) {
 
@@ -616,6 +654,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             query_interface.all_films_one_actor(5, saved_actor_with_10_movie, (err, movies) => {
                 movies.length.should.eql(10);
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_10_movie.first_name));
                 done();
             });
         });
@@ -625,6 +665,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_100_movie.movies;
 
             query_interface.all_films_one_actor(5, saved_actor_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });
@@ -655,12 +697,18 @@ describe('Query: Retrieve all movies acted by one actor', function () {
 
             all_saved.push(save_interface.save(6,
                 {movie: saved_movie_with_1_actor, actor: saved_actor_with_1_movie,
-                    director : util.fakeDirector(),  genre : util.fakeGenre()}))
+                    director : util.fakeDirector(),  genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(6,
+                {movie: util.fakeMovie(), actor: saved_actor_with_10_movie,
+                    director : util.fakeDirector(),genre : util.fakeGenre()}));
+            all_saved.push(save_interface.save(6,
+                {movie: util.fakeMovie(), actor: saved_actor_with_100_movie,
+                    director : util.fakeDirector(),genre : util.fakeGenre()}));
 
             q.all(all_saved).then(() => {
                 let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                    if (i < 10)
+                for (let i = 0; i < 99; i++) {
+                    if (i < 9)
                         all_saved.push(save_interface.save(6, {
                             movie: util.fakeMovie(),
                             actor: saved_actor_with_10_movie,
@@ -675,7 +723,7 @@ describe('Query: Retrieve all movies acted by one actor', function () {
                     }));
                 }
                 q.all(all_saved).then(() => done())
-            })
+            });
         });
 
         after('Clear database', function (done) {
@@ -706,6 +754,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_10_movie.movies;
 
             query_interface.all_films_one_actor(6, saved_actor_with_10_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_10_movie.first_name));
                 movies.length.should.eql(10);
                 done();
             });
@@ -716,6 +766,8 @@ describe('Query: Retrieve all movies acted by one actor', function () {
             delete saved_actor_with_100_movie.movies;
 
             query_interface.all_films_one_actor(6, saved_actor_with_100_movie, (err, movies) => {
+                movies.forEach(
+                    (movie) => movie.actors[0].first_name.should.be.eql(saved_actor_with_100_movie.first_name));
                 movies.length.should.eql(100);
                 done();
             });

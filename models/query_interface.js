@@ -27,12 +27,13 @@ module.exports = {
             case 1:
             case 2:
             case 6:
-
+                query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
                 console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
-                let opts = {};
-                if(version === 2) opts = 'actors directors';
-                else if( version === 1) opts = 'actors';
-                else if( version === 6) opts = 'actors genres directors'
+
+                let population = {};
+                if(version === 2) population = 'actors directors';
+                else if( version === 1) population = 'actors';
+                else if( version === 6) population = 'actors genres directors';
 
                 query.exec((err, docs) => {
                     if (err) throw err;
@@ -41,7 +42,7 @@ module.exports = {
                     docs.forEach ( (doc) => {
                         //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
 
-                        mongoose.model('Movie' + version).populate(doc.movies, opts, (err, movies) => {
+                        mongoose.model('Movie' + version).populate(doc.movies, population, (err, movies) => {
                             if(err) throw err;
                             //console.log('Populated');
                            // console.log(JSON.stringify(actor, null, 2));
