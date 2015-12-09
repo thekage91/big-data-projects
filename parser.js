@@ -121,7 +121,7 @@ var parseAndSave= function () {
 
     console.log("[DEBUG] Start | movies | actors | directors | genres |  parsing...")
 
-    let _movies = []
+    let _movies = [];
     var moviesStream = fs.createReadStream(moviesPathShort).pipe(movieParser.startParsing);
     var genresStream = fs.createReadStream(genresPathShort).pipe(genresParser.startParsing);
     var actorsStream = fs.createReadStream(actorsPathShort).pipe(actorsParser.startParsing);
@@ -129,28 +129,45 @@ var parseAndSave= function () {
 
     movieParser.movies.then(function(movies){
 
-        _movies = movies; 
-        console.log(_movies);
+        //_movies = movies; 
+        Saver.Movies = movies;
 
-    });
-    console.log(_movies);
+    }).then(function(){
 
-    directorParser.directors.then(function(directors){
+        directorParser.directors.then(function(directors){
         
-        Saver.Directors = directors;
-    })
+            Saver.Directors = directors;
 
-    genresParser.genres.then(function(genres){
-        
-        Saver.Genres = genres;
+        }).then(function(){
+
+            genresParser.genres.then(function(genres){
+            
+                Saver.Genres = genres;
+
+            }).then(function(){
+
+                actorsParser.actors.then(function(actors){
+
+                    Saver.Actors = actors;
+
+                }).then(function(){
+
+                    console.log("\n\n Movies")
+                    console.log(Saver.Movies);
+
+                    console.log("\n\n Actors")
+                    console.log(Saver.Actors); 
+
+                    console.log("\n\n Directors")
+                    console.log(Saver.Directors);
+
+                    console.log("\n\n Genres")
+                    console.log(Saver.Genres);
+
+                });
+            })
+        });
     });
-
-    actorsParser.actors.then(function(actors){
-
-        Saver.Actors = actors;
-    });
-
-    console.log(Saver.Movies);
 
     console.log("[DEBUG] Finish parsing...")
     console.log("[DEBUG] Start save schema on DB... ")
