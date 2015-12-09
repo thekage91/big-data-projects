@@ -39,13 +39,10 @@ var movieParser = require('./parsers/parser.movies.js'),
  var directorPostApi = "/api/director"
  var actorPostApi = "/api/actor"
 
-// da togiere 
- var directorsFields = ['first_name', 'last_name', 'film'];
- var genreFields = ['film', 'genre'];
- var actorFields = ['first_name', 'last_name', 'film', '', '', 'role'];
-
  var genres = {},
      actors = {};
+
+var Saver = require("./saver/saver.js");
 
  var callbackSave = function (err) {
     if (err) throw new Error(err);
@@ -117,145 +114,52 @@ parseActors.on('finish', function(){
     console.log("\n[DEBUG] Acotors: " + actors);
 })
 
-//parseActors.end();
 
-module.exports = {
-
-    parsingDataAndSave: parseAndSave
-}
-
-var filter = function(element, obj){
-
-    var result = [];
-
-    for(var key in obj){
-
-        if(obj[key].indexOf(element) !== -1){
-
-            result.push(key);
-        }
-    }
-
-    return result;
-}
-
-/* Schema Movies */
-var schemaM = function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-    var movieToPost = {};
-    
-    /*
-    *  Populet movies with relations
-    */
-
-    console.log("[DEBUG] Save schema Movies...")
-
-    movies.forEach(function(elem){
-
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-
-        movieToPost.genres = filter(elem, genres);
-        movieToPost.actors = filter(elem, actors);
-        movieToPost.directors = filter(elem, directors);
-
-        /*Movie0.create(movieToPost, function (err, movie) {
-            if (err) throw new Error(err);
-            console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
-        });*/
-
-
-});
-
-    console.log("[DEBUG] Finish...")
-};
-
-/* Schema Movies Actors */ 
-var schemaMA= function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-
-
-    
-};
-
-/* Schema Movies Actors Directors */
-var schemaMAD = function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-    
-};
-
-/* Schema Movies Directors */ 
-var schemaMD = function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-    
-};
-
-/* Schema Movies Genres */ 
-var saveMG = function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-    
-};
-
-/* Schema Movies Genres Directors */ 
-var saveMGD = function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-    
-};
-
-/* Schema Movies Genres Directors Actors */ 
-var saveMGDA = function(){
-
-    var Movie0 = mongoose.model('Movie0');  
-    
-};
 
 
 var parseAndSave= function () {
 
     console.log("[DEBUG] Start | movies | actors | directors | genres |  parsing...")
 
+    let _movies = []
     var moviesStream = fs.createReadStream(moviesPathShort).pipe(movieParser.startParsing);
     var genresStream = fs.createReadStream(genresPathShort).pipe(genresParser.startParsing);
     var actorsStream = fs.createReadStream(actorsPathShort).pipe(actorsParser.startParsing);
     var directorsStream = fs.createReadStream(directorsPathShort).pipe(directorParser.startParsing);
 
     movieParser.movies.then(function(movies){
-        movies.forEach(function(elem){
-        });
+
+        _movies = movies; 
+        console.log(_movies);
+
     });
+    console.log(_movies);
 
     directorParser.directors.then(function(directors){
-        var stringDirectors = JSON.stringify(directors);
+        
+        Saver.Directors = directors;
     })
 
     genresParser.genres.then(function(genres){
-
-        var stringGenres = JSON.stringify(genres);
+        
+        Saver.Genres = genres;
     });
 
     actorsParser.actors.then(function(actors){
 
-        var stringActors = JSON.stringify(actors);
+        Saver.Actors = actors;
     });
+
+    console.log(Saver.Movies);
 
     console.log("[DEBUG] Finish parsing...")
     console.log("[DEBUG] Start save schema on DB... ")
 
-    //schemaM(movies, genres, directors, actors);
 }
 
-var log = function(){
+module.exports = {
 
-    console.log("\n\n[DEBUG] Movies: " + JSON.stringify(films));
-    console.log("\n\n[DEBUG] Genres: " + JSON.stringify(genres));
-    console.log("\n\n[DEBUG] Actors: " + JSON.stringify(actors));
-    console.log("\n\n[DEBUG] Directors: " + JSON.stringify(directors));
+    parsingDataAndSave: parseAndSave
 }
 
 parseAndSave();
