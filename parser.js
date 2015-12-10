@@ -152,7 +152,7 @@ var parseAndSave= function () {
 
                 }).then(function(){
 
-                    console.log("\n\n Movies")
+                    /*console.log("\n\n Movies")
                     console.log(Saver.Movies);
 
                     console.log("\n\n Actors")
@@ -162,7 +162,11 @@ var parseAndSave= function () {
                     console.log(Saver.Directors);
 
                     console.log("\n\n Genres")
-                    console.log(Saver.Genres);
+                    console.log(Saver.Genres);*/
+
+                    Saver.saveM();
+
+
 
                 });
             })

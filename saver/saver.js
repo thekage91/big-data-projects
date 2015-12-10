@@ -14,7 +14,7 @@ var filter = function(element, obj){
 
     for(var key in obj){
 
-        if(obj[key].indexOf(element) !== -1){
+        if(obj[key].indexOf(element.title) !== -1){
 
             result.push(key);
         }
@@ -26,24 +26,30 @@ var filter = function(element, obj){
 /* save Movies */
 var saveM = function(){
 
-    var Movie0 = mongoose.model('Movie0');  
-    var movieToPost = {};
+    var Movie0 = mongoose.model('Movie0'), 
+        movieToPost = {},
+        local_genres = this.Genres,
+        local_actors = this.Actors,
+        local_directors = this.Directors;
     
     /*
     *  Populet movies with relations
     */
+    console.log(local_actors);
+            console.log("\n\n");
 
-    console.log("[DEBUG] Save save Movies...")
-
-    movies.forEach(function(elem){
+    this.Movies.forEach(function(elem){
 
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
 
-        movieToPost.genres = filter(elem, genres);
-        movieToPost.actors = filter(elem, actors);
-        movieToPost.directors = filter(elem, directors);
+        movieToPost.genres = filter(elem, local_genres);
+        movieToPost.actors = filter(elem, local_actors);
+        //movieToPost.directors = filter(elem, local_directors);
 
+        console.log(movieToPost)
+        console.log("\n\n");
+        
         /*Movie0.create(movieToPost, function (err, movie) {
             if (err) throw new Error(err);
             console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
@@ -95,10 +101,10 @@ var saveMGDA = function(){
 
 var getInfo = function(){
 
-	return "Movies: " + JSON.stringify(_movies) + "\n\n" +
-			"Directors: " + JSON.stringify(_directors) + "\n\n" + 
-			"Actors: " + JSON.stringify(_actors) + "\n\n" + 
-			"Genres: " + JSON.stringify(_genres) + "\n\n" ;
+	return "Movies: " + JSON.stringify( this.Movies ) + "\n\n" +
+			"Directors: " + JSON.stringify( this.Directors ) + "\n\n" + 
+			"Actors: " + JSON.stringify( this.Actors ) + "\n\n" + 
+			"Genres: " + JSON.stringify( this.Genres ) + "\n\n" ;
 }
 
 
@@ -108,5 +114,7 @@ module.exports = {
 	Actors: _actors,
 	Directors: _directors,
 	Genres: _genres,
-	getInfo: getInfo
+	getInfo: getInfo,
+
+    saveM: saveM
 }
