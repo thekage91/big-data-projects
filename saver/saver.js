@@ -35,7 +35,7 @@ var saveM = function(){
     /*
     *  Populet movies with relations
     */
-    console.log(local_actors);
+    console.log(local_directors);
             console.log("\n\n");
 
     this.Movies.forEach(function(elem){
