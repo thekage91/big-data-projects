@@ -20,14 +20,16 @@ parserActors.on('readable', function(){
 
         if( record[0].indexOf('\t') !== 0 ){
 
-            currentRecord = record[0].split(',')[1].replace(' ', '').split('\t');
+            currentRecord = record[0].split(',')[1].replace(' ', '').split(/\t/g);
             currentActor = currentRecord[0];
-            actors[currentActor] = [ currentRecord[currentRecord.length - 1].replace('"', '') ];
+            var movie = currentRecord[currentRecord.length - 1].replace(/"/g, '').split('(')[0].slice(0, -1);
+            //console.log("[DEBUG] Current movie (if true): " + movie);
+            actors[currentActor] = [movie];
         }
         else{
 
-            var movie = record[0].replace('\t', '');
-
+            var movie = record[0].replace(/\t/g, '').split('(')[0].replace(/"/g, '').slice(0, -1);
+            //console.log("[DEBUG] Current movie (else): " + movie);
             actors[currentActor].push(movie);
         }
     }

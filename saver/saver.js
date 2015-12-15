@@ -47,8 +47,8 @@ var saveM = function(){
         movieToPost.actors = filter(elem, local_actors);
         //movieToPost.directors = filter(elem, local_directors);
 
-        console.log(movieToPost)
-        console.log("\n\n");
+        //console.log(movieToPost)
+        //console.log("\n\n");
         
         /*Movie0.create(movieToPost, function (err, movie) {
             if (err) throw new Error(err);
