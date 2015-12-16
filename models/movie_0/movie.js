@@ -4,6 +4,13 @@ var mongoose = require('mongoose'),
 		Schema = mongoose.Schema,
 		ObjectId = Schema.ObjectId;
 
+/*var fields = {
+    first_name:String ,
+    last_name: String
+};
+
+var directorSchema = new Schema(fields, {_id: false});
+*/
 var fields = {
 	title: { type: String ,trim: true, required: true},
 	release_date: { type: Date , default: Date.now },
@@ -21,10 +28,12 @@ var fields = {
         last_name: String }],
     directors : [{
         first_name:String ,
-        last_name: String }]
+        last_name: String
+    }]
 };
 
 var movieSchema = new Schema(fields);
+
 
 
 module.exports = mongoose.model('Movie0', movieSchema);

@@ -103,21 +103,54 @@ module.exports = {
                 break;
         }
         //return result;
+        //console.log(`movie: ${JSON.stringify(movies[i])}`)
     },
     top_5_actors_of_a_director: function (version, director, cb) {
-        this.all_films_one_director( version, director, function (err,movies) {
-            let counter = {};
-            let sorted_ids = [];
-            for(let i=0; i < movies.length; i++) {
-                for( let j=0; j < movies.actors.length; j++) {
-                    let actor_id = movies.actors[j]._id;
-                    counter[actor_id] = ( counter[actor_id] + 1) || 1;
-                }
-            }
-            for (let id in counter) if(counter.hasOwnProperty(id)) {
-                let counter[id] = number_of_movies
+        function getSorted (films) {
+            var top5 = [films[0]];
+            for(let i=1; i < films.length; i++)
+            {
+                console.log(`elem.id = ${JSON.stringify(films[i].id)}`);
+                //console.log(`top5 = ${JSON.stringify(top5)}`);
+                insertSorted(films[i],top5);
             }
 
+            return top5;
+        }
+
+
+        function insertSorted(elem, array1) {
+            let inserted = false;
+            for(let i=0; i < array1.length && (!inserted); i++) {
+                if(array1[i].count <= elem.count) {
+                    array1.splice(i,0,elem);
+                    inserted = true;
+                }
+            }
+            if(!inserted)
+                array1.push(elem);
+        }
+
+        this.all_films_one_director( version, director, function (err,movies) {
+            var counted = [], indexes = {}, current_movie, current_actor, position, current_actor_identifier;
+            for(let i=0; i < movies.length; i++) {
+                current_movie = movies[i];
+
+                for( let j=0; j < current_movie.actors.length; j++) {
+                    current_actor = current_movie.actors[j];
+                    current_actor_identifier = '' + current_actor.first_name + current_actor.last_name;
+                    position = indexes[current_actor_identifier];
+
+                    if (position===undefined) {
+                        counted.push({id: current_actor_identifier, count: 1});
+                        indexes[current_actor_identifier] = counted.length - 1;
+                    }
+                    else counted[position].count++;
+                }
+            }
+
+            let sorted = getSorted(counted).slice(0,5);
+            cb(null, sorted);
         })
 
     },
