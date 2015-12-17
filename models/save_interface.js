@@ -102,6 +102,7 @@ module.exports = {
                         actor_to_save.resolve(retrieved_actor)
                     else (new Actor1(data.actor)).save((err, actor) => {
                         if (err) throw new Error(err);
+                        console.log(`${actor.first_name} non c'era`);
                         actor_to_save.resolve(actor);
                     });
                 });

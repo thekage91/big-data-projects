@@ -68,7 +68,7 @@ module.exports = {
             case 0:
                 console.log(`query: Movie${version}.find({director : {$elemMatch : ${JSON.stringify(director)} } } )`);
                 mongoose.model('Movie' + version)
-                    .find({directors: {$elemMatch: director}}).then((movies) => cb(undefined, movies));
+                    .find({directors: {$elemMatch: director}}).populate('actors').then((movies) => cb(undefined, movies));
                 break;
             case 3:
             case 2:
@@ -132,6 +132,10 @@ module.exports = {
         }
 
         this.all_films_one_director( version, director, function (err,movies) {
+            if(err) cb(err);
+            if(!movies) cb(new Error('Director not film'))
+
+
             var counted = [], indexes = {}, current_movie, current_actor, position, current_actor_identifier;
             for(let i=0; i < movies.length; i++) {
                 current_movie = movies[i];
