@@ -133,8 +133,10 @@ module.exports = {
 
         this.all_films_one_director( version, director, function (err,movies) {
             if(err) cb(err);
-            if(!movies) cb(new Error('Director not film'))
+            if(!movies) cb(new Error('Director not film'));
 
+           /* console.log(movies);
+            console.log(`Found ${movies.length} movies`);*/
 
             var counted = [], indexes = {}, current_movie, current_actor, position, current_actor_identifier;
             for(let i=0; i < movies.length; i++) {
