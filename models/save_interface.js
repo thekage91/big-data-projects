@@ -102,7 +102,6 @@ module.exports = {
                         actor_to_save.resolve(retrieved_actor)
                     else (new Actor1(data.actor)).save((err, actor) => {
                         if (err) throw new Error(err);
-                        console.log(`${actor.first_name} non c'era`);
                         actor_to_save.resolve(actor);
                     });
                 });
@@ -172,7 +171,6 @@ module.exports = {
                     if (typeof retrieved_director !== 'undefined' && retrieved_director)
                         director_to_save.resolve(retrieved_director)
                     else (new Director2(data.director)).save((err, director) => {
-                        console.log(`Director ${director.first_name} ${director.last_name} not Found`)
                         if (err) throw new Error(err);
                         director_to_save.resolve(director);
                     });

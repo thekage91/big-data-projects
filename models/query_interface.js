@@ -22,12 +22,12 @@ module.exports = {
             case 0:
                // console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
                 mongoose.model('Movie' + version)
-                    .find({actors: {$elemMatch: actor}}).then((movies) => cb(undefined, movies));
+                    .find({actors: {$elemMatch: actor}}).populate('directors').then((movies) => cb(undefined, movies));
                 break;
             case 1:
             case 2:
             case 6:
-               // query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
+                query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
                 console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
 
                 let population = {};
@@ -57,6 +57,7 @@ module.exports = {
         //return result;
     },
 
+    //Tutti i film di un regista
     all_films_one_director: function (version, director, cb) {
         if (isNaN(version) || (!director))
             throw new Error('version and director needed')
@@ -110,7 +111,7 @@ module.exports = {
             var top5 = [films[0]];
             for(let i=1; i < films.length; i++)
             {
-                console.log(`elem.id = ${JSON.stringify(films[i].id)}`);
+                //console.log(`elem.id = ${JSON.stringify(films[i].id)}`);
                 //console.log(`top5 = ${JSON.stringify(top5)}`);
                 insertSorted(films[i],top5);
             }
@@ -162,7 +163,57 @@ module.exports = {
     },
     top_5_directors_of_an_actor: function (version, actor, cb) {
 
+        function getSorted (films) {
+            var top5 = [films[0]];
+            for(let i=1; i < films.length; i++)
+            {
+               // console.log(`elem.id = ${JSON.stringify(films[i].id)}`);
+                //console.log(`top5 = ${JSON.stringify(top5)}`);
+                insertSorted(films[i],top5);
+            }
 
+            return top5;
+        }
+
+        function insertSorted(elem, array1) {
+            let inserted = false;
+            for(let i=0; i < array1.length && (!inserted); i++) {
+                if(array1[i].count <= elem.count) {
+                    array1.splice(i,0,elem);
+                    inserted = true;
+                }
+            }
+            if(!inserted)
+                array1.push(elem);
+        }
+
+        this.all_films_one_actor( version, actor, function (err,movies) {
+            if(err) cb(err);
+            if(!movies) return cb(new Error('Actor not film'));
+
+             //console.log(movies);
+             //console.log(`Found ${movies.length} movies`);
+
+            var counted = [], indexes = {}, current_movie, current_directors, position, current_director_identifier;
+            for(let i=0; i < movies.length; i++) {
+                current_movie = movies[i];
+
+                for( let j=0; j < current_movie.actors.length; j++) {
+                    current_directors = current_movie.directors[j];
+                    current_director_identifier = '' + current_directors.first_name + current_directors.last_name;
+                    position = indexes[current_director_identifier];
+
+                    if (position === undefined) {
+                        counted.push({id: current_director_identifier, count: 1});
+                        indexes[current_director_identifier] = counted.length - 1;
+                    }
+                    else counted[position].count++;
+                }
+            }
+
+            let sorted = getSorted(counted).slice(0,5);
+            cb(null, sorted);
+        })
 
     }
 };

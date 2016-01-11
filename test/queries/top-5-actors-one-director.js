@@ -68,51 +68,51 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
 
 
 
-                let all_saved = [];
-                for (let i = 0; i < 100; i++) {
-                        if(i>98)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_1_movies, genre: util.fakeGenre()
-                        }));
-                    if (i > 97)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_2_movies, genre: util.fakeGenre()
-                        }));
-                    if (i > 96)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_3_movies, genre: util.fakeGenre()
-                        }));
-                    if (i > 95)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_4_movies, genre: util.fakeGenre()
-                        }));
-                    if (i > 94)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_5_movies, genre: util.fakeGenre()
-                        }));
-                    if (i > 93)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_6_movies, genre: util.fakeGenre()
-                        }));
-                    if (i > 89)
-                        all_saved.push(save_interface.save(0, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_10_movies, genre: util.fakeGenre()
-                        }));
+            let all_saved = [];
+            for (let i = 0; i < 100; i++) {
+                if(i>98)
                     all_saved.push(save_interface.save(0, {
                         movie: util.fakeMovie(), director: saved_director,
-                        actor: saved_actor_100_movies, genre: util.fakeGenre()
-                    }))
+                        actor: saved_actor_1_movies, genre: util.fakeGenre()
+                    }));
+                if (i > 97)
+                    all_saved.push(save_interface.save(0, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_2_movies, genre: util.fakeGenre()
+                    }));
+                if (i > 96)
+                    all_saved.push(save_interface.save(0, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_3_movies, genre: util.fakeGenre()
+                    }));
+                if (i > 95)
+                    all_saved.push(save_interface.save(0, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_4_movies, genre: util.fakeGenre()
+                    }));
+                if (i > 94)
+                    all_saved.push(save_interface.save(0, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_5_movies, genre: util.fakeGenre()
+                    }));
+                if (i > 93)
+                    all_saved.push(save_interface.save(0, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_6_movies, genre: util.fakeGenre()
+                    }));
+                if (i > 89)
+                    all_saved.push(save_interface.save(0, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_10_movies, genre: util.fakeGenre()
+                    }));
+                all_saved.push(save_interface.save(0, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_100_movies, genre: util.fakeGenre()
+                }))
 
 
-                }
-                q.all(all_saved).then(() => done())
+            }
+            q.all(all_saved).then(() => done())
         });
 
         after('Clear database', function (done) {
@@ -191,73 +191,73 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
                 actor: saved_actor_2_movies, genre: util.fakeGenre()
             }));
 
-             all_saved.push(save_interface.save(1, {
-             movie: util.fakeMovie(), director: saved_director,
-             actor: saved_actor_3_movies, genre: util.fakeGenre()
-             }));
+            all_saved.push(save_interface.save(1, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_3_movies, genre: util.fakeGenre()
+            }));
 
-             all_saved.push(save_interface.save(1, {
-             movie: util.fakeMovie(), director: saved_director,
-             actor: saved_actor_4_movies, genre: util.fakeGenre()
-             }));
+            all_saved.push(save_interface.save(1, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_4_movies, genre: util.fakeGenre()
+            }));
 
-             all_saved.push(save_interface.save(1, {
-             movie: util.fakeMovie(), director: saved_director,
-             actor: saved_actor_5_movies, genre: util.fakeGenre()
-             }));
+            all_saved.push(save_interface.save(1, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_5_movies, genre: util.fakeGenre()
+            }));
 
-             all_saved.push(save_interface.save(1, {
-             movie: util.fakeMovie(), director: saved_director,
-             actor: saved_actor_6_movies, genre: util.fakeGenre()
-             }));
+            all_saved.push(save_interface.save(1, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_6_movies, genre: util.fakeGenre()
+            }));
 
-             all_saved.push(save_interface.save(1, {
-             movie: util.fakeMovie(), director: saved_director,
-             actor: saved_actor_10_movies, genre: util.fakeGenre()
-             }));
+            all_saved.push(save_interface.save(1, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_10_movies, genre: util.fakeGenre()
+            }));
 
-             all_saved.push(save_interface.save(1, {
-             movie: util.fakeMovie(), director: saved_director,
-             actor: saved_actor_100_movies, genre: util.fakeGenre()
-             }));
+            all_saved.push(save_interface.save(1, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_100_movies, genre: util.fakeGenre()
+            }));
 
             q.all(all_saved).then( () => {
-                    all_saved = [];
-                    for(let i=0; i< 99; i++) {
-                        if (i > 97)
+                all_saved = [];
+                for(let i=0; i< 99; i++) {
+                    if (i > 97)
                         all_saved.push(save_interface.save(1, {
                             movie: util.fakeMovie(), director: saved_director,
                             actor: saved_actor_2_movies, genre: util.fakeGenre()
                         }));
                     if (i > 96)
-                     all_saved.push(save_interface.save(1, {
-                     movie: util.fakeMovie(), director: saved_director,
-                     actor: saved_actor_3_movies, genre: util.fakeGenre()
-                     }));
-                     if (i > 95)
-                     all_saved.push(save_interface.save(1, {
-                     movie: util.fakeMovie(), director: saved_director,
-                     actor: saved_actor_4_movies, genre: util.fakeGenre()
-                     }));
-                     if (i > 94)
-                     all_saved.push(save_interface.save(1, {
-                     movie: util.fakeMovie(), director: saved_director,
-                     actor: saved_actor_5_movies, genre: util.fakeGenre()
-                     }));
-                     if (i > 93)
-                     all_saved.push(save_interface.save(1, {
-                     movie: util.fakeMovie(), director: saved_director,
-                     actor: saved_actor_6_movies, genre: util.fakeGenre()
-                     }));
-                     if (i > 89)
-                     all_saved.push(save_interface.save(1, {
-                     movie: util.fakeMovie(), director: saved_director,
-                     actor: saved_actor_10_movies, genre: util.fakeGenre()
-                     }));
-                     all_saved.push(save_interface.save(1, {
-                     movie: util.fakeMovie(), director: saved_director,
-                     actor: saved_actor_100_movies, genre: util.fakeGenre()
-                     }));
+                        all_saved.push(save_interface.save(1, {
+                            movie: util.fakeMovie(), director: saved_director,
+                            actor: saved_actor_3_movies, genre: util.fakeGenre()
+                        }));
+                    if (i > 95)
+                        all_saved.push(save_interface.save(1, {
+                            movie: util.fakeMovie(), director: saved_director,
+                            actor: saved_actor_4_movies, genre: util.fakeGenre()
+                        }));
+                    if (i > 94)
+                        all_saved.push(save_interface.save(1, {
+                            movie: util.fakeMovie(), director: saved_director,
+                            actor: saved_actor_5_movies, genre: util.fakeGenre()
+                        }));
+                    if (i > 93)
+                        all_saved.push(save_interface.save(1, {
+                            movie: util.fakeMovie(), director: saved_director,
+                            actor: saved_actor_6_movies, genre: util.fakeGenre()
+                        }));
+                    if (i > 89)
+                        all_saved.push(save_interface.save(1, {
+                            movie: util.fakeMovie(), director: saved_director,
+                            actor: saved_actor_10_movies, genre: util.fakeGenre()
+                        }));
+                    all_saved.push(save_interface.save(1, {
+                        movie: util.fakeMovie(), director: saved_director,
+                        actor: saved_actor_100_movies, genre: util.fakeGenre()
+                    }));
 
                 }
                 q.all(all_saved).then(() => done())
@@ -333,7 +333,6 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
 
             let all_saved = [];
 
-            // PER ME È LA CIPOLLA
             save_interface.save(2, {
                 movie: util.fakeMovie(), director: saved_director,
                 actor: saved_actor_1_movies, genre: util.fakeGenre()
@@ -344,35 +343,35 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
                     actor: saved_actor_2_movies, genre: util.fakeGenre()
                 }));
 
-                 all_saved.push(save_interface.save(2, {
-                 movie: util.fakeMovie(), director: saved_director,
-                 actor: saved_actor_3_movies, genre: util.fakeGenre()
-                 }));
+                all_saved.push(save_interface.save(2, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_3_movies, genre: util.fakeGenre()
+                }));
 
-                 all_saved.push(save_interface.save(2, {
-                 movie: util.fakeMovie(), director: saved_director,
-                 actor: saved_actor_4_movies, genre: util.fakeGenre()
-                 }));
+                all_saved.push(save_interface.save(2, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_4_movies, genre: util.fakeGenre()
+                }));
 
-                 all_saved.push(save_interface.save(2, {
-                 movie: util.fakeMovie(), director: saved_director,
-                 actor: saved_actor_5_movies, genre: util.fakeGenre()
-                 }));
+                all_saved.push(save_interface.save(2, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_5_movies, genre: util.fakeGenre()
+                }));
 
-                 all_saved.push(save_interface.save(2, {
-                 movie: util.fakeMovie(), director: saved_director,
-                 actor: saved_actor_6_movies, genre: util.fakeGenre()
-                 }));
+                all_saved.push(save_interface.save(2, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_6_movies, genre: util.fakeGenre()
+                }));
 
-                 all_saved.push(save_interface.save(2, {
-                 movie: util.fakeMovie(), director: saved_director,
-                 actor: saved_actor_10_movies, genre: util.fakeGenre()
-                 }));
+                all_saved.push(save_interface.save(2, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_10_movies, genre: util.fakeGenre()
+                }));
 
-                 all_saved.push(save_interface.save(2, {
-                 movie: util.fakeMovie(), director: saved_director,
-                 actor: saved_actor_100_movies, genre: util.fakeGenre()
-                 }));
+                all_saved.push(save_interface.save(2, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_100_movies, genre: util.fakeGenre()
+                }));
 
                 q.all(all_saved).then( () => {
                     all_saved = [];
@@ -383,34 +382,34 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
                                 actor: saved_actor_2_movies, genre: util.fakeGenre()
                             }));
                         if (i > 96)
-                         all_saved.push(save_interface.save(2, {
-                         movie: util.fakeMovie(), director: saved_director,
-                         actor: saved_actor_3_movies, genre: util.fakeGenre()
-                         }));
-                         if (i > 95)
-                         all_saved.push(save_interface.save(2, {
-                         movie: util.fakeMovie(), director: saved_director,
-                         actor: saved_actor_4_movies, genre: util.fakeGenre()
-                         }));
-                         if (i > 94)
-                         all_saved.push(save_interface.save(2, {
-                         movie: util.fakeMovie(), director: saved_director,
-                         actor: saved_actor_5_movies, genre: util.fakeGenre()
-                         }));
-                         if (i > 93)
-                         all_saved.push(save_interface.save(2, {
-                         movie: util.fakeMovie(), director: saved_director,
-                         actor: saved_actor_6_movies, genre: util.fakeGenre()
-                         }));
-                         if (i > 89)
-                         all_saved.push(save_interface.save(2, {
-                         movie: util.fakeMovie(), director: saved_director,
-                         actor: saved_actor_10_movies, genre: util.fakeGenre()
-                         }));
-                         all_saved.push(save_interface.save(2, {
-                         movie: util.fakeMovie(), director: saved_director,
-                         actor: saved_actor_100_movies, genre: util.fakeGenre()
-                         }));
+                            all_saved.push(save_interface.save(2, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_3_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 95)
+                            all_saved.push(save_interface.save(2, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_4_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 94)
+                            all_saved.push(save_interface.save(2, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_5_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 93)
+                            all_saved.push(save_interface.save(2, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_6_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 89)
+                            all_saved.push(save_interface.save(2, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_10_movies, genre: util.fakeGenre()
+                            }));
+                        all_saved.push(save_interface.save(2, {
+                            movie: util.fakeMovie(), director: saved_director,
+                            actor: saved_actor_100_movies, genre: util.fakeGenre()
+                        }));
 
                     }
                     q.all(all_saved).then(() => done())
@@ -602,312 +601,312 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
     })
 
 
-            describe('Version 4', function () {
+    describe('Version 4', function () {
 
-                var saved_movie_with_1_director;
-                var saved_movie_with_10_director;
-                var saved_movie_with_100_director;
-                var saved_director;
-                var saved_genre;
-                var saved_actor_1_movies;
-                var saved_actor_2_movies;
-                var saved_actor_3_movies;
-                var saved_actor_4_movies;
-                var saved_actor_5_movies;
-                var saved_actor_6_movies;
-                var saved_actor_10_movies;
-                var saved_actor_100_movies;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director;
+        var saved_genre;
+        var saved_actor_1_movies;
+        var saved_actor_2_movies;
+        var saved_actor_3_movies;
+        var saved_actor_4_movies;
+        var saved_actor_5_movies;
+        var saved_actor_6_movies;
+        var saved_actor_10_movies;
+        var saved_actor_100_movies;
 
-                before('Populate database', function (done) {
+        before('Populate database', function (done) {
 
-                    saved_movie_with_1_director = util.fakeMovie();
-                    saved_movie_with_10_director = util.fakeMovie();
-                    saved_movie_with_100_director = util.fakeMovie();
-                    saved_actor_1_movies = util.fakeActor();
-                    saved_actor_2_movies = util.fakeActor();
-                    saved_actor_3_movies = util.fakeActor();
-                    saved_actor_4_movies = util.fakeActor();
-                    saved_actor_5_movies = util.fakeActor();
-                    saved_actor_6_movies = util.fakeActor();
-                    saved_actor_10_movies = util.fakeActor();
-                    saved_actor_100_movies = util.fakeActor();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_actor_1_movies = util.fakeActor();
+            saved_actor_2_movies = util.fakeActor();
+            saved_actor_3_movies = util.fakeActor();
+            saved_actor_4_movies = util.fakeActor();
+            saved_actor_5_movies = util.fakeActor();
+            saved_actor_6_movies = util.fakeActor();
+            saved_actor_10_movies = util.fakeActor();
+            saved_actor_100_movies = util.fakeActor();
 
 
-                    saved_director = util.fakeDirector();
-                    saved_genre = util.fakeGenre();
+            saved_director = util.fakeDirector();
+            saved_genre = util.fakeGenre();
 
-                    let all_saved = [];
+            let all_saved = [];
 
-                    save_interface.save(4, {
-                        movie: util.fakeMovie(), director: saved_director,
-                        actor: saved_actor_1_movies, genre: util.fakeGenre()
-                    }).then( () => {
+            save_interface.save(4, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_1_movies, genre: util.fakeGenre()
+            }).then( () => {
 
-                        all_saved.push(save_interface.save(4, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_2_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_2_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(4, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_3_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_3_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(4, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_4_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_4_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(4, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_5_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_5_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(4, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_6_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_6_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(4, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_10_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_10_movies, genre: util.fakeGenre()
+                }));
 
+                all_saved.push(save_interface.save(4, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_100_movies, genre: util.fakeGenre()
+                }));
+
+                q.all(all_saved).then( () => {
+                    all_saved = [];
+                    for(let i=0; i< 99; i++) {
+                        if (i > 97)
+                            all_saved.push(save_interface.save(4, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_2_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 96)
+                            all_saved.push(save_interface.save(4, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_3_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 95)
+                            all_saved.push(save_interface.save(4, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_4_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 94)
+                            all_saved.push(save_interface.save(4, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_5_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 93)
+                            all_saved.push(save_interface.save(4, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_6_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 89)
+                            all_saved.push(save_interface.save(4, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_10_movies, genre: util.fakeGenre()
+                            }));
                         all_saved.push(save_interface.save(4, {
                             movie: util.fakeMovie(), director: saved_director,
                             actor: saved_actor_100_movies, genre: util.fakeGenre()
                         }));
 
-                        q.all(all_saved).then( () => {
-                            all_saved = [];
-                            for(let i=0; i< 99; i++) {
-                                if (i > 97)
-                                    all_saved.push(save_interface.save(4, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_2_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 96)
-                                    all_saved.push(save_interface.save(4, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_3_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 95)
-                                    all_saved.push(save_interface.save(4, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_4_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 94)
-                                    all_saved.push(save_interface.save(4, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_5_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 93)
-                                    all_saved.push(save_interface.save(4, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_6_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 89)
-                                    all_saved.push(save_interface.save(4, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_10_movies, genre: util.fakeGenre()
-                                    }));
-                                all_saved.push(save_interface.save(4, {
-                                    movie: util.fakeMovie(), director: saved_director,
-                                    actor: saved_actor_100_movies, genre: util.fakeGenre()
-                                }));
+                    }
+                    q.all(all_saved).then(() => done())
+                })
 
-                            }
-                            q.all(all_saved).then(() => done())
-                        })
+            });
 
-                    });
+        });
 
-                });
-
-                after('Clear database', function (done) {
-                    mongoose.connection.db.dropDatabase(function () {
-                        done();
-                    })
-                });
-
-                it('Retrieves right top 5 actors', function (done) {
-
-                    // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
-                    // Version 0 model does not have relationships, only embedded documents.
-                    // So we delete the field
-                    delete saved_director.movies;
-
-                    query_interface.top_5_actors_of_a_director(4, saved_director, (err, actors) => {
-                        if(err) throw err;
-
-                        actors.length.should.be.eql(5);
-                        actors[0].id.should.be.eql(''+saved_actor_100_movies.first_name+saved_actor_100_movies.last_name);
-                        actors[1].id.should.be.eql(''+saved_actor_10_movies.first_name+saved_actor_10_movies.last_name);
-                        actors[2].id.should.be.eql(''+saved_actor_6_movies.first_name+saved_actor_6_movies.last_name);
-                        actors[3].id.should.be.eql(''+saved_actor_5_movies.first_name+saved_actor_5_movies.last_name);
-                        actors[4].id.should.be.eql(''+saved_actor_4_movies.first_name+saved_actor_4_movies.last_name);
-                        done();
-                    });
-
-
-                });
+        after('Clear database', function (done) {
+            mongoose.connection.db.dropDatabase(function () {
+                done();
             })
+        });
+
+        it('Retrieves right top 5 actors', function (done) {
+
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
+            // Version 0 model does not have relationships, only embedded documents.
+            // So we delete the field
+            delete saved_director.movies;
+
+            query_interface.top_5_actors_of_a_director(4, saved_director, (err, actors) => {
+                if(err) throw err;
+
+                actors.length.should.be.eql(5);
+                actors[0].id.should.be.eql(''+saved_actor_100_movies.first_name+saved_actor_100_movies.last_name);
+                actors[1].id.should.be.eql(''+saved_actor_10_movies.first_name+saved_actor_10_movies.last_name);
+                actors[2].id.should.be.eql(''+saved_actor_6_movies.first_name+saved_actor_6_movies.last_name);
+                actors[3].id.should.be.eql(''+saved_actor_5_movies.first_name+saved_actor_5_movies.last_name);
+                actors[4].id.should.be.eql(''+saved_actor_4_movies.first_name+saved_actor_4_movies.last_name);
+                done();
+            });
+
+
+        });
+    })
 
 
 
-            describe('Version 5', function () {
+    describe('Version 5', function () {
 
-                var saved_movie_with_1_director;
-                var saved_movie_with_10_director;
-                var saved_movie_with_100_director;
-                var saved_director;
-                var saved_genre;
-                var saved_actor_1_movies;
-                var saved_actor_2_movies;
-                var saved_actor_3_movies;
-                var saved_actor_4_movies;
-                var saved_actor_5_movies;
-                var saved_actor_6_movies;
-                var saved_actor_10_movies;
-                var saved_actor_100_movies;
+        var saved_movie_with_1_director;
+        var saved_movie_with_10_director;
+        var saved_movie_with_100_director;
+        var saved_director;
+        var saved_genre;
+        var saved_actor_1_movies;
+        var saved_actor_2_movies;
+        var saved_actor_3_movies;
+        var saved_actor_4_movies;
+        var saved_actor_5_movies;
+        var saved_actor_6_movies;
+        var saved_actor_10_movies;
+        var saved_actor_100_movies;
 
-                before('Populate database', function (done) {
+        before('Populate database', function (done) {
 
-                    saved_movie_with_1_director = util.fakeMovie();
-                    saved_movie_with_10_director = util.fakeMovie();
-                    saved_movie_with_100_director = util.fakeMovie();
-                    saved_actor_1_movies = util.fakeActor();
-                    saved_actor_2_movies = util.fakeActor();
-                    saved_actor_3_movies = util.fakeActor();
-                    saved_actor_4_movies = util.fakeActor();
-                    saved_actor_5_movies = util.fakeActor();
-                    saved_actor_6_movies = util.fakeActor();
-                    saved_actor_10_movies = util.fakeActor();
-                    saved_actor_100_movies = util.fakeActor();
-
-
-                    saved_director = util.fakeDirector();
-                    saved_genre = util.fakeGenre();
+            saved_movie_with_1_director = util.fakeMovie();
+            saved_movie_with_10_director = util.fakeMovie();
+            saved_movie_with_100_director = util.fakeMovie();
+            saved_actor_1_movies = util.fakeActor();
+            saved_actor_2_movies = util.fakeActor();
+            saved_actor_3_movies = util.fakeActor();
+            saved_actor_4_movies = util.fakeActor();
+            saved_actor_5_movies = util.fakeActor();
+            saved_actor_6_movies = util.fakeActor();
+            saved_actor_10_movies = util.fakeActor();
+            saved_actor_100_movies = util.fakeActor();
 
 
+            saved_director = util.fakeDirector();
+            saved_genre = util.fakeGenre();
 
-                    let all_saved = [];
 
-                    // PER ME È LA CIPOLLA
-                    save_interface.save(5, {
-                        movie: util.fakeMovie(), director: saved_director,
-                        actor: saved_actor_1_movies, genre: util.fakeGenre()
-                    }).then( () => {
 
-                        all_saved.push(save_interface.save(5, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_2_movies, genre: util.fakeGenre()
-                        }));
+            let all_saved = [];
 
-                        all_saved.push(save_interface.save(5, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_3_movies, genre: util.fakeGenre()
-                        }));
+            // PER ME È LA CIPOLLA
+            save_interface.save(5, {
+                movie: util.fakeMovie(), director: saved_director,
+                actor: saved_actor_1_movies, genre: util.fakeGenre()
+            }).then( () => {
 
-                        all_saved.push(save_interface.save(5, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_4_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_2_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(5, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_5_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_3_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(5, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_6_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_4_movies, genre: util.fakeGenre()
+                }));
 
-                        all_saved.push(save_interface.save(5, {
-                            movie: util.fakeMovie(), director: saved_director,
-                            actor: saved_actor_10_movies, genre: util.fakeGenre()
-                        }));
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_5_movies, genre: util.fakeGenre()
+                }));
 
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_6_movies, genre: util.fakeGenre()
+                }));
+
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_10_movies, genre: util.fakeGenre()
+                }));
+
+                all_saved.push(save_interface.save(5, {
+                    movie: util.fakeMovie(), director: saved_director,
+                    actor: saved_actor_100_movies, genre: util.fakeGenre()
+                }));
+
+                q.all(all_saved).then( () => {
+                    all_saved = [];
+                    for(let i=0; i< 99; i++) {
+                        if (i > 97)
+                            all_saved.push(save_interface.save(5, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_2_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 96)
+                            all_saved.push(save_interface.save(5, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_3_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 95)
+                            all_saved.push(save_interface.save(5, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_4_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 94)
+                            all_saved.push(save_interface.save(5, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_5_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 93)
+                            all_saved.push(save_interface.save(5, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_6_movies, genre: util.fakeGenre()
+                            }));
+                        if (i > 89)
+                            all_saved.push(save_interface.save(5, {
+                                movie: util.fakeMovie(), director: saved_director,
+                                actor: saved_actor_10_movies, genre: util.fakeGenre()
+                            }));
                         all_saved.push(save_interface.save(5, {
                             movie: util.fakeMovie(), director: saved_director,
                             actor: saved_actor_100_movies, genre: util.fakeGenre()
                         }));
 
-                        q.all(all_saved).then( () => {
-                            all_saved = [];
-                            for(let i=0; i< 99; i++) {
-                                if (i > 97)
-                                    all_saved.push(save_interface.save(5, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_2_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 96)
-                                    all_saved.push(save_interface.save(5, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_3_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 95)
-                                    all_saved.push(save_interface.save(5, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_4_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 94)
-                                    all_saved.push(save_interface.save(5, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_5_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 93)
-                                    all_saved.push(save_interface.save(5, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_6_movies, genre: util.fakeGenre()
-                                    }));
-                                if (i > 89)
-                                    all_saved.push(save_interface.save(5, {
-                                        movie: util.fakeMovie(), director: saved_director,
-                                        actor: saved_actor_10_movies, genre: util.fakeGenre()
-                                    }));
-                                all_saved.push(save_interface.save(5, {
-                                    movie: util.fakeMovie(), director: saved_director,
-                                    actor: saved_actor_100_movies, genre: util.fakeGenre()
-                                }));
+                    }
+                    q.all(all_saved).then(() => done())
+                })
 
-                            }
-                            q.all(all_saved).then(() => done())
-                        })
+            });
 
-                    });
+        });
 
-                });
-
-                after('Clear database', function (done) {
-                    mongoose.connection.db.dropDatabase(function () {
-                        done();
-                    })
-                });
-
-                it('Retrieves right top 5 actors', function (done) {
-
-                    // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
-                    // Version 0 model does not have relationships, only embedded documents.
-                    // So we delete the field
-                    delete saved_director.movies;
-
-                    query_interface.top_5_actors_of_a_director(5, saved_director, (err, actors) => {
-                        if(err) throw err;
-
-                        actors.length.should.be.eql(5);
-                        actors[0].id.should.be.eql(''+saved_actor_100_movies.first_name+saved_actor_100_movies.last_name);
-                        actors[1].id.should.be.eql(''+saved_actor_10_movies.first_name+saved_actor_10_movies.last_name);
-                        actors[2].id.should.be.eql(''+saved_actor_6_movies.first_name+saved_actor_6_movies.last_name);
-                        actors[3].id.should.be.eql(''+saved_actor_5_movies.first_name+saved_actor_5_movies.last_name);
-                        actors[4].id.should.be.eql(''+saved_actor_4_movies.first_name+saved_actor_4_movies.last_name);
-                        done();
-                    });
-
-
-                });
+        after('Clear database', function (done) {
+            mongoose.connection.db.dropDatabase(function () {
+                done();
             })
+        });
+
+        it('Retrieves right top 5 actors', function (done) {
+
+            // util.fakeDirector() adds 'movies' field to Director object, used for relationships.
+            // Version 0 model does not have relationships, only embedded documents.
+            // So we delete the field
+            delete saved_director.movies;
+
+            query_interface.top_5_actors_of_a_director(5, saved_director, (err, actors) => {
+                if(err) throw err;
+
+                actors.length.should.be.eql(5);
+                actors[0].id.should.be.eql(''+saved_actor_100_movies.first_name+saved_actor_100_movies.last_name);
+                actors[1].id.should.be.eql(''+saved_actor_10_movies.first_name+saved_actor_10_movies.last_name);
+                actors[2].id.should.be.eql(''+saved_actor_6_movies.first_name+saved_actor_6_movies.last_name);
+                actors[3].id.should.be.eql(''+saved_actor_5_movies.first_name+saved_actor_5_movies.last_name);
+                actors[4].id.should.be.eql(''+saved_actor_4_movies.first_name+saved_actor_4_movies.last_name);
+                done();
+            });
+
+
+        });
+    })
 
 
 
@@ -1060,8 +1059,6 @@ describe('Query: Retrieve first 5 actors which acted more times with a certain d
                 done();
             });
 
-
         });
     })
-
-        });
+});
