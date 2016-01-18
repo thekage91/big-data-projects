@@ -60,10 +60,10 @@ var saveM = function(){
         console.log(movieToPost)
         console.log("\n\n");
         
-        /*Movie0.create(movieToPost, function (err, movie) {
+        Movie0.create(movieToPost, function (err, movie) {
             if (err) throw new Error(err);
             console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
-        });*/
+        });
 	});
 }
 
