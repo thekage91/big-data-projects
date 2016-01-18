@@ -35,20 +35,30 @@ var saveM = function(){
     /*
     *  Populet movies with relations
     */
+    
+    console.log("Actors: \n");
+    console.log(local_actors);
+    console.log("\n\n");
+
+  
+
+    /*console.log("Directors: \n");
     console.log(local_directors);
-            console.log("\n\n");
+    console.log("\n\n");*/
 
     this.Movies.forEach(function(elem){
+
+        console.log("Title: " + elem.title );
 
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
 
         movieToPost.genres = filter(elem, local_genres);
         movieToPost.actors = filter(elem, local_actors);
-        //movieToPost.directors = filter(elem, local_directors);
+        movieToPost.directors = filter(elem, local_directors);
 
-        //console.log(movieToPost)
-        //console.log("\n\n");
+        console.log(movieToPost)
+        console.log("\n\n");
         
         /*Movie0.create(movieToPost, function (err, movie) {
             if (err) throw new Error(err);
