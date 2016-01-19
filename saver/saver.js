@@ -23,54 +23,76 @@ var filter = function(element, obj){
     return result;
 }
 
+var filterObj = function(element, obj){
+
+    var result = [];
+
+}
+
+var postSchemaModel = function (SchemaModel, toPost, type) {
+
+    SchemaModel.create(toPost, function (err, movie) {
+            if (err) throw new Error(err);
+            console.log('[DEBUG] Saved in database ' + type + ' with id: ' + toPost._id);
+    });
+}
+
 /* save Movies */
 var saveM = function(){
 
     var Movie0 = mongoose.model('Movie0'), 
-        movieToPost = {},
-        local_genres = this.Genres,
-        local_actors = this.Actors,
-        local_directors = this.Directors;
+        movieToPost = {};
     
     /*
     *  Populet movies with relations
     */
-    
-    console.log("Actors: \n");
-    console.log(local_actors);
-    console.log("\n\n");
-
-  
-
-    /*console.log("Directors: \n");
-    console.log(local_directors);
-    console.log("\n\n");*/
-
     this.Movies.forEach(function(elem){
-
-        console.log("Title: " + elem.title );
 
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
 
-        movieToPost.genres = filter(elem, local_genres);
-        movieToPost.actors = filter(elem, local_actors);
-        movieToPost.directors = filter(elem, local_directors);
+        movieToPost.genres = filter(elem, this.Genres);
+        movieToPost.actors = filter(elem, this.Actors);
+        movieToPost.directors = filter(elem, this.Directors);
 
-        console.log(movieToPost)
-        console.log("\n\n");
-        
-        Movie0.create(movieToPost, function (err, movie) {
+        /*Movie0.create(movieToPost, function (err, movie) {
             if (err) throw new Error(err);
             console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
-        });
+        });*/
 	});
 }
 
 /* save Movies Actors */ 
 var saveMA= function(){
 
-    var Movie0 = mongoose.model('Movie0');  
+    var Movie1 = mongoose.model('Movie1'),
+        Actor1 = mongoose.model('Actor1'),
+        movieToPost = {},
+        actorToPost = {},
+        local_genres = this.Genres,
+        local_directors = this.Directors,
+        actorToPost = {};
+
+    this.Movies.forEach(function(elem){
+
+        movieToPost.title = elem.title;
+        movieToPost.release_date = elem.release_date;
+
+        movieToPost.genres = filter(elem, local_genres);
+        //movieToPost.actors = filterObj(elem, local_actors);
+        movieToPost.directors = filter(elem, this.Directors);
+
+        console.log(movieToPost);
+
+        //postSchemaModel(Movie1, movieToPost, "movie");
+    });
+    
+    for(var key in this.Actors){
+
+        actorToPost.first_name = key;
+
+        //postSchemaModel(Actor1, actorToPost, "actor");
+    }
     
 };
 
@@ -126,5 +148,6 @@ module.exports = {
 	Genres: _genres,
 	getInfo: getInfo,
 
-    saveM: saveM
+    saveM: saveM,
+    saveMA: saveMA
 }

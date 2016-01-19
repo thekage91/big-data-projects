@@ -129,7 +129,6 @@ var parseAndSave= function () {
 
     movieParser.movies.then(function(movies){
 
-        //_movies = movies; 
         Saver.Movies = movies;
 
     }).then(function(){
@@ -152,21 +151,8 @@ var parseAndSave= function () {
 
                 }).then(function(){
 
-                    /*console.log("\n\n Movies")
-                    console.log(Saver.Movies);
-
-                    console.log("\n\n Actors")
-                    console.log(Saver.Actors); 
-
-                    console.log("\n\n Directors")
-                    console.log(Saver.Directors);
-
-                    console.log("\n\n Genres")
-                    console.log(Saver.Genres);*/
-
-                    Saver.saveM();
-
-
+                    //Saver.saveM();
+                    Saver.saveMA();
 
                 });
             })
