@@ -82,14 +82,26 @@ var saveMA= function(){
         //movieToPost.actors = [];
         movieToPost.directors = filter(elem, this.Directors);
 
-        postSchemaModel(Movie1, movieToPost, "movie");
+        //postSchemaModel(Movie1, movieToPost, "movie");
     });
     
     for(var key in this.Actors){
 
         actorToPost.first_name = key;
 
-        postSchemaModel(Actor1, actorToPost, "actor");
+        this.Actors[key].forEach(function(movie_title){
+            
+            var actorMovie = [];
+
+            Movie1.find({ 'title': movie_title }, function(err, result){
+                console.log("[DEBUG] Result: " + result);
+                actorMovie.push(result);
+            });
+        });
+
+        console.log(actorMovie);
+
+        //postSchemaModel(Actor1, actorToPost, "actor");
     }
 
     /* Caricare tutti i movie e attori e costruire i relativi arrivi 
