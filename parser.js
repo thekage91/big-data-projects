@@ -43,7 +43,6 @@ var movieParser = require('./parsers/parser.movies.js'),
      actors = {};
 
 var Saver = require("./saver/saver.js");
-var SaverInterface = require("./models/saver_interface.js");
 
  var callbackSave = function (err) {
     if (err) throw new Error(err);
@@ -152,21 +151,7 @@ var parseAndSave= function () {
 
                 }).then(function(){
 
-                    //Saver.saveM();
-                    //Saver.saveMA();
-                    /*console.log("Movies:");
-                    console.log(Saver.Movies)
-
-                    console.log("Actors:");
-                    console.log(Saver.Actors)
-
-                    console.log("Genres:");
-                    console.log(Saver.Genres)
-
-                    console.log("Directors:");
-                    console.log(Saver.Directors)
-
-                    SaverInterface.save()*/
+                    Saver.saveMA();
 
                 });
             })

@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var fields = {
 	first_name: { type: String },
-    last_name: String,
+    //last_name: String,
     movies : [{ type: Schema.Types.ObjectId, ref: 'Movie2' }]
 };
 

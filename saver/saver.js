@@ -1,6 +1,7 @@
 
 var app = require('../app.js'),
-	mongoose = app.mongoose;
+	mongoose = app.mongoose,
+    SaverInterface = require("../models/save_interface.js");
 
 
 var _movies = [],
@@ -45,9 +46,12 @@ var postSchemaModel = function (SchemaModel, toPost, type) {
 var saveM = function(){
 
     var Movie0 = mongoose.model('Movie0'), 
-        movieToPost = {};
-    var version = 0;
-    var data = {};
+        local_genres = this.Genres,
+        local_directors = this.Directors,
+        local_actors = this.Actors,
+        movieToPost = {},
+        version = 0,
+        data = {};
     
     /*
     *  Populet movies with relations
@@ -57,19 +61,31 @@ var saveM = function(){
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
 
-        movieToPost.genres = filter(elem, this.Genres);
-        movieToPost.actors = filter(elem, this.Actors);
-        movieToPost.directors = filter(elem, this.Directors);
-
-        /*Movie0.create(movieToPost, function (err, movie) {
-            if (err) throw new Error(err);
-            console.log('Saved in database movie with id: ' + movie._id + " and title: " + movie.title);
-        });*/
+        movieToPost.genres = filter(elem, local_genres);
+        movieToPost.actors = filter(elem, local_actors);
+        movieToPost.directors = filter(elem, local_directors);
 
         data.movie = movieToPost;
 
         SaverInterface.save(version, data);
 	});
+}
+
+
+var findActorByFilm = function(movie_title){
+
+    var local_actors = this.Actors,
+        result = [];
+
+    for(var key in local_actors){
+
+        console.log("Movie: " + movie_title + " Actor: " + key);        
+        if(local_actors[key].indexOf(movie_title) !== -1){
+            result.push(key);
+        }
+    }
+
+    return result;
 }
 
 /* 
@@ -78,53 +94,47 @@ var saveM = function(){
 */ 
 var saveMA= function(){
 
-    // movie1 e acotr1 forse da togliere
-    var Movie1 = mongoose.model('Movie1'),
-        Actor1 = mongoose.model('Actor1'),
-        movieToPost = {},
+    var movieToPost = {},
         actorToPost = {},
         local_genres = this.Genres,
         local_directors = this.Directors,
+        local_actors = this.Actors,
         actorToPost = {},
         version = 1,
         data = {};
 
-    this.Movies.forEach(function(elem){
+    data.movie = {};
 
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
+    this.Movies.forEach(function(movie){
 
-        movieToPost.genres = filter(elem, local_genres);
-        movieToPost.directors = filter(elem, local_directors);
-        data.movie = movieToPost;
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
 
-        SaverInterface.save(version, data);
-    });
-    
-    for(var key in this.Actors){
+        movieToPost.genres = filter(movie, local_genres);
+        movieToPost.directors = filter(movie, local_directors);
 
-        actorToPost.first_name = key;
+        for(var key in local_actors){
 
-        /*this.Actors[key].forEach(function(movie_title){
-            
-            var actorMovie = [];
+            data.actor = {};
 
-            Movie1.findOne({ 'title': movie_title }, function(err, result){
+            if(local_actors[key].indexOf(movie.title) !== -1){
+                
+                data.actor.first_name = key;
+                data.movie = movieToPost;
+                console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
+                SaverInterface.save(version, data);
+            }
+        }
 
-                if(result !== null){
-                    console.log("[DEBUG] Result: " + result._id);
-                    actorMovie.push(result._id);
-                }
-            });
+        /*findActorByFilm(movie.title)/*.forEach(function(actor_name){
+
+            data.actor = {};
+            data.actor.first_name = actor_name;
+            data.movie = movieToPost;
+
+            SaverInterface(version, data); 
         });*/
-
-        data.actor = actorToPost;
-        
-        SaverInterface.save(version, data);
-    }
-
-    // http://mongoosejs.com/docs/api.html
-
+    });
 };
 
 /* 
@@ -274,8 +284,7 @@ var saveMGD = function(){
         data.director = directorToPost;
         
         SaverInterface.save(version, data);
-    }  
-    
+    }    
 };
 
 /*

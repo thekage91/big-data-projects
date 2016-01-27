@@ -49,6 +49,7 @@ module.exports = {
         switch (version) {
             case 0:
                 movie_to_save = new Movie0(data.movie);
+                console.log(movie_to_save);
                 movie_to_save.save(function (err, movie) {
                     if (err) result.reject(err);
                     result.resolve(movie);
@@ -67,7 +68,6 @@ module.exports = {
                 });
 
                 Actor1.findOne({
-                    last_name: data.actor.last_name,
                     first_name: data.actor.first_name
                 }, function (err, retrieved_actor) {
                     if (err) result.reject(err);
