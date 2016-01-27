@@ -125,15 +125,6 @@ var saveMA= function(){
                 SaverInterface.save(version, data);
             }
         }
-
-        /*findActorByFilm(movie.title)/*.forEach(function(actor_name){
-
-            data.actor = {};
-            data.actor.first_name = actor_name;
-            data.movie = movieToPost;
-
-            SaverInterface(version, data); 
-        });*/
     });
 };
 
