@@ -1,3 +1,4 @@
+'use strict'
 
 var app = require('../app.js'),
 	mongoose = app.mongoose,
@@ -94,37 +95,44 @@ var findActorByFilm = function(movie_title){
 */ 
 var saveMA= function(){
 
-    var movieToPost = {},
-        actorToPost = {},
+    var actorToPost = {},
         local_genres = this.Genres,
         local_directors = this.Directors,
         local_actors = this.Actors,
         actorToPost = {},
-        version = 1,
-        data = {};
+        version = 1;
+        //data = {};
 
-    data.movie = {};
+    //data.movie = {};
+    //data.actor = {};
 
     this.Movies.forEach(function(movie){
 
+        let movieToPost = {};
+        //let movie_title = movie.title;
         movieToPost.title = movie.title;
         movieToPost.release_date = movie.release_date;
 
         movieToPost.genres = filter(movie, local_genres);
         movieToPost.directors = filter(movie, local_directors);
 
-        for(var key in local_actors){
-
-            data.actor = {};
+        for(let key in local_actors){
 
             if(local_actors[key].indexOf(movie.title) !== -1){
                 
+                let data = {};
+
+                data.actor = {};
+                data.movie = {};
+
                 data.actor.first_name = key;
                 data.movie = movieToPost;
                 console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
                 SaverInterface.save(version, data);
             }
         }
+
+        movie = null;
     });
 };
 
