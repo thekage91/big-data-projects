@@ -54,9 +54,9 @@ module.exports.sameMovie = function () {
         country: 'Italy',
         writers:  'Ciccio Paduccio',
         distributors: 'SONY',
-        genres : [],
+        /*genres : [],
         directors : [],
-        actors : []
+        actors : []*/
     }
 }
 

@@ -35,82 +35,180 @@ var save_interface = require('../../models/save_interface.js'),
 describe('Save interface', function () {
 
     describe('Version 0', function () {
-        afterEach('Clear database', function (done) {
-            mongoose.connection.db.dropDatabase(function (err, ww) {
-                done();
-            })
-        });
 
+        describe('No existing data', function () {
 
-        it('saves one movie', function (done) {
-            var movie_to_save = util.fakeMovie();
-
-            var movie_saved = save_interface.save(0, {movie: movie_to_save});
-
-            movie_saved.then(() => {
-                Movie0.find({title: movie_to_save.title}, function (err, movie) {
-                    movie.should.not.be.null();
-                    movie.should.not.be.empty();
-                    movie.length.should.be.equal(1);
+            afterEach('Clear database', function (done) {
+                mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
             });
 
-        })
 
-        it('saves two movies', function (done) {
-            var movie_to_save_1 = util.fakeMovie();
-            var movie_to_save_2 = util.fakeMovie();
+            it('saves one movie', function (done) {
+                var movie_to_save = util.fakeMovie();
+                var movie_saved = save_interface.save(0, {movie: movie_to_save});
 
-            var movie_saved_1 = save_interface.save(0, {movie: movie_to_save_1});
-            var movie_saved_2 = save_interface.save(0, {movie: movie_to_save_2});
+                movie_saved.then(() => {
+                    Movie0.find({title: movie_to_save.title}, function (err, movie) {
+                        movie.should.not.be.null();
+                        movie.should.not.be.empty();
+                        movie.length.should.be.equal(1);
+                        done();
+                    })
+                });
 
-            var saved_1 = q.defer(), saved_2 = q.defer();
-            var both_saved = q.all([saved_1.promise,saved_2.promise]);
+            })
 
-            movie_saved_1.then(() => {
-                Movie0.find({title: movie_to_save_1.title}, function (err, movie) {
-                    movie.should.not.be.null();
-                    movie.should.not.be.empty();
-                    movie.length.should.be.equal(1);
-                    saved_1.resolve();
+            it('saves two movies', function (done) {
+                var movie_to_save_1 = util.fakeMovie();
+                var movie_to_save_2 = util.fakeMovie();
+
+                var movie_saved_1 = save_interface.save(0, {movie: movie_to_save_1});
+                var movie_saved_2 = save_interface.save(0, {movie: movie_to_save_2});
+
+                var saved_1 = q.defer(), saved_2 = q.defer();
+                var both_saved = q.all([saved_1.promise, saved_2.promise]);
+
+                movie_saved_1.then(() => {
+                    Movie0.find({title: movie_to_save_1.title}, function (err, movie) {
+                        movie.should.not.be.null();
+                        movie.should.not.be.empty();
+                        movie.length.should.be.equal(1);
+                        saved_1.resolve();
+                    })
+                });
+
+                movie_saved_2.then(() => {
+                    Movie0.find({title: movie_to_save_2.title}, function (err, movie) {
+                        movie.should.not.be.null();
+                        movie.should.not.be.empty();
+                        movie.length.should.be.equal(1);
+                        saved_2.resolve();
+                    })
+                });
+
+                both_saved.then(
+                    function () {
+                        done();
+                    },
+                    function () {
+                        throw new AssertionError('Failed saving two movies')
+                    });
+            })
+        });
+
+
+        describe('Overwrite existing data', function () {
+
+            afterEach('Clear database', function (done) {
+                mongoose.connection.db.dropDatabase(function (err, ww) {
+                    done();
                 })
             });
 
-            movie_saved_2.then(() => {
-                Movie0.find({title: movie_to_save_2.title}, function (err, movie) {
-                    movie.should.not.be.null();
-                    movie.should.not.be.empty();
-                    movie.length.should.be.equal(1);
-                    saved_2.resolve();
-                })
+            beforeEach('Save movie',  function (done) {
+                save_interface.save(0, {movie: util.sameMovie()}).then( () => done());
             });
 
-            both_saved.then(
-                function () {done();},
-                function () {throw new AssertionError('Failed saving two movies')});
-        })
 
-        it('does not save missing title', function (done) {
-            var movie_to_save = util.fakeMovie();
-            delete movie_to_save.title;
+            it('Does not create another identical movie', function (done) {
 
-            var movie_saved = save_interface.save(0, {movie: movie_to_save});
+                var movie_to_save = util.sameMovie();
 
-            movie_saved.then(
-                () => { throw new AssertionError('promise should not be resolved')},
-                (err) => { err.should.be.Error(); done();});
-        })
+                var movie_saved = save_interface.save(0, { movie: movie_to_save });
 
-        it('does not save empty title', function (done) {
-            var movie_to_save = util.fakeMovie();
-            movie_to_save.title = "";
+                movie_saved.then(() => {
 
-            var movie_saved = save_interface.save(0, {movie: movie_to_save});
+                    Movie0.find({title: movie_to_save.title}, function (err, movies) {
+                        movies.should.not.be.null();
+                        movies.should.not.be.empty();
+                        movies.length.should.be.equal(1);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
 
-            movie_saved.then(
-                () => { throw new AssertionError('promise should not be resolved')},
-                (err) => { err.should.be.Error(); done();});
+            })
+
+            it('Adds a new actor to existing movie', function (done) {
+
+                var actor_to_save = util.fakeActor();
+
+                var movie_saved = save_interface.save(0, {movie: util.sameMovie(), actor: actor_to_save});
+
+                movie_saved.then(() => {
+                    Movie0.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        console.log(movie)
+                        movie.actors.length.should.be.equal(1);
+                        movie.actors[0].first_name.should.eql(actor_to_save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+
+            it('Adds 2 new actors to existing movie', function (done) {
+
+                var actor_to_save_1 = util.fakeActor();
+                var actor_to_save_2 = util.fakeActor();
+
+                save_interface.save(0, {movie: util.sameMovie(), actor: actor_to_save_1});
+                var movie_saved = save_interface.save(0, {movie: util.sameMovie(), actor: actor_to_save_2});
+
+                movie_saved.then(() => {
+                    Movie0.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        console.log(movie)
+                        movie.actors.length.should.be.equal(2);
+                        //movie.actors[0].first_name.should.eql(actor_to_save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+            it('Adds a new director to existing movie', function (done) {
+
+                var director_to_save = util.fakeDirector();
+
+                var movie_saved = save_interface.save(0, {movie: util.sameMovie(), director: director_to_save});
+
+                movie_saved.then(() => {
+                    Movie0.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.directors.length.should.be.eql(1);
+                        movie.directors[0].first_name.should.eql(director_to_save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+            it('Adds a new genre to existing movie', function (done) {
+
+                var genre_to_save = util.fakeGenre();
+
+                var movie_saved = save_interface.save(0, {movie: util.sameMovie(), genre: genre_to_save});
+
+                movie_saved.then(() => {
+                    Movie0.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.genres.length.should.be.eql(1);
+                        movie.genres[0].name.should.eql(genre_to_save.name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
         })
 
     })
@@ -357,6 +455,41 @@ describe('Save interface', function () {
                 });
             });
 
+           /* it('Adds a new director to existing movie', function (done) {
+
+                var director_to_save = util.fakeDirector();
+
+                var movie_saved = save_interface.save(1, {movie: util.sameMovie(), director: director_to_save});
+
+                movie_saved.then(() => {
+                    Movie1.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.directors.length.should.be.eql(1);
+                        movie.directors[0].first_name.should.eql(director_to_save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });
+
+            it('Adds a new genre to existing movie', function (done) {
+
+                var genre_to_save = util.fakeGenre();
+
+                var movie_saved = save_interface.save(1, {movie: util.sameMovie(), genre: genre_to_save});
+
+                movie_saved.then(() => {
+                    Movie1.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.genres.length.should.be.eql(1);
+                        movie.genres[0].name.should.eql(genre_to_save.name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });*/
         })
 
     });
@@ -791,6 +924,24 @@ describe('Save interface', function () {
                     throw new AssertionError(err)
                 });
             });
+
+           /* it('Adds a new genre to existing movie', function (done) {
+
+                var genre_to_Save = util.fakeGenre();
+
+                var movie_saved = save_interface.save(1, {movie: util.sameMovie(), director: genre_to_Save});
+
+                movie_saved.then(() => {
+                    Movie1.findOne({title: util.sameMovie().title}, function (err, movie) {
+                        movie.directors.length.should.be.eql(1);
+                        movie.directors[0].first_name.should.eql(genre_to_Save.first_name);
+                        done();
+                    })
+                }, (err) => {
+                    throw new AssertionError(err)
+                });
+
+            });*/
 
         })
 

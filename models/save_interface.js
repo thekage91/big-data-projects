@@ -48,12 +48,38 @@ module.exports = {
 
         switch (version) {
             case 0:
-                movie_to_save = new Movie0(data.movie);
-                console.log(movie_to_save);
-                movie_to_save.save(function (err, movie) {
+                Movie0.findOne({title: data.movie.title}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
-                    result.resolve(movie);
+                    if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
+                        movie_to_save.resolve(retrieved_movie)
+                    else {
+                       // console.log('Non trovato ' + data.movie.title);
+                        (new Movie0(data.movie)).save((err, movie) => {
+                            if (err) throw new Error(err);
+
+                            movie_to_save.resolve(movie);
+                        });
+                    }
+
                 });
+
+                movie_to_save.promise.then((movie) => {
+
+                    // Model fields are plural, function argument not.
+                    // In order to update model, we first pluralize field names.
+                    let update = {};
+
+                    if (data.genre) update.genres = data.genre;
+                    if (data.actor) update.actors = data.actor;
+                    if (data.director) update.directors = data.director;
+
+                    Movie0.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                        (err, movie) => {
+                            if (err) throw new Error(err);
+                            result.resolve(movie);
+                        });
+
+                })
                 break;
             case 1:
 
@@ -61,8 +87,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    else (new Movie1(data.movie)).save((err,movie) => {
-                        if(err) throw new Error(err);
+                    else (new Movie1(data.movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -73,36 +99,38 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_actor !== 'undefined' && retrieved_actor)
                         actor_to_save.resolve(retrieved_actor)
-                    else (new Actor1(data.actor)).save((err,actor) => {
-                        if(err) throw new Error(err);
+                    else (new Actor1(data.actor)).save((err, actor) => {
+                        if (err) throw new Error(err);
                         actor_to_save.resolve(actor);
                     });
                 });
 
-                q.all([movie_to_save.promise, actor_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let actor = data[1];
+                q.all([movie_to_save.promise, actor_to_save.promise]).then(function (movie_actor) {
+                    let movie = movie_actor[0];
+                    let actor = movie_actor[1];
 
                     let movie_promise = q.defer();
                     let actor_promise = q.defer();
 
-                    movie.actors = movie.actors || [];
-                    actor.movies = actor.movies || [];
+                    let update = {};
+                    update.actors = actor._id;
 
+                    if (data.genre) update.genres = data.genre;
+                    if (data.director) update.directors = data.director;
 
-                    Movie1.findByIdAndUpdate(movie._id, {$push : { actors: actor._id} }, {new: true},
-                        (err,movie) => {
-                            if(err) throw new Error(err);
+                    Movie1.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                        (err, movie) => {
+                            if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Actor1.findByIdAndUpdate(actor._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,actor) => {
-                            if(err) throw new Error(err);
+                    Actor1.findByIdAndUpdate(actor._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, actor) => {
+                            if (err) throw new Error(err);
                             actor_promise.resolve(actor);
                         });
 
-                    q.all([movie_promise.promise,actor_promise.promise]).then( (mov_act) => {
+                    q.all([movie_promise.promise, actor_promise.promise]).then((mov_act) => {
                         result.resolve(mov_act);
                     });
 
@@ -115,8 +143,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    else (new Movie2(data.movie)).save((err,movie) => {
-                        if(err) throw new Error(err);
+                    else (new Movie2(data.movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -128,8 +156,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_actor !== 'undefined' && retrieved_actor)
                         actor_to_save.resolve(retrieved_actor)
-                    else (new Actor2(data.actor)).save((err,actor) => {
-                        if(err) throw new Error(err);
+                    else (new Actor2(data.actor)).save((err, actor) => {
+                        if (err) throw new Error(err);
                         actor_to_save.resolve(actor);
                     });
                 });
@@ -141,41 +169,47 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_director !== 'undefined' && retrieved_director)
                         director_to_save.resolve(retrieved_director)
-                    else (new Director2(data.director)).save((err,actor) => {
-                        if(err) throw new Error(err);
-                        director_to_save.resolve(actor);
+                    else (new Director2(data.director)).save((err, director) => {
+                        if (err) throw new Error(err);
+                        director_to_save.resolve(director);
                     });
                 });
 
 
-                q.all([movie_to_save.promise, actor_to_save.promise, director_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let actor = data[1];
-                    let director = data[2];
+                q.all([movie_to_save.promise, actor_to_save.promise, director_to_save.promise]).then(function (mov_act_dir) {
+                    let movie = mov_act_dir[0];
+                    let actor = mov_act_dir[1];
+                    let director = mov_act_dir[2];
 
                     let movie_promise = q.defer();
                     let actor_promise = q.defer();
                     let director_promise = q.defer();
 
+                    let update = {};
 
-                    Movie2.findByIdAndUpdate(movie._id, {$push : { actors: actor._id, directors: director._id} }, {new: true},
-                        (err,movie) => {
-                            if(err) throw new Error(err);
+                    update.actors = actor._id;
+                    update.directors = director._id
+
+                    if (data.genre) update.genres = data.genre;
+
+                    Movie2.findByIdAndUpdate(movie._id, {$push: update }, {new: true},
+                        (err, movie) => {
+                            if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Actor2.findByIdAndUpdate(actor._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,actor) => {
-                            if(err) throw new Error(err);
+                    Actor2.findByIdAndUpdate(actor._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, actor) => {
+                            if (err) throw new Error(err);
                             actor_promise.resolve(actor);
                         });
-                    Director2.findByIdAndUpdate(director._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,director) => {
-                            if(err) throw new Error(err);
+                    Director2.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, director) => {
+                            if (err) throw new Error(err);
                             director_promise.resolve(director);
                         });
 
-                    q.all([movie_promise.promise,actor_promise.promise, director_promise.promise]).then( (mov_act_dir) => {
+                    q.all([movie_promise.promise, actor_promise.promise, director_promise.promise]).then((mov_act_dir) => {
                         result.resolve(mov_act_dir);
                     });
 
@@ -187,8 +221,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    else (new Movie3(data.movie)).save((err,movie) => {
-                        if(err) throw new Error(err);
+                    else (new Movie3(data.movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -200,34 +234,40 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_director !== 'undefined' && retrieved_director)
                         director_to_save.resolve(retrieved_director)
-                    else (new Director3(data.director)).save((err,actor) => {
-                        if(err) throw new Error(err);
+                    else (new Director3(data.director)).save((err, actor) => {
+                        if (err) throw new Error(err);
                         director_to_save.resolve(actor);
                     });
                 });
 
 
-                q.all([movie_to_save.promise,director_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let director = data[1];
+                q.all([movie_to_save.promise, director_to_save.promise]).then(function (mov_dir) {
+                    let movie = mov_dir[0];
+                    let director = mov_dir[1];
 
                     let movie_promise = q.defer();
                     let director_promise = q.defer();
 
+                    let update = {};
 
-                    Movie3.findByIdAndUpdate(movie._id, {$push : {directors: director._id} }, {new: true},
-                        (err,movie) => {
-                            if(err) throw new Error(err);
+                    update.directors = director._id
+
+                    if (data.genre) update.genres = data.genre;
+                    if (data.actor) update.actors = data.actor;
+
+                    Movie3.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                        (err, movie) => {
+                            if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Director3.findByIdAndUpdate(director._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,director) => {
-                            if(err) throw new Error(err);
+                    Director3.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, director) => {
+                            if (err) throw new Error(err);
                             director_promise.resolve(director);
                         });
 
-                    q.all([movie_promise.promise, director_promise.promise]).then( (mov_dir) => {
+                    q.all([movie_promise.promise, director_promise.promise]).then((mov_dir) => {
                         result.resolve(mov_dir);
                     });
 
@@ -239,8 +279,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    else (new Movie4(data.movie)).save((err,movie) => {
-                        if(err) throw new Error(err);
+                    else (new Movie4(data.movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -249,34 +289,39 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_genre !== 'undefined' && retrieved_genre)
                         genre_to_save.resolve(retrieved_genre)
-                    else (new Genre4(data.genre)).save((err,genre) => {
-                        if(err) throw new Error(err);
+                    else (new Genre4(data.genre)).save((err, genre) => {
+                        if (err) throw new Error(err);
                         genre_to_save.resolve(genre);
                     });
                 });
 
 
-                q.all([movie_to_save.promise,genre_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let genre = data[1];
+                q.all([movie_to_save.promise, genre_to_save.promise]).then(function (movie_genre) {
+                    let movie = movie_genre[0];
+                    let genre = movie_genre[1];
 
                     let movie_promise = q.defer();
                     let genre_promise = q.defer();
 
+                    let update = {};
+                    update.genres = genre._id;
 
-                    Movie4.findByIdAndUpdate(movie._id, {$push : {genres: genre._id} }, {new: true},
-                        (err,movie) => {
-                            if(err) throw new Error(err);
+                    if (data.director) update.directors = data.director;
+                    if (data.actor) update.actors = data.actor;
+
+                    Movie4.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                        (err, movie) => {
+                            if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Genre4.findByIdAndUpdate(genre._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,genre) => {
-                            if(err) throw new Error(err);
+                    Genre4.findByIdAndUpdate(genre._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, genre) => {
+                            if (err) throw new Error(err);
                             genre_promise.resolve(genre);
                         });
 
-                    q.all([movie_promise.promise, genre_promise.promise]).then( (mov_gen) => {
+                    q.all([movie_promise.promise, genre_promise.promise]).then((mov_gen) => {
                         result.resolve(mov_gen);
                     });
 
@@ -289,8 +334,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    else (new Movie5(data.movie)).save((err,movie) => {
-                        if(err) throw new Error(err);
+                    else (new Movie5(data.movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -299,8 +344,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_genre !== 'undefined' && retrieved_genre)
                         genre_to_save.resolve(retrieved_genre)
-                    else (new Genre5(data.genre)).save((err,genre) => {
-                        if(err) throw new Error(err);
+                    else (new Genre5(data.genre)).save((err, genre) => {
+                        if (err) throw new Error(err);
                         genre_to_save.resolve(genre);
                     });
                 });
@@ -312,41 +357,49 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_director !== 'undefined' && retrieved_director)
                         director_to_save.resolve(retrieved_director)
-                    else (new Director5(data.director)).save((err,genre) => {
-                        if(err) throw new Error(err);
+                    else (new Director5(data.director)).save((err, genre) => {
+                        if (err) throw new Error(err);
                         director_to_save.resolve(genre);
                     });
                 });
 
 
-                q.all([movie_to_save.promise, genre_to_save.promise, director_to_save.promise]).then(function (data) {
-                    let movie = data[0];
-                    let genre = data[1];
-                    let director = data[2];
+                q.all([movie_to_save.promise, genre_to_save.promise, director_to_save.promise]).then(function (movie_genre_director) {
+                    let movie = movie_genre_director[0];
+                    let genre = movie_genre_director[1];
+                    let director = movie_genre_director[2];
 
                     let movie_promise = q.defer();
                     let genre_promise = q.defer();
                     let director_promise = q.defer();
 
 
-                    Movie5.findByIdAndUpdate(movie._id, {$push : { genres: genre._id, directors: director._id} }, {new: true},
-                        (err,movie) => {
-                            if(err) throw new Error(err);
+                    let update = {};
+                    update.genres = genre._id;
+                    update.directors =  director._id;
+
+                    if (data.actor) update.actors = data.actor;
+
+                    Movie5.findByIdAndUpdate(movie._id, {
+                            $push: update
+                        }, {new: true},
+                        (err, movie) => {
+                            if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Genre5.findByIdAndUpdate(genre._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,genre) => {
-                            if(err) throw new Error(err);
+                    Genre5.findByIdAndUpdate(genre._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, genre) => {
+                            if (err) throw new Error(err);
                             genre_promise.resolve(genre);
                         });
-                    Director5.findByIdAndUpdate(director._id, {$push : { movies: movie._id} }, {new: true},
-                        (err,director) => {
-                            if(err) throw new Error(err);
+                    Director5.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                        (err, director) => {
+                            if (err) throw new Error(err);
                             director_promise.resolve(director);
                         });
 
-                    q.all([movie_promise.promise,genre_promise.promise, director_promise.promise]).then( (mov_gen_dir) => {
+                    q.all([movie_promise.promise, genre_promise.promise, director_promise.promise]).then((mov_gen_dir) => {
                         result.resolve(mov_gen_dir);
                     });
 
@@ -358,8 +411,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
                         movie_to_save.resolve(retrieved_movie)
-                    else (new Movie6(data.movie)).save((err,movie) => {
-                        if(err) throw new Error(err);
+                    else (new Movie6(data.movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
                         movie_to_save.resolve(movie);
                     });
                 });
@@ -368,8 +421,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_genre !== 'undefined' && retrieved_genre)
                         genre_to_save.resolve(retrieved_genre)
-                    else (new Genre6(data.genre)).save((err,genre) => {
-                        if(err) throw new Error(err);
+                    else (new Genre6(data.genre)).save((err, genre) => {
+                        if (err) throw new Error(err);
                         genre_to_save.resolve(genre);
                     });
                 });
@@ -381,8 +434,8 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_director !== 'undefined' && retrieved_director)
                         director_to_save.resolve(retrieved_director)
-                    else (new Director6(data.director)).save((err,director) => {
-                        if(err) throw new Error(err);
+                    else (new Director6(data.director)).save((err, director) => {
+                        if (err) throw new Error(err);
                         director_to_save.resolve(director);
                     });
                 });
@@ -394,14 +447,14 @@ module.exports = {
                     if (err) result.reject(err);
                     if (typeof retrieved_actor !== 'undefined' && retrieved_actor)
                         actor_to_save.resolve(retrieved_actor)
-                    else (new Actor6(data.actor)).save((err,actor) => {
-                        if(err) throw new Error(err);
+                    else (new Actor6(data.actor)).save((err, actor) => {
+                        if (err) throw new Error(err);
                         actor_to_save.resolve(actor);
                     });
                 });
 
 
-                q.all([movie_to_save.promise, genre_to_save.promise, director_to_save.promise,actor_to_save.promise])
+                q.all([movie_to_save.promise, genre_to_save.promise, director_to_save.promise, actor_to_save.promise])
                     .then(function (data) {
                         let movie = data[0];
                         let genre = data[1];
@@ -413,32 +466,37 @@ module.exports = {
                         let director_promise = q.defer();
                         let actor_promise = q.defer();
 
-
-                        Movie6.findByIdAndUpdate(movie._id, {$push : { genres: genre._id, directors: director._id, actors: actor._id} }, {new: true},
-                            (err,movie) => {
-                                if(err) throw new Error(err);
+                        Movie6.findByIdAndUpdate(movie._id, {
+                                $push: {
+                                    genres: genre._id,
+                                    directors: director._id,
+                                    actors: actor._id
+                                }
+                            }, {new: true},
+                            (err, movie) => {
+                                if (err) throw new Error(err);
                                 movie_promise.resolve(movie);
                             });
 
-                        Genre6.findByIdAndUpdate(genre._id, {$push : { movies: movie._id} }, {new: true},
-                            (err,genre) => {
-                                if(err) throw new Error(err);
+                        Genre6.findByIdAndUpdate(genre._id, {$push: {movies: movie._id}}, {new: true},
+                            (err, genre) => {
+                                if (err) throw new Error(err);
                                 genre_promise.resolve(genre);
                             });
-                        Director6.findByIdAndUpdate(director._id, {$push : { movies: movie._id} }, {new: true},
-                            (err,director) => {
-                                if(err) throw new Error(err);
+                        Director6.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                            (err, director) => {
+                                if (err) throw new Error(err);
                                 director_promise.resolve(director);
                             });
 
-                        Actor6.findByIdAndUpdate(actor._id, {$push : { movies: movie._id} }, {new: true},
-                            (err,actor) => {
-                                if(err) throw new Error(err);
+                        Actor6.findByIdAndUpdate(actor._id, {$push: {movies: movie._id}}, {new: true},
+                            (err, actor) => {
+                                if (err) throw new Error(err);
                                 actor_promise.resolve(actor);
                             });
 
 
-                        q.all([movie_promise.promise,genre_promise.promise, director_promise.promise, actor_promise.promise]).then( (mov_gen_dir_act) => {
+                        q.all([movie_promise.promise, genre_promise.promise, director_promise.promise, actor_promise.promise]).then((mov_gen_dir_act) => {
                             result.resolve(mov_gen_dir_act);
                         });
 
