@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 var directorSchema = new Schema(fields, {_id: false});
 */
 var fields = {
-	title: { type: String ,unique: true,trim: true, required: true},
+	title: { type: String, trim: true, required: true},
 	release_date: { type: String },
 	writer: { type: String },
 	stars: { type: String },

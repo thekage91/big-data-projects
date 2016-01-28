@@ -9,7 +9,7 @@ var _movies = [],
 	_directors = {},
 	_genres = {};
 
-var filter = function(element, obj){
+var filter = function(element, obj, parameter){
 
     var result = [];
 
@@ -17,7 +17,10 @@ var filter = function(element, obj){
 
         if(obj[key].indexOf(element.title) !== -1){
 
-            result.push(key);
+            var data = {};
+            data[parameter] = key;
+
+            result.push(data);
         }
     }
 
@@ -61,9 +64,9 @@ var saveM = function(){
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
 
-        movieToPost.genres = filter(elem, local_genres);
-        movieToPost.actors = filter(elem, local_actors);
-        movieToPost.directors = filter(elem, local_directors);
+        movieToPost.genres = filter(elem, local_genres, "name");
+        movieToPost.actors = filter(elem, local_actors, "first_name");
+        movieToPost.directors = filter(elem, local_directors, "first_name");
 
         data.movie = movieToPost;
 
@@ -121,7 +124,8 @@ var saveMA= function(){
                 
                 data.actor.first_name = key;
                 data.movie = movieToPost;
-                console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
+                //console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
+                console.log(data);
                 SaverInterface.save(version, data);
             }
         }

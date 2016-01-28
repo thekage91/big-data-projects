@@ -151,7 +151,7 @@ var parseAndSave= function () {
 
                 }).then(function(){
 
-                    Saver.saveMA();
+                    Saver.saveM();
 
                 });
             })

@@ -253,8 +253,7 @@ describe('Save interface', function () {
 
                 movie_saved.then(() => {
                     Actor1.find({
-                        first_name: actor_to_save.first_name,
-                        last_name: actor_to_save.last_name
+                        first_name: actor_to_save.first_name
                     }, function (err, actor) {
                         actor.should.not.be.null();
                         actor.should.not.be.empty();
