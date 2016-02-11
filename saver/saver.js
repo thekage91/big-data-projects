@@ -2,7 +2,8 @@
 
 var app = require('../app.js'),
 	mongoose = app.mongoose,
-    SaverInterface = require("../models/save_interface.js");
+    SaverInterface = require("../models/save_interface.js"),
+    q = require('q');
 
 
 var _movies = [],
@@ -116,6 +117,11 @@ var saveMA= function(){
         movieToPost.genres = filter(movie, local_genres);
         movieToPost.directors = filter(movie, local_directors);
 
+        /*
+        SaverInterface.save(version, {}).then(function(){
+            console.log("ciao")
+        });*/
+        
         for(let key in local_actors){
 
             if(local_actors[key].indexOf(movie.title) !== -1){

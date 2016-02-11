@@ -57,6 +57,11 @@ module.exports = {
                 break;
             case 1:
 
+                if(data === {}){
+
+                    return;
+                }
+
                 Movie1.findOne({title: data.movie.title}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
