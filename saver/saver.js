@@ -90,6 +90,22 @@ var findActorByFilm = function(movie_title){
     return result;
 }
 
+var saveSync = function(data, vesion){
+
+    if(data.length == 0){
+        return;
+    }
+
+    var post = data.shift();
+
+    SaverInterface.save(version, post).then(function(value){
+        
+        console.log(value)
+        saveSync(data, version);
+    });
+
+}
+
 /* 
 * save Movies Actors 
 * version 1
@@ -101,7 +117,8 @@ var saveMA= function(){
         local_directors = this.Directors,
         local_actors = this.Actors,
         actorToPost = {},
-        version = 1;
+        version = 1,
+        dataToPost = [];
         //data = {};
 
     //data.movie = {};
@@ -121,7 +138,7 @@ var saveMA= function(){
         SaverInterface.save(version, {}).then(function(){
             console.log("ciao")
         });*/
-        
+
         for(let key in local_actors){
 
             if(local_actors[key].indexOf(movie.title) !== -1){
@@ -133,13 +150,15 @@ var saveMA= function(){
 
                 data.actor.first_name = key;
                 data.movie = movieToPost;
-                console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
-                SaverInterface.save(version, data);
+                dataToPost.push(data);
             }
         }
 
         movie = null;
     });
+
+    saveSync(dataToPost, version);
+    
 };
 
 /* 
