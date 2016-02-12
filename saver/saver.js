@@ -92,15 +92,15 @@ var findActorByFilm = function(movie_title){
 
 var saveSync = function(data, vesion){
 
+    var post = data.shift();
+    console.log(data)
+    
     if(data.length == 0){
         return;
     }
 
-    var post = data.shift();
-
-    SaverInterface.save(version, post).then(function(value){
+    SaverInterface.save(version, post).then(function(){
         
-        console.log(value)
         saveSync(data, version);
     });
 
@@ -157,6 +157,7 @@ var saveMA= function(){
         movie = null;
     });
 
+    console.log(dataToPost)
     saveSync(dataToPost, version);
     
 };
