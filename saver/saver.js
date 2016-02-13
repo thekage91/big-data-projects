@@ -108,11 +108,9 @@ var saveSync = function(data, version){
 */ 
 var saveMA= function(){
 
-    var actorToPost = {},
-        local_genres = this.Genres,
+    var local_genres = this.Genres,
         local_directors = this.Directors,
         local_actors = this.Actors,
-        actorToPost = {},
         version = 1,
         dataToPost = [];
         //data = {};
@@ -155,38 +153,54 @@ var saveMA= function(){
 var saveMAD = function(){
 
     var local_genres = this.Genres,
-        data = {},
+        local_directors = this.Directors,
+        local_actors = this.Actors,
         version = 2,
-        movieToPost = {},
-        actorToPost = {},
-        directorToPost = {};
+        dataToPost = [];
 
-    this.Movies.forEach(function(elem){
+    console.log("[DEBUG] Start save version 2")
 
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-        movieToPost.genres = local_genres;
+    this.Movies.forEach(function(movie){
 
-        data.movie = movieToPost;
+        let movieToPost = {};
 
-        SaverInterface.save(version, data);
-    });     
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
+        movieToPost.genres = filter(movie, local_genres);
 
-    for(var key in this.Actors){
+        for(let key in local_actors){
 
-        actorToPost.first_name = key;
-        data.actor = actorToPost;
-        
-        SaverInterface.save(version, data);
-    }
+            if(local_actors[key].indexOf(movie.title) !== -1){
+                
+                let actorToPost = {};
 
-    for(var key in this.Directors){
+                actorToPost.first_name = key;
 
-        directorToPost.first_name = key;
-        data.director = directorToPost;
-        
-        SaverInterface.save(version, data);
-    }
+                for(let key in local_directors){
+                    
+                    if(local_directors[key].indexOf(movie.title) !== -1){
+                        
+                        let data = {};
+                        console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
+                        data.director = {};
+
+                        data.director.first_name = key;
+                        data.actor = actorToPost;
+                        data.movie = movieToPost;
+
+                        dataToPost.push(data);
+                    }
+                }
+            }
+        }
+
+        movie = null;
+        //dataToPost.push(data);
+    });
+
+    console.log(dataToPost);
+
+    saveSync(dataToPost, version);  
 };
 
 /*
@@ -364,5 +378,6 @@ module.exports = {
 	getInfo: getInfo,
 
     saveM: saveM,
-    saveMA: saveMA
+    saveMA: saveMA,
+    saveMAD: saveMAD
 }
