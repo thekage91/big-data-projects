@@ -90,41 +90,16 @@ var findActorByFilm = function(movie_title){
     return result;
 }
 
-var saveSync = function(data, vesion, flag){
+var saveSync = function(data, version){
     
-    /*if(data.length == 0){
+    if(data.length == 0){
         return;
     }
 
-    if(flag){
-
-        var post = data.shift();
-        console.log(data)
-
-        SaverInterface.save(version, post).then(function(){
+    SaverInterface.save(version, data.shift()).then(function(response){
         
-            saveSync(data, version, true);
-        });    
-    }
-    
-    saveSync(data, version, false);*/
-
-    do{
-
-        if(flag){
-            var post = data.shift();
-
-            console.log(data)
-            flag = false;
-            SaverInterface.save(version, post).then(function(){
-            
-                //saveSync(data, version, true);
-                console.log("Save")
-                flag = true;
-            }); 
-        }
-
-    }while(data.length !== 0);
+        saveSync(data, version);
+    });   
 }
 
 /* 
@@ -142,9 +117,6 @@ var saveMA= function(){
         dataToPost = [];
         //data = {};
 
-    //data.movie = {};
-    //data.actor = {};
-
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -154,11 +126,6 @@ var saveMA= function(){
 
         movieToPost.genres = filter(movie, local_genres);
         movieToPost.directors = filter(movie, local_directors);
-
-        /*
-        SaverInterface.save(version, {}).then(function(){
-            console.log("ciao")
-        });*/
 
         for(let key in local_actors){
 
@@ -178,9 +145,7 @@ var saveMA= function(){
         movie = null;
     });
 
-    //console.log(dataToPost)
-    saveSync(dataToPost, version, true);
-    
+    saveSync(dataToPost, version);    
 };
 
 /* 
