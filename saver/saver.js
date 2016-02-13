@@ -90,20 +90,41 @@ var findActorByFilm = function(movie_title){
     return result;
 }
 
-var saveSync = function(data, vesion){
-
-    var post = data.shift();
-    console.log(data)
+var saveSync = function(data, vesion, flag){
     
-    if(data.length == 0){
+    /*if(data.length == 0){
         return;
     }
 
-    SaverInterface.save(version, post).then(function(){
-        
-        saveSync(data, version);
-    });
+    if(flag){
 
+        var post = data.shift();
+        console.log(data)
+
+        SaverInterface.save(version, post).then(function(){
+        
+            saveSync(data, version, true);
+        });    
+    }
+    
+    saveSync(data, version, false);*/
+
+    do{
+
+        if(flag){
+            var post = data.shift();
+
+            console.log(data)
+            flag = false;
+            SaverInterface.save(version, post).then(function(){
+            
+                //saveSync(data, version, true);
+                console.log("Save")
+                flag = true;
+            }); 
+        }
+
+    }while(data.length !== 0);
 }
 
 /* 
@@ -157,8 +178,8 @@ var saveMA= function(){
         movie = null;
     });
 
-    console.log(dataToPost)
-    saveSync(dataToPost, version);
+    //console.log(dataToPost)
+    saveSync(dataToPost, version, true);
     
 };
 
