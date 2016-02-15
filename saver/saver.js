@@ -95,7 +95,8 @@ var saveSync = function(data, version){
     if(data.length == 0){
         return;
     }
-
+    
+    console.log("movie: " + data[0].movie.title + " actor: " + data[0].actor.first_name + " director: " + data[0].director.first_name);
     SaverInterface.save(version, data.shift()).then(function(response){
         
         saveSync(data, version);
@@ -181,7 +182,7 @@ var saveMAD = function(){
                     if(local_directors[key].indexOf(movie.title) !== -1){
                         
                         let data = {};
-                        console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
+                        //console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
                         data.director = {};
 
                         data.director.first_name = key;
@@ -198,7 +199,7 @@ var saveMAD = function(){
         //dataToPost.push(data);
     });
 
-    console.log(dataToPost);
+    //console.log(dataToPost);
 
     saveSync(dataToPost, version);  
 };
