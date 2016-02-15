@@ -26,19 +26,32 @@ var filter = function(element, obj){
     return result;
 }
 
-var filterObj = function(element, obj){
-
-    var result = [];
-
+var saveSync = function(data, version){
+    
+    if(data.length == 0){
+        return;
+    }
+    
+    SaverInterface.save(version, data.shift()).then(function(response){
+        
+        saveSync(data, version);
+    });   
 }
 
-/* example: postSchemaModel(Movie1, movieToPost, "movie"); */
-var postSchemaModel = function (SchemaModel, toPost, type) {
+var findActorByFilm = function(movie_title){
 
-    SchemaModel.create(toPost, function (err, elem) {
-            if (err) throw new Error(err);
-            console.log('[DEBUG] Saved in database ' + type + ' with id: ' + elem._id);
-    });
+    var local_actors = this.Actors,
+        result = [];
+
+    for(var key in local_actors){
+
+        console.log("Movie: " + movie_title + " Actor: " + key);        
+        if(local_actors[key].indexOf(movie_title) !== -1){
+            result.push(key);
+        }
+    }
+
+    return result;
 }
 
 /* 
@@ -71,36 +84,6 @@ var saveM = function(){
 
         SaverInterface.save(version, data);
 	});
-}
-
-
-var findActorByFilm = function(movie_title){
-
-    var local_actors = this.Actors,
-        result = [];
-
-    for(var key in local_actors){
-
-        console.log("Movie: " + movie_title + " Actor: " + key);        
-        if(local_actors[key].indexOf(movie_title) !== -1){
-            result.push(key);
-        }
-    }
-
-    return result;
-}
-
-var saveSync = function(data, version){
-    
-    if(data.length == 0){
-        return;
-    }
-    
-    console.log("movie: " + data[0].movie.title + " actor: " + data[0].actor.first_name + " director: " + data[0].director.first_name);
-    SaverInterface.save(version, data.shift()).then(function(response){
-        
-        saveSync(data, version);
-    });   
 }
 
 /* 
@@ -293,39 +276,49 @@ var saveMG = function(){
 */ 
 var saveMGD = function(){
 
-    var local_actors = this.Actors,
-        data = {},
+    var local_genres = this.Genres,
+        local_directors = this.Directors,
+        local_actors = this.Actors,
         version = 5,
-        movieToPost = {},
-        genreToPost = {},
-        directorToPost = {};
+        dataToPost = [];
 
-    this.Movies.forEach(function(elem){
+    this.Movies.forEach(function(movie){
 
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-        movieToPost.actors = local_actors;
-        movieToPost.directors = local_directors;
-        data.movie = movieToPost;
+        let movieToPost = {};
 
-        SaverInterface.save(version, data);
-    });  
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
+        movieToPost.actors = filter(movie, local_actors);
 
-    for(var key in this.Genres){
+        for(let key in local_genres){
 
-        genresToPost.name = key;
-        data.genre = genreToPost;
-        
-        SaverInterface.save(version, data);
-    }  
+            if(local_genres[key].indexOf(movie.title) !== -1){
+                
+                let genreToPost = {};
 
-    for(var key in this.Directors){
+                genreToPost.name = key;
 
-        directorToPost.first_name = key;
-        data.director = directorToPost;
-        
-        SaverInterface.save(version, data);
-    }    
+                for(let key in local_directors){
+                    
+                    if(local_directors[key].indexOf(movie.title) !== -1){
+                        
+                        let data = {};
+                        data.director = {};
+
+                        data.director.first_name = key;
+                        data.genre = genreToPost;
+                        data.movie = movieToPost;
+
+                        dataToPost.push(data);
+                    }
+                }
+            }
+        }
+
+        movie = null;
+    });
+
+    saveSync(dataToPost, version);  
 };
 
 /*
@@ -397,5 +390,6 @@ module.exports = {
     saveMA: saveMA,
     saveMAD: saveMAD,
     saveMD: saveMD,
-    saveMG: saveMG
+    saveMG: saveMG,
+    saveMGD: saveMGD
 }
