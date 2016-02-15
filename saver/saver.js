@@ -237,6 +237,7 @@ var saveMD = function(){
         SaverInterface.save(version, data);
     }   */
 
+    console.log("EFefew")
     var local_genres = this.Genres,
     local_directors = this.Directors,
     local_actors = this.Actors,
@@ -265,14 +266,12 @@ var saveMD = function(){
 
                 data.director.first_name = key;
                 data.movie = movieToPost;
-                dataToPost.push(data);
+                SaverInterface.save(version, data);
             }
         }
 
         movie = null;
     });
-
-    saveSync(dataToPost, version);    
 };
 
 /* 
