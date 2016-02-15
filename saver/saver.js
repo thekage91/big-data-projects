@@ -209,35 +209,7 @@ var saveMAD = function(){
 * version 3
 */ 
 var saveMD = function(){
-
-   /* var local_genres = this.Genres,
-        local_actors = this.Actors,
-        data = {},
-        version = 3,
-        movieToPost = {},
-        directorToPost = {};
-
-    this.Movies.forEach(function(elem){
-
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-        movieToPost.genres = local_genres;
-        movieToPost.actors = local_actors;
-
-        data.movie = movieToPost;
-
-        SaverInterface.save(version, data);
-    });  
-
-    for(var key in this.Directors){
-
-        directorToPost.first_name = key;
-        data.director = directorToPost;
-        
-        SaverInterface.save(version, data);
-    }   */
-
-    console.log("EFefew")
+ 
     var local_genres = this.Genres,
     local_directors = this.Directors,
     local_actors = this.Actors,
@@ -280,32 +252,39 @@ var saveMD = function(){
 */ 
 var saveMG = function(){
 
-    var local_actors = this.Actors,
-        local_directors = this.Directors,
-        data = {},
-        version = 4,
-        movieToPost = {},
-        genreToPost = {};
+    var local_genres = this.Genres,
+    local_directors = this.Directors,
+    local_actors = this.Actors,
+    version = 4;
+    //data = {};
 
-    this.Movies.forEach(function(elem){
+    this.Movies.forEach(function(movie){
 
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-        movieToPost.actors = local_actors;
-        movieToPost.directors = local_directors;
+        let movieToPost = {};
+        //let movie_title = movie.title;
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
 
-        data.movie = movieToPost;
+        movieToPost.directors = filter(movie, local_directors);
+        movieToPost.actors = filter(movie, local_actors);
 
-        SaverInterface.save(version, data);
-    });  
+        for(let key in local_genres){
 
-    for(var key in this.Genres){
+            if(local_genres[key].indexOf(movie.title) !== -1){
+                
+                let data = {};
 
-        genresToPost.name = key;
-        data.genre = genreToPost;
-        
-        SaverInterface.save(version, data);
-    }  
+                data.genre = {};
+                data.movie = {};
+
+                data.genre.name = key;
+                data.movie = movieToPost;
+                SaverInterface.save(version, data);
+            }
+        }
+
+        movie = null;
+    });
 };
 
 /* 
@@ -326,7 +305,7 @@ var saveMGD = function(){
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
         movieToPost.actors = local_actors;
-
+        movieToPost.directors = local_directors;
         data.movie = movieToPost;
 
         SaverInterface.save(version, data);
@@ -417,5 +396,6 @@ module.exports = {
     saveM: saveM,
     saveMA: saveMA,
     saveMAD: saveMAD,
-    saveMD: saveMD
+    saveMD: saveMD,
+    saveMG: saveMG
 }

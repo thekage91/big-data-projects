@@ -152,7 +152,7 @@ var parseAndSave= function () {
                 }).then(function(){
 
                     console.log(Saver.Movies);
-                    Saver.saveMD();
+                    Saver.saveMG();
 
                 });
             })
