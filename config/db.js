@@ -22,7 +22,7 @@ var uristring =  "mongodb://" + login + config.host + port + "/" + config.db;
 var mongoOptions = { db: { safe: true } };
 
 // Connect to Database
-mongoose.connect(uristring, mongoOptions, function (err, res) {
+var connection_2_db = mongoose.connect(uristring, mongoOptions, function (err, res) {
   if(err){
     console.log('ERROR connecting to: ' + uristring + '. ' + err);
   }else{
@@ -30,5 +30,16 @@ mongoose.connect(uristring, mongoOptions, function (err, res) {
   }
 });
 
+/*
+connection_2_db.db.dropDatabase();
+
+mongoose.connect(uristring, mongoOptions, function (err, res) {
+  if(err){
+    console.log('ERROR connecting to: ' + uristring + '. ' + err);
+  }else{
+    console.log('Successfully connected to: ' + uristring);
+  }
+});
+*/
 
 exports.mongoose = mongoose;

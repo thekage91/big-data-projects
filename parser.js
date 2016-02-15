@@ -151,9 +151,13 @@ var parseAndSave= function () {
 
                 }).then(function(){
 
-                    console.log(Saver.Movies);
+                    Saver.saveM();
+                    Saver.saveMA();
+                    Saver.saveMAD();
+                    Saver.saveMD();
+                    Saver.saveMG();
+                    Saver.saveMGD();
                     Saver.saveMGDA();
-
                 });
             })
         });

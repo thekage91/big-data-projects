@@ -21,15 +21,9 @@ var fields = {
 	country: { type: String },
 	writers: { type: String },
 	distributors: { type: String },
-    genres : [{
-        name: { type: String}}],
-    actors : [{
-        first_name:String ,
-        last_name: String }],
-    directors : [{
-        first_name:String ,
-        last_name: String
-    }]
+    genres : [{ type: String }],
+    actors : [{ type: String }],
+    directors : [{ type: String }]
 };
 
 var movieSchema = new Schema(fields);
