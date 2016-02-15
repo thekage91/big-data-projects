@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var fields = {
 	title: { type: String ,trim: true},
-	release_date: { type: Date , default: Date.now },
+	release_date: { type: String },
 	writer: { type: String },
 	stars: { type: String },
 	ratings: { type: String },

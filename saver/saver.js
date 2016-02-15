@@ -327,7 +327,7 @@ var saveMGD = function(){
 */ 
 var saveMGDA = function(){
 
-    var data = {},
+    /*var data = {},
         version = 6,
         movieToPost = {},
         genreToPost = {},
@@ -366,7 +366,62 @@ var saveMGDA = function(){
         data.actor = actorToPost;
         
         SaverInterface.save(version, data);
-    }  
+    } */
+
+     var local_genres = this.Genres,
+        local_directors = this.Directors,
+        local_actors = this.Actors,
+        version = 6,
+        dataToPost = [];
+
+    this.Movies.forEach(function(movie){
+
+        let movieToPost = {};
+
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
+
+        for(let key in local_actors){
+
+            if(local_actors[key].indexOf(movie.title) !== -1){
+
+                let actorToPost = {};
+
+                actorToPost.first_name = key;
+
+                 for(let key in local_genres){
+
+                    if(local_genres[key].indexOf(movie.title) !== -1){
+                        
+                        let genreToPost = {};
+
+                        genreToPost.name = key;
+
+                        for(let key in local_directors){
+                            
+                            if(local_directors[key].indexOf(movie.title) !== -1){
+                                
+                                let data = {};
+                                data.director = {};
+
+                                data.director.first_name = key;
+                                data.genre = genreToPost;
+                                data.actor = actorToPost;
+                                data.movie = movieToPost;
+
+                                console.log("[DEBUG] Movie: " + data.movie.title + " Genre: " + data.genre.name + " Actor: " + data.actor.first_name + " Director: " + data.director.first_name)
+                                dataToPost.push(data);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        movie = null;
+    });
+
+    saveSync(dataToPost, version);  
 };
 
 var getInfo = function(){
@@ -391,5 +446,6 @@ module.exports = {
     saveMAD: saveMAD,
     saveMD: saveMD,
     saveMG: saveMG,
-    saveMGD: saveMGD
+    saveMGD: saveMGD,
+    saveMGDA: saveMGDA
 }
