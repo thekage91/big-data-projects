@@ -498,11 +498,11 @@ describe('Save interface', function () {
 
         describe('No existing data', function () {
 
-            afterEach('Clear database', function (done) {
+           /* afterEach('Clear database', function (done) {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
-            });
+            });*/
 
 
             it('Saves one movie', function (done) {
@@ -565,7 +565,7 @@ describe('Save interface', function () {
                         first_name: director_to_save.first_name,
                         last_name: director_to_save.last_name
                     }, function (err, director) {
-                        if(err) throw err;
+                        if (err) throw err;
                         director.should.not.be.empty();
                         director.length.should.be.equal(1);
                         done();
@@ -649,7 +649,6 @@ describe('Save interface', function () {
                 });
             });
 
-
             it('Saves the correct director -> movie association', function (done) {
 
                 var movie_to_save = util.fakeMovie();
@@ -675,6 +674,34 @@ describe('Save interface', function () {
                 });
 
             });
+
+            it('Saves the correct movie without duplicating IDs', function (done) {
+
+                var movie_to_save = util.fakeMovie();
+                var actor_to_save = util.fakeActor();
+                var director_to_save = util.fakeDirector();
+                var director_to_save_2 = util.fakeDirector();
+
+
+                (save_interface.save(2,
+                    {movie: movie_to_save, actor: actor_to_save, director: director_to_save})).then( () =>{
+                    (save_interface.save(2,
+                        {movie: movie_to_save, actor: actor_to_save, director: director_to_save_2})).then ( () => {
+
+                        Movie2.findOne({title: movie_to_save.title}, function (err, movie) {
+                            if(err) throw err;
+                            console.log(movie);
+                            movie.actors.length.should.be.equal(1);
+                            movie.directors.length.should.be.equal(2);
+                            done();
+                        })
+                    }, (err) => {
+                        throw new AssertionError(err)
+                    });
+
+                    });
+                } );
+
         });
 
 
