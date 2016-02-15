@@ -1,7 +1,9 @@
+'use strict'
 
 var app = require('../app.js'),
 	mongoose = app.mongoose,
-    SaverInterface = require("../models/save_interface.js");
+    SaverInterface = require("../models/save_interface.js"),
+    q = require('q');
 
 
 var _movies = [],
@@ -9,7 +11,7 @@ var _movies = [],
 	_directors = {},
 	_genres = {};
 
-var filter = function(element, obj, parameter){
+var filter = function(element, obj){
 
     var result = [];
 
@@ -17,10 +19,7 @@ var filter = function(element, obj, parameter){
 
         if(obj[key].indexOf(element.title) !== -1){
 
-            var data = {};
-            data[parameter] = key;
-
-            result.push(data);
+            result.push(key);
         }
     }
 
@@ -64,9 +63,9 @@ var saveM = function(){
         movieToPost.title = elem.title;
         movieToPost.release_date = elem.release_date;
 
-        movieToPost.genres = filter(elem, local_genres, "name");
-        movieToPost.actors = filter(elem, local_actors, "first_name");
-        movieToPost.directors = filter(elem, local_directors, "first_name");
+        movieToPost.genres = filter(elem, local_genres);
+        movieToPost.actors = filter(elem, local_actors);
+        movieToPost.directors = filter(elem, local_directors);
 
         data.movie = movieToPost;
 
@@ -91,45 +90,61 @@ var findActorByFilm = function(movie_title){
     return result;
 }
 
+var saveSync = function(data, version){
+    
+    if(data.length == 0){
+        return;
+    }
+    
+    console.log("movie: " + data[0].movie.title + " actor: " + data[0].actor.first_name + " director: " + data[0].director.first_name);
+    SaverInterface.save(version, data.shift()).then(function(response){
+        
+        saveSync(data, version);
+    });   
+}
+
 /* 
 * save Movies Actors 
 * version 1
 */ 
 var saveMA= function(){
 
-    var movieToPost = {},
-        actorToPost = {},
-        local_genres = this.Genres,
+    var local_genres = this.Genres,
         local_directors = this.Directors,
         local_actors = this.Actors,
-        actorToPost = {},
         version = 1,
-        data = {};
-
-    data.movie = {};
+        dataToPost = [];
+        //data = {};
 
     this.Movies.forEach(function(movie){
 
+        let movieToPost = {};
+        //let movie_title = movie.title;
         movieToPost.title = movie.title;
         movieToPost.release_date = movie.release_date;
 
         movieToPost.genres = filter(movie, local_genres);
         movieToPost.directors = filter(movie, local_directors);
 
-        for(var key in local_actors){
-
-            data.actor = {};
+        for(let key in local_actors){
 
             if(local_actors[key].indexOf(movie.title) !== -1){
                 
+                let data = {};
+
+                data.actor = {};
+                data.movie = {};
+
                 data.actor.first_name = key;
                 data.movie = movieToPost;
-                //console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
-                console.log(data);
-                SaverInterface.save(version, data);
+                dataToPost.push(data);
             }
         }
+
+        movie = null;
     });
+
+    saveSync(dataToPost, version);    
 };
 
 /* 
@@ -139,38 +154,54 @@ var saveMA= function(){
 var saveMAD = function(){
 
     var local_genres = this.Genres,
-        data = {},
+        local_directors = this.Directors,
+        local_actors = this.Actors,
         version = 2,
-        movieToPost = {},
-        actorToPost = {},
-        directorToPost = {};
+        dataToPost = [];
 
-    this.Movies.forEach(function(elem){
+    console.log("[DEBUG] Start save version 2")
 
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-        movieToPost.genres = local_genres;
+    this.Movies.forEach(function(movie){
 
-        data.movie = movieToPost;
+        let movieToPost = {};
 
-        SaverInterface.save(version, data);
-    });     
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
+        movieToPost.genres = filter(movie, local_genres);
 
-    for(var key in this.Actors){
+        for(let key in local_actors){
 
-        actorToPost.first_name = key;
-        data.actor = actorToPost;
-        
-        SaverInterface.save(version, data);
-    }
+            if(local_actors[key].indexOf(movie.title) !== -1){
+                
+                let actorToPost = {};
 
-    for(var key in this.Directors){
+                actorToPost.first_name = key;
 
-        directorToPost.first_name = key;
-        data.director = directorToPost;
-        
-        SaverInterface.save(version, data);
-    }
+                for(let key in local_directors){
+                    
+                    if(local_directors[key].indexOf(movie.title) !== -1){
+                        
+                        let data = {};
+                        //console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
+                        data.director = {};
+
+                        data.director.first_name = key;
+                        data.actor = actorToPost;
+                        data.movie = movieToPost;
+
+                        dataToPost.push(data);
+                    }
+                }
+            }
+        }
+
+        movie = null;
+        //dataToPost.push(data);
+    });
+
+    //console.log(dataToPost);
+
+    saveSync(dataToPost, version);  
 };
 
 /*
@@ -348,5 +379,6 @@ module.exports = {
 	getInfo: getInfo,
 
     saveM: saveM,
-    saveMA: saveMA
+    saveMA: saveMA,
+    saveMAD: saveMAD
 }
