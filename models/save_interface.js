@@ -73,7 +73,7 @@ module.exports = {
                     if (data.actor) update.actors = data.actor;
                     if (data.director) update.directors = data.director;
 
-                    Movie0.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                    Movie0.findByIdAndUpdate(movie._id, {$addToSet: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             result.resolve(movie);
@@ -118,13 +118,13 @@ module.exports = {
                     if (data.genre) update.genres = data.genre;
                     if (data.director) update.directors = data.director;
 
-                    Movie1.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                    Movie1.findByIdAndUpdate(movie._id, {$addToSet: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Actor1.findByIdAndUpdate(actor._id, {$push: {movies: movie._id}}, {new: true},
+                    Actor1.findByIdAndUpdate(actor._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, actor) => {
                             if (err) throw new Error(err);
                             actor_promise.resolve(actor);
@@ -192,18 +192,18 @@ module.exports = {
 
                     if (data.genre) update.genres = data.genre;
 
-                    Movie2.findByIdAndUpdate(movie._id, {$push: update }, {new: true},
+                    Movie2.findByIdAndUpdate(movie._id, {$addToSet: update }, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Actor2.findByIdAndUpdate(actor._id, {$push: {movies: movie._id}}, {new: true},
+                    Actor2.findByIdAndUpdate(actor._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, actor) => {
                             if (err) throw new Error(err);
                             actor_promise.resolve(actor);
                         });
-                    Director2.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                    Director2.findByIdAndUpdate(director._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, director) => {
                             if (err) throw new Error(err);
                             director_promise.resolve(director);
@@ -255,13 +255,13 @@ module.exports = {
                     if (data.genre) update.genres = data.genre;
                     if (data.actor) update.actors = data.actor;
 
-                    Movie3.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                    Movie3.findByIdAndUpdate(movie._id, {$addToSet: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Director3.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                    Director3.findByIdAndUpdate(director._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, director) => {
                             if (err) throw new Error(err);
                             director_promise.resolve(director);
@@ -309,13 +309,13 @@ module.exports = {
                     if (data.director) update.directors = data.director;
                     if (data.actor) update.actors = data.actor;
 
-                    Movie4.findByIdAndUpdate(movie._id, {$push: update}, {new: true},
+                    Movie4.findByIdAndUpdate(movie._id, {$addToSet: update}, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Genre4.findByIdAndUpdate(genre._id, {$push: {movies: movie._id}}, {new: true},
+                    Genre4.findByIdAndUpdate(genre._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, genre) => {
                             if (err) throw new Error(err);
                             genre_promise.resolve(genre);
@@ -381,19 +381,19 @@ module.exports = {
                     if (data.actor) update.actors = data.actor;
 
                     Movie5.findByIdAndUpdate(movie._id, {
-                            $push: update
+                            $addToSet: update
                         }, {new: true},
                         (err, movie) => {
                             if (err) throw new Error(err);
                             movie_promise.resolve(movie);
                         });
 
-                    Genre5.findByIdAndUpdate(genre._id, {$push: {movies: movie._id}}, {new: true},
+                    Genre5.findByIdAndUpdate(genre._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, genre) => {
                             if (err) throw new Error(err);
                             genre_promise.resolve(genre);
                         });
-                    Director5.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                    Director5.findByIdAndUpdate(director._id, {$addToSet: {movies: movie._id}}, {new: true},
                         (err, director) => {
                             if (err) throw new Error(err);
                             director_promise.resolve(director);
@@ -478,18 +478,18 @@ module.exports = {
                                 movie_promise.resolve(movie);
                             });
 
-                        Genre6.findByIdAndUpdate(genre._id, {$push: {movies: movie._id}}, {new: true},
+                        Genre6.findByIdAndUpdate(genre._id, {$addToSet: {movies: movie._id}}, {new: true},
                             (err, genre) => {
                                 if (err) throw new Error(err);
                                 genre_promise.resolve(genre);
                             });
-                        Director6.findByIdAndUpdate(director._id, {$push: {movies: movie._id}}, {new: true},
+                        Director6.findByIdAndUpdate(director._id, {$addToSet: {movies: movie._id}}, {new: true},
                             (err, director) => {
                                 if (err) throw new Error(err);
                                 director_promise.resolve(director);
                             });
 
-                        Actor6.findByIdAndUpdate(actor._id, {$push: {movies: movie._id}}, {new: true},
+                        Actor6.findByIdAndUpdate(actor._id, {$addToSet: {movies: movie._id}}, {new: true},
                             (err, actor) => {
                                 if (err) throw new Error(err);
                                 actor_promise.resolve(actor);
