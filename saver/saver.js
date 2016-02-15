@@ -137,14 +137,14 @@ var saveMA= function(){
 
                 data.actor.first_name = key;
                 data.movie = movieToPost;
-                dataToPost.push(data);
+                SaverInterface.save(version, data);
             }
         }
 
         movie = null;
     });
 
-    saveSync(dataToPost, version);    
+    //saveSync(dataToPost, version);    
 };
 
 /* 
@@ -210,7 +210,7 @@ var saveMAD = function(){
 */ 
 var saveMD = function(){
 
-    var local_genres = this.Genres,
+   /* var local_genres = this.Genres,
         local_actors = this.Actors,
         data = {},
         version = 3,
@@ -235,7 +235,44 @@ var saveMD = function(){
         data.director = directorToPost;
         
         SaverInterface.save(version, data);
-    }   
+    }   */
+
+    var local_genres = this.Genres,
+    local_directors = this.Directors,
+    local_actors = this.Actors,
+    version = 3,
+    dataToPost = [];
+        //data = {};
+
+    this.Movies.forEach(function(movie){
+
+        let movieToPost = {};
+        //let movie_title = movie.title;
+        movieToPost.title = movie.title;
+        movieToPost.release_date = movie.release_date;
+
+        movieToPost.genres = filter(movie, local_genres);
+        movieToPost.actors = filter(movie, local_actors);
+
+        for(let key in local_directors){
+
+            if(local_directors[key].indexOf(movie.title) !== -1){
+                
+                let data = {};
+
+                data.director = {};
+                data.movie = {};
+
+                data.director.first_name = key;
+                data.movie = movieToPost;
+                dataToPost.push(data);
+            }
+        }
+
+        movie = null;
+    });
+
+    saveSync(dataToPost, version);    
 };
 
 /* 
@@ -380,5 +417,6 @@ module.exports = {
 
     saveM: saveM,
     saveMA: saveMA,
-    saveMAD: saveMAD
+    saveMAD: saveMAD,
+    saveMD: saveMD
 }
