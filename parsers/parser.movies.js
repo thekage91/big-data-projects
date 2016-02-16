@@ -28,6 +28,10 @@ parserMovies.on('readable', function(){
 
         film.title = regexMovie(record.title);
 
+        if(film.title){
+            film.title = "foo";
+        }
+
         /* 
         * Essendo il film ordinati in maniera crescente, effettuo un controllo del precendete
         * Se il precedente è uguale al corrente allora sto aggiungendo un duplicato, 

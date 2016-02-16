@@ -60,29 +60,28 @@ var findActorByFilm = function(movie_title){
 */
 var saveM = function(){
 
-    var Movie0 = mongoose.model('Movie0'), 
-        local_genres = this.Genres,
+    var local_genres = this.Genres,
         local_directors = this.Directors,
         local_actors = this.Actors,
-        movieToPost = {},
-        version = 0,
-        data = {};
-    
+        version = 0;    
     /*
     *  Populet movies with relations
     */
-    this.Movies.forEach(function(elem){
+    this.Movies.forEach(function(movie){
 
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
+        let data = {}
 
-        movieToPost.genres = filter(elem, local_genres);
-        movieToPost.actors = filter(elem, local_actors);
-        movieToPost.directors = filter(elem, local_directors);
+        data.movie = {};
+        data.movie.title = movie.title;
+        data.movie.release_date = movie.release_date;
 
-        data.movie = movieToPost;
+        data.movie.genres = filter(movie, local_genres);
+        data.movie.actors = filter(movie, local_actors);
+        data.movie.directors = filter(movie, local_directors);
 
+        //console.log("Movie: " + movieToPost.title + " Actors: " + movieToPost.actors);
         SaverInterface.save(version, data);
+        movie = null;
 	});
 }
 
@@ -120,14 +119,14 @@ var saveMA= function(){
 
                 data.actor.first_name = key;
                 data.movie = movieToPost;
-                SaverInterface.save(version, data);
+                dataToPost.push(data);
             }
         }
 
         movie = null;
     });
 
-    //saveSync(dataToPost, version);    
+    saveSync(dataToPost, version);    
 };
 
 /* 
@@ -142,7 +141,14 @@ var saveMAD = function(){
         version = 2,
         dataToPost = [];
 
-    console.log("[DEBUG] Start save version 2")
+    console.log("[DEBUG] Start save version 2 \nDirectors")
+
+    //console.log(local_directors)
+
+    console.log("\n\nActors\n")
+    //console.log(local_actors)
+
+
 
     this.Movies.forEach(function(movie){
 
@@ -165,7 +171,7 @@ var saveMAD = function(){
                     if(local_directors[key].indexOf(movie.title) !== -1){
                         
                         let data = {};
-                        //console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
+                        console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
                         data.director = {};
 
                         data.director.first_name = key;
@@ -327,48 +333,7 @@ var saveMGD = function(){
 */ 
 var saveMGDA = function(){
 
-    /*var data = {},
-        version = 6,
-        movieToPost = {},
-        genreToPost = {},
-        directorToPost = {},
-        actorToPost = {};
-    
-    this.Movies.forEach(function(elem){
-
-        movieToPost.title = elem.title;
-        movieToPost.release_date = elem.release_date;
-
-        data.movie = movieToPost;
-
-        SaverInterface.save(version, data);
-    });  
-
-    for(var key in this.Genres){
-
-        genresToPost.name = key;
-        data.genre = genreToPost;
-        
-        SaverInterface.save(version, data);
-    }  
-
-    for(var key in this.Directors){
-
-        directorToPost.first_name = key;
-        data.director = directorToPost;
-        
-        SaverInterface.save(version, data);
-    } 
-
-    for(var key in this.Actors){
-
-        directorToPost.first_name = key;
-        data.actor = actorToPost;
-        
-        SaverInterface.save(version, data);
-    } */
-
-     var local_genres = this.Genres,
+    var local_genres = this.Genres,
         local_directors = this.Directors,
         local_actors = this.Actors,
         version = 6,

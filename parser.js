@@ -13,20 +13,18 @@
 var fs = require('fs'),
     parse = require('csv-parse'),
 
+    moviesPath = './dataset/movies.list',
+    directorsPath = './dataset/directors.list',
+    genresPath = './dataset/genres.list',
+    actorsPath = './dataset/actors.list',
 
- moviesPath = './dataset/movies.list',
- directorsPath = './dataset/directors.list',
- genresPath = './dataset/genres.list',
- actorsPath = './dataset/actors.list',
- provaPath = './dataset/prova.list',
+    moviesPathShort = './dataset/movies.short.list',
+    genresPathShort = './dataset/genres.short.list',
+    directorsPathShort = './dataset/directors.short.list',
+    actorsPathShort = './dataset/actors.short.list',
 
- moviesPathShort = './dataset/movies.short.list',
- genresPathShort = './dataset/genres.short.list',
- directorsPathShort = './dataset/directors.short.list',
- actorsPathShort = './dataset/actors.short.list',
-
- app = require('./app.js'),
- mongoose = app.mongoose;
+    app = require('./app.js'),
+    mongoose = app.mongoose;
 
 var movieParser = require('./parsers/parser.movies.js'),
     directorParser = require('./parsers/parser.directors.js'),
@@ -122,10 +120,10 @@ var parseAndSave= function () {
     console.log("[DEBUG] Start | movies | actors | directors | genres |  parsing...")
 
     let _movies = [];
-    var moviesStream = fs.createReadStream(moviesPathShort).pipe(movieParser.startParsing);
-    var genresStream = fs.createReadStream(genresPathShort).pipe(genresParser.startParsing);
-    var actorsStream = fs.createReadStream(actorsPathShort).pipe(actorsParser.startParsing);
-    var directorsStream = fs.createReadStream(directorsPathShort).pipe(directorParser.startParsing);
+    var moviesStream = fs.createReadStream(moviesPath, {start: 0, end: 10000}).pipe(movieParser.startParsing);
+    var genresStream = fs.createReadStream(genresPath, {start: 0, end: 10000}).pipe(genresParser.startParsing);
+    var actorsStream = fs.createReadStream(actorsPath, {start: 0, end: 10000}).pipe(actorsParser.startParsing);
+    var directorsStream = fs.createReadStream(directorsPath, {start: 0, end: 10000}).pipe(directorParser.startParsing);
 
     movieParser.movies.then(function(movies){
 
@@ -152,12 +150,12 @@ var parseAndSave= function () {
                 }).then(function(){
 
                     Saver.saveM();
-                    Saver.saveMA();
-                    Saver.saveMAD();
+                    //Saver.saveMA();
+                    /*Saver.saveMAD();
                     Saver.saveMD();
                     Saver.saveMG();
                     Saver.saveMGD();
-                    Saver.saveMGDA();
+                    Saver.saveMGDA();*/
                 });
             })
         });

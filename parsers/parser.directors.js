@@ -23,12 +23,14 @@ parserDirectors.on('readable', function(){
 
             currentRecord = record[0].split('\t');
             currentDirector = currentRecord[0].replace(',', '');
-            var movie = currentRecord[1].replace(/\t/g, '').split('(')[0].slice(0, -1);
+            var movie = currentRecord[1].replace(/\t/g, '').split('(')[0].slice(0, -1).replace('"', '');
+
             directors[currentDirector] = [ movie ];
         }
         else{
 
-            var movie = record[0].replace(/\t/g, '').split('(')[0].slice(0, -1);
+            var movie = record[0].replace(/\t/g, '').split('(')[0].slice(0, -1).replace(/"/g, '');
+          
             directors[currentDirector].push(movie);
         }
     };
