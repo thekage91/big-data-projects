@@ -2396,9 +2396,11 @@ describe('Save interface', function () {
         describe('It saves  3500000 fake films', function () {
                 console.log('Sono nel test')
                 var current_movie;
-                for(let i=0; i < 3500000; i++) {
+                for(let i=0; i < 1000; i++) {
                     current_movie = util.fakeMovie();
-                    save_interface.save(0,{movie: current_movie})
+                    (new Movie0(current_movie)).save((err, movie) => {
+                        if (err) throw new Error(err);
+                    });
                 }
             })
 
