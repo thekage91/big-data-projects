@@ -15,7 +15,8 @@ var regexMovie = function(title){
     return title.split(" (")[0].replace(/"/g, "");
 }
 
-var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']});
+var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']}),
+    i = 0;
 
 parserMovies.on('readable', function(){
 
@@ -27,10 +28,6 @@ parserMovies.on('readable', function(){
         //Per ogni riga, filtra via gli elementi vuoti
 
         film.title = regexMovie(record.title);
-
-        if(film.title){
-            film.title = "foo";
-        }
 
         /* 
         * Essendo il film ordinati in maniera crescente, effettuo un controllo del precendete
@@ -49,9 +46,12 @@ parserMovies.on('readable', function(){
             }
 
             temp_title = film.title;
+            console.log("movie: " + i)
             films.push(film);
         }
     }
+
+    i += 1;
 })
 
 var result = q.defer();

@@ -3,7 +3,8 @@
 var app = require('../app.js'),
 	mongoose = app.mongoose,
     SaverInterface = require("../models/save_interface.js"),
-    q = require('q');
+    q = require('q'),
+    Movie0 = mongoose.model('Movie0');
 
 
 var _movies = [],
@@ -63,10 +64,9 @@ var saveM = function(){
     var local_genres = this.Genres,
         local_directors = this.Directors,
         local_actors = this.Actors,
-        version = 0;    
-    /*
-    *  Populet movies with relations
-    */
+        version = 0,
+        i = 0;    
+   
     this.Movies.forEach(function(movie){
 
         let data = {}
@@ -79,10 +79,20 @@ var saveM = function(){
         data.movie.actors = filter(movie, local_actors);
         data.movie.directors = filter(movie, local_directors);
 
-        //console.log("Movie: " + movieToPost.title + " Actors: " + movieToPost.actors);
         SaverInterface.save(version, data);
+        /*
+        var movieSave = new Movie0(data.movie);
+        movieSave.save(function (err){
+
+            if (err) return handleError(err);
+            console.log("movie: " + data.movie.title + " saved");
+        });
+        */
         movie = null;
+        i += 1;
 	});
+
+    console.log("FINE")
 }
 
 /* 

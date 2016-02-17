@@ -48,6 +48,8 @@ module.exports = {
 
         switch (version) {
             case 0:
+
+                //console.log("Save version 0 movie: " + data.movie.title);
                 Movie0.findOne({title: data.movie.title}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)

@@ -58,7 +58,6 @@ parserActors.on('readable', function(){
 var result = q.defer();
 parserActors.on('finish', function(){
 
-    console.log("[DEBUG] Actors parsing finisch");
     result.resolve(actors);
     parserActors.end();
     
