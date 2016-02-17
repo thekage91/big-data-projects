@@ -120,16 +120,16 @@ var parseAndSave= function () {
     console.log("[DEBUG] Start | movies | actors | directors | genres |  parsing...")
 
     let _movies = [];
-    var moviesStream = fs.createReadStream(moviesPath, { start: 1000001, end: 3000000 }).pipe(movieParser.startParsing);
+    var moviesStream = fs.createReadStream(moviesPath, { start: 3000001, end: 9000000 }).pipe(movieParser.startParsing);
 
     console.log("\n\nParsing Genres");
-    var genresStream = fs.createReadStream(genresPath, { start: 1000001, end: 3000000 }).pipe(genresParser.startParsing);
+    var genresStream = fs.createReadStream(genresPath, { start: 3000001, end: 9000000 }).pipe(genresParser.startParsing);
     
     console.log("\n\nParsing Acotors");
-    var actorsStream = fs.createReadStream(actorsPath, { start: 1000001, end: 3000000 }).pipe(actorsParser.startParsing);
+    var actorsStream = fs.createReadStream(actorsPath, { start: 3000001, end: 9000000 }).pipe(actorsParser.startParsing);
     
     console.log("\n\nParsing Directors");
-    var directorsStream = fs.createReadStream(directorsPath, { start: 1000001, end: 3000000 }).pipe(directorParser.startParsing);
+    var directorsStream = fs.createReadStream(directorsPath, { start: 3000001, end: 9000000 }).pipe(directorParser.startParsing);
 
     movieParser.movies.then(function(movies){
 
