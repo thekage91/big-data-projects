@@ -11,7 +11,8 @@ var directors = {};
 var parserDirectors = parse({ delimiter: '\n', relax: true });
 
 var currentRecord = [],
-    currentDirector = "";
+    currentDirector = "",
+    i = 0;
 
 parserDirectors.on('readable', function(){
 
@@ -21,17 +22,34 @@ parserDirectors.on('readable', function(){
 
         if( record[0].indexOf('\t') !== 0 ){
 
-            currentRecord = record[0].split('\t');
-            currentDirector = currentRecord[0].replace(',', '');
-            var movie = currentRecord[1].replace(/\t/g, '').split('(')[0].slice(0, -1);
-            directors[currentDirector] = [ movie ];
+            try{
+                currentRecord = record[0].split('\t');
+                currentDirector = currentRecord[0].replace(',', '');
+                var movie = currentRecord[1].replace(/\t/g, '').split('(')[0].slice(0, -1).replace(/"/g, '');
+
+                directors[currentDirector] = [ movie ];
+
+            }catch(err){
+                
+                console.log("[Exception] Current record : " + i + " record: " + currentRecord);
+            }
         }
         else{
 
-            var movie = record[0].replace(/\t/g, '').split('(')[0].slice(0, -1);
-            directors[currentDirector].push(movie);
+            try{
+                var movie = record[0].replace(/\t/g, '').split('(')[0].slice(0, -1).replace(/"/g, '');
+          
+                directors[currentDirector].push(movie);
+
+            }catch(err){
+
+                console.log("[Exception] Current record : " + i + " record: " + currentRecord);
+            }
+            
         }
     };
+
+    i += 1;
 });
 
 var result = q.defer();

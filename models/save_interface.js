@@ -48,6 +48,8 @@ module.exports = {
 
         switch (version) {
             case 0:
+
+                //console.log("Save version 0 movie: " + data.movie.title);
                 Movie0.findOne({title: data.movie.title}, function (err, retrieved_movie) {
                     if (err) result.reject(err);
                     if (typeof retrieved_movie !== 'undefined' && retrieved_movie)
@@ -467,7 +469,7 @@ module.exports = {
                         let actor_promise = q.defer();
 
                         Movie6.findByIdAndUpdate(movie._id, {
-                                $push: {
+                                $addToSet: {
                                     genres: genre._id,
                                     directors: director._id,
                                     actors: actor._id

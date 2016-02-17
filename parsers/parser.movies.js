@@ -15,7 +15,8 @@ var regexMovie = function(title){
     return title.split(" (")[0].replace(/"/g, "");
 }
 
-var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']});
+var parserMovies = parse({delimiter: '\t', relax: true, columns: ['title', 'release_date']}),
+    i = 0;
 
 parserMovies.on('readable', function(){
 
@@ -45,9 +46,12 @@ parserMovies.on('readable', function(){
             }
 
             temp_title = film.title;
+            console.log("movie: " + i)
             films.push(film);
         }
     }
+
+    i += 1;
 })
 
 var result = q.defer();

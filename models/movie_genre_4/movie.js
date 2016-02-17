@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var fields = {
 	title: { type: String ,trim: true},
-	release_date: { type: Date , default: Date.now },
+	release_date: { type: String },
 	writer: { type: String },
 	stars: { type: String },
 	ratings: { type: String },
@@ -15,12 +15,8 @@ var fields = {
 	writers: { type: String },
 	distributors: { type: String },
     genres : [{ type: Schema.Types.ObjectId, ref: 'Genre4' }],
-    actors : [{
-        first_name:String ,
-        last_name: String }],
-    directors : [{
-        first_name:String ,
-        last_name: String }]
+    actors : [{ type: String }],
+    directors : [{ type: String }]
 };
 
 var movieSchema = new Schema(fields);
