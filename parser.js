@@ -120,16 +120,16 @@ var parseAndSave= function () {
     console.log("[DEBUG] Start | movies | actors | directors | genres |  parsing...")
 
     let _movies = [];
-    var moviesStream = fs.createReadStream(moviesPath).pipe(movieParser.startParsing);
+    var moviesStream = fs.createReadStream(moviesPath, { start: 0, end: 10000000 }).pipe(movieParser.startParsing);
 
     console.log("\n\nParsing Genres");
-    var genresStream = fs.createReadStream(genresPath).pipe(genresParser.startParsing);
+    var genresStream = fs.createReadStream(genresPath, { start: 0, end: 10000000 }).pipe(genresParser.startParsing);
     
     console.log("\n\nParsing Acotors");
-    var actorsStream = fs.createReadStream(actorsPath).pipe(actorsParser.startParsing);
+    var actorsStream = fs.createReadStream(actorsPath, { start: 0, end: 10000000 }).pipe(actorsParser.startParsing);
     
     console.log("\n\nParsing Directors");
-    var directorsStream = fs.createReadStream(directorsPath).pipe(directorParser.startParsing);
+    var directorsStream = fs.createReadStream(directorsPath, { start: 0, end: 10000000 }).pipe(directorParser.startParsing);
 
     movieParser.movies.then(function(movies){
 
@@ -161,8 +161,9 @@ var parseAndSave= function () {
                     console.log("Movies: " + Object.keys(Saver.Movies).length);
 
 
-                    setTimeout(function (){  Saver.saveM();  }, 3000);                 
-                    //Saver.saveMA();
+                    setTimeout(function (){  Saver.saveM();  }, 4000);                 
+                    setTimeout(function (){  Saver.saveMA();  }, 4000);                 
+                    //setTimeout(function (){  Saver.saveMAD();  }, 4000);                 
                     /*Saver.saveMAD();
                     Saver.saveMD();
                     Saver.saveMG();
