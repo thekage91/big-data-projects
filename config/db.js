@@ -40,32 +40,16 @@ var uristring_cluster =  `mongodb://${login_cluster}${config_cluster.host1}:${co
 var mongoOptions = { db: { safe: true } };
 //var mongoOptions = {};
 // Connect to Database
-<<<<<<< HEAD
 console.log('connecting to: ' + uristring);
 
 //Usare variabile uristring_cluster per il cluster online
 //oppure uristring in locale
 mongoose.connect(uristring, mongoOptions, function (err, res) {
-=======
-var connection_2_db = mongoose.connect(uristring, mongoOptions, function (err, res) {
->>>>>>> dev-parsing
   if(err){
     console.log('ERROR connecting to: ' + uristring_cluster + '. ' + err);
   }else{
     console.log('Successfully connected to: ' + uristring_cluster);
   }
 });
-
-/*
-connection_2_db.db.dropDatabase();
-
-mongoose.connect(uristring, mongoOptions, function (err, res) {
-  if(err){
-    console.log('ERROR connecting to: ' + uristring + '. ' + err);
-  }else{
-    console.log('Successfully connected to: ' + uristring);
-  }
-});
-*/
 
 exports.mongoose = mongoose;
