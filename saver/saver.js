@@ -78,7 +78,7 @@ var saveM = function(){
         data.movie.genres = filter(movie, local_genres);
         data.movie.actors = filter(movie, local_actors);
         data.movie.directors = filter(movie, local_directors);
-
+        console.log("Save movie: " + data.movie.title);
         SaverInterface.save(version, data);
         /*
         var movieSave = new Movie0(data.movie);

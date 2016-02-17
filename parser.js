@@ -156,13 +156,12 @@ var parseAndSave= function () {
                 }).then(function(){
 
                     console.log("Actors: " + Object.keys(Saver.Actors).length);
-
                     console.log("Genres: " + Object.keys(Saver.Genres).length);
-                    
                     console.log("Directors: " + Object.keys(Saver.Directors).length);
-
                     console.log("Movies: " + Object.keys(Saver.Movies).length);
-                    //Saver.saveM();
+
+
+                    setTimeout(function (){  Saver.saveM();  }, 3000);                 
                     //Saver.saveMA();
                     /*Saver.saveMAD();
                     Saver.saveMD();
