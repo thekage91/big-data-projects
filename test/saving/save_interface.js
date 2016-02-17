@@ -2390,5 +2390,19 @@ describe('Save interface', function () {
 
     });
 
+
+    describe('Massive Saving', function () {
+
+        describe('It saves  3500000 fake films', function () {
+                console.log('Sono nel test')
+                var current_movie;
+                for(let i=0; i < 3500000; i++) {
+                    current_movie = util.fakeMovie();
+                    save_interface.save(0,{movie: current_movie})
+                }
+            })
+
+    })
+
 });
 

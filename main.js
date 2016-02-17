@@ -38,11 +38,11 @@ function profile_query (document,query_function, description) {
 
 
 (function () {
-    console.log('Misurazione dei tempi di query per i vari modelli di aggregati ')
+    console.log('Misurazione dei tempi di query per i vari modelli di aggregati ');
     profile_query('actor',query_interface.all_films_one_actor,`Restituire tutti i film recitati da un dato attore`);
     profile_query('director',query_interface.all_films_one_director,`Restituire tutti i film girati da un certo regista`);
-    profile_query('director',query_interface.top_5_actors_of_a_director,`Restituire tutti i film girati da un certo regista`);
-    profile_query('actor',query_interface.top_5_directors_of_an_actor,`Restituire tutti i film girati da un certo regista`);
+    profile_query('director',query_interface.top_5_actors_of_a_director,`Trovare per un certo regista i 5 attori con i quali ha fatto più film`);
+    profile_query('actor',query_interface.top_5_directors_of_an_actor,`Trovare per un attore i 5 Registi con i quali ha fatto più film                                      `);
 
 })();
 
