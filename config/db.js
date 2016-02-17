@@ -44,7 +44,7 @@ console.log('connecting to: ' + uristring);
 
 //Usare variabile uristring_cluster per il cluster online
 //oppure uristring in locale
-mongoose.connect(uristring, mongoOptions, function (err, res) {
+mongoose.connect(uristring_cluster, mongoOptions, function (err, res) {
   if(err){
     console.log('ERROR connecting to: ' + uristring_cluster + '. ' + err);
   }else{

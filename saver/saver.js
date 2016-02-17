@@ -12,7 +12,7 @@ var _movies = [],
 	_directors = {},
 	_genres = {};
 
-var filter = function(element, obj, parameter){
+var filter = function(element, obj){
 
     var result = [];
 
@@ -20,10 +20,7 @@ var filter = function(element, obj, parameter){
 
         if(obj[key].indexOf(element.title) !== -1){
 
-            var data = {};
-            data[parameter] = key;
-
-            result.push(data);
+            result.push(key);
         }
     }
 
@@ -70,6 +67,7 @@ var saveM = function(){
         version = 0,
         i = 0;    
    
+    console.log("Version 0");
     this.Movies.forEach(function(movie){
 
         let data = {}
@@ -80,7 +78,8 @@ var saveM = function(){
         data.movie.genres = filter(movie, local_genres);
         data.movie.actors = filter(movie, local_actors);
         data.movie.directors = filter(movie, local_directors);
-        console.log("Save movie: " + data.movie.title);
+        
+        //console.log("Save movie: " + data.movie.title);
         SaverInterface.save(version, data);
         /*
         var movieSave = new Movie0(data.movie);
@@ -94,33 +93,6 @@ var saveM = function(){
         i += 1;
 	});
 
-var findActorByFilm = function(movie_title){
-
-    var local_actors = this.Actors,
-        result = [];
-
-    for(var key in local_actors){
-
-        console.log("Movie: " + movie_title + " Actor: " + key);
-        if(local_actors[key].indexOf(movie_title) !== -1){
-            result.push(key);
-        }
-    }
-
-    return result;
-}
-
-var saveSync = function(data, version){
-
-    if(data.length == 0){
-        return;
-    }
-
-    console.log("movie: " + data[0].movie.title + " actor: " + data[0].actor.first_name + " director: " + data[0].director.first_name);
-    SaverInterface.save(version, data.shift()).then(function(response){
-
-        saveSync(data, version);
-    });
     console.log("FINE")
 }
 
@@ -137,6 +109,7 @@ var saveMA= function(){
         dataToPost = [];
         //data = {};
 
+    console.log("Version 1");
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -158,11 +131,7 @@ var saveMA= function(){
 
                 data.actor.first_name = key;
                 data.movie = movieToPost;
-
-                throw 'Controllare un attimo il codice qua';
                 //console.log("Movie title: " + data.movie.title + " Actor title: " + data.actor.first_name);
-                console.log(data);
-                SaverInterface.save(version, data);
 
                 dataToPost.push(data);
 
@@ -187,15 +156,7 @@ var saveMAD = function(){
         version = 2,
         dataToPost = [];
 
-    console.log("[DEBUG] Start save version 2 \nDirectors")
-
-    //console.log(local_directors)
-
-    console.log("\n\nActors\n")
-    //console.log(local_actors)
-
-
-
+    console.log("Version 2");
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -217,7 +178,7 @@ var saveMAD = function(){
                     if(local_directors[key].indexOf(movie.title) !== -1){
 
                         let data = {};
-                        console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
+                        //console.log("director:" + key + " actor: " + actorToPost.first_name + " movie: " + movie.title + "\n");
                         data.director = {};
 
                         data.director.first_name = key;
@@ -231,10 +192,7 @@ var saveMAD = function(){
         }
 
         movie = null;
-        //dataToPost.push(data);
     });
-
-    //console.log(dataToPost);
 
     saveSync(dataToPost, version);
 };
@@ -250,8 +208,8 @@ var saveMD = function(){
     local_actors = this.Actors,
     version = 3,
     dataToPost = [];
-        //data = {};
 
+    console.log("Version 3");
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -293,6 +251,7 @@ var saveMG = function(){
     version = 4;
     //data = {};
 
+    console.log("Version 4");
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -334,6 +293,7 @@ var saveMGD = function(){
         version = 5,
         dataToPost = [];
 
+    console.log("Version 5");
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -385,6 +345,7 @@ var saveMGDA = function(){
         version = 6,
         dataToPost = [];
 
+    console.log("Version 6");
     this.Movies.forEach(function(movie){
 
         let movieToPost = {};
@@ -420,7 +381,7 @@ var saveMGDA = function(){
                                 data.actor = actorToPost;
                                 data.movie = movieToPost;
 
-                                console.log("[DEBUG] Movie: " + data.movie.title + " Genre: " + data.genre.name + " Actor: " + data.actor.first_name + " Director: " + data.director.first_name)
+                                //console.log("[DEBUG] Movie: " + data.movie.title + " Genre: " + data.genre.name + " Actor: " + data.actor.first_name + " Director: " + data.director.first_name)
                                 dataToPost.push(data);
                             }
                         }
