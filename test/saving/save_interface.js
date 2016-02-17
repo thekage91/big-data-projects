@@ -34,15 +34,16 @@ var save_interface = require('../../models/save_interface.js'),
 
 describe('Save interface', function () {
 
+    this.timeout(5000);
     describe('Version 0', function () {
 
         describe('No existing data', function () {
 
-            afterEach('Clear database', function (done) {
+            /*afterEach('Clear database', function (done) {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
-            });
+            });*/
 
 
             it('saves one movie', function (done) {

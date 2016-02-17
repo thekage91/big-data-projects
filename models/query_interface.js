@@ -21,14 +21,17 @@ module.exports = {
             case 5:
             case 0:
                // console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
+                var t1 = process.hrtime();
                 mongoose.model('Movie' + version)
-                    .find({actors: {$elemMatch: actor}}).populate('directors').then((movies) => cb(undefined, movies));
+                    .find({actors: {$elemMatch: actor}}).populate('directors').then(
+                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[0] + " ns"));
                 break;
             case 1:
             case 2:
             case 6:
+                var t2 = process.hrtime();
                 query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
-                console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
+                //console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
 
                 let population = {};
                 if(version === 2) population = 'actors directors';
@@ -47,7 +50,7 @@ module.exports = {
                            // console.log(JSON.stringify(actor, null, 2));
                             if (actor === null)
                                 return cb('Error: query returned null');
-                            return cb(undefined, movies);
+                            return cb(undefined, movies,process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[0] + " ns");
                         })
                         });
                     });
@@ -67,7 +70,7 @@ module.exports = {
             case 4:
             case 1:
             case 0:
-                console.log(`query: Movie${version}.find({director : {$elemMatch : ${JSON.stringify(director)} } } )`);
+                //console.log(`query: Movie${version}.find({director : {$elemMatch : ${JSON.stringify(director)} } } )`);
                 mongoose.model('Movie' + version)
                     .find({directors: {$elemMatch: director}}).populate('actors').then((movies) => cb(undefined, movies));
                 break;
@@ -76,7 +79,7 @@ module.exports = {
             case 6:
             case 5:
                 query = mongoose.model('Director' + version).find(director, 'movies').populate('movies ');
-                console.log(`query: Director${version}.find(${JSON.stringify(query._conditions)})`);
+                //console.log(`query: Director${version}.find(${JSON.stringify(query._conditions)})`);
 
                 let population = {};
                 if(version === 2) population = 'directors actors';
