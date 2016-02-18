@@ -10,7 +10,7 @@ var app = require('./app.js'),
 
 var MOVIES_NUMBER = 10000,
 	ACTORS_NUMBER = 2000,
-	DIRECTORS_NUMBER = 3000,
+	DIRECTORS_NUMBER = 300,
 	GENRES_NUMBER = 100;
 
 var max_actor_movie = 15,
@@ -21,6 +21,18 @@ var _movies = [],
 	_directors = [],
 	_actors = [],
 	_genres = [];
+
+var saveSync = function(version, data){
+    
+    if(data.length == 0){
+        return;
+    }
+    
+    SaverInterface.save(version, data.shift()).then(function(response){
+        
+        saveSync(data, version);
+    });   
+}
 
 var pick_random_element = function(elements, quantity, NUM_ELEMENTS){
 
@@ -144,6 +156,8 @@ var save_version2 = function(){
 
 	var version = 2;
 
+	console.log("Version 2...");
+	
 	_movies.forEach(function(movie){
 
 		let actors = [];
@@ -182,6 +196,8 @@ var save_version2 = function(){
 var save_version3 = function(){
 
 	var version = 3;
+	
+	console.log("Version 3...");
 
 	_movies.forEach(function(movie){
 
@@ -220,6 +236,8 @@ var save_version4 = function(){
 
 	var version = 4;
 
+	console.log("Version 4...");
+
 	_movies.forEach(function(movie){
 
 		let genres = [];
@@ -231,7 +249,7 @@ var save_version4 = function(){
 		let quantity_genre = Math.floor((Math.random() * max_genre_movie) + 1);
 
 		data.movie = {};
-		data.director = {};
+		data.genre = {};
 
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
@@ -255,7 +273,10 @@ var save_version4 = function(){
 /* MGD */
 var save_version5 = function(){
 
-	var version = 5;
+	var version = 5,
+		dataToPost = [];
+
+	console.log("Version 5...");
 
 	_movies.forEach(function(movie){
 
@@ -286,17 +307,22 @@ var save_version5 = function(){
 			data.director.first_name = director_elem;
 			data.genre.name = genres[index_genre];
 
+			//dataToPost.push(data);
 			SaverInterface.save(version, data);
 		});
 
 		movie = null;
 	});
+
+	//saveSync(version, dataToPost);
 }
 
 /* MGDA */
 var save_version6 = function(){
 
 	var version = 6;
+
+	console.log("Version 6...");
 
 	_movies.forEach(function(movie){
 
@@ -312,7 +338,8 @@ var save_version6 = function(){
 
 		data.movie = {};
 		data.director = {};
-		data.actors = {};
+		data.actor = {};
+		data.genre = {};
 
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
@@ -350,24 +377,19 @@ var seed = function(){
 	console.log("Movies: " + _movies.length + " Directors: " + _directors.length + " Actors: " + _actors.length + " Genres: " + _genres.length);
 	console.log("Start saving...")
 
-	//save_version0();
+	save_version0();
 
 	save_version1();
 
-	/*console.log("Version 2...");
 	save_version2();
 
-	console.log("Version 3...");
 	save_version3();
 
-	console.log("Version 4...");
 	save_version4();
 
-	console.log("Version 5...");
 	save_version5();
 
-	console.log("Version 6...");
-	save_version6();*/
+	//save_version6();
 
 	console.log("Finish saving...")
 
