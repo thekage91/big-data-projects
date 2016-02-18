@@ -169,8 +169,8 @@ var save_version2 = function(){
 
 			let index_director = Math.floor((Math.random() * directors.length) + 1);
 
-			data.actor = actor_elem;
-			data.director = directors[index_director];
+			data.actor.first_name = actor_elem;
+			data.director.first_name = directors[index_director];
 
 			SaverInterface.save(version, data);
 		});
@@ -205,7 +205,7 @@ var save_version3 = function(){
 
 		directors.forEach(function(director_elem){
 
-			data.director = director_elem;
+			data.director.first_name = director_elem;
 
 			SaverInterface.save(version, data);
 		});
@@ -242,7 +242,7 @@ var save_version4 = function(){
 
 		genres.forEach(function(genre_elem){
 
-			data.genre = genre_elem;
+			data.genre.name = genre_elem;
 
 			SaverInterface.save(version, data);
 		});
@@ -283,8 +283,8 @@ var save_version5 = function(){
 
 			let index_genre = Math.floor((Math.random() * genres.length) + 1);
 
-			data.director = director_elem;
-			data.genre = genres[index_genre];
+			data.director.first_name = director_elem;
+			data.genre.name = genres[index_genre];
 
 			SaverInterface.save(version, data);
 		});
@@ -326,9 +326,9 @@ var save_version6 = function(){
 			let index_genre = Math.floor((Math.random() * genres.length) + 1);
 			let index_actor = Math.floor((Math.random() * actors.length) + 1);
 
-			data.director = director_elem;
-			data.genre = genres[index_genre];
-			data.actor = actors[index_actor];
+			data.director.first_name = director_elem;
+			data.genre.name = genres[index_genre];
+			data.actor.first_name = actors[index_actor];
 
 			SaverInterface.save(version, data);
 		});
