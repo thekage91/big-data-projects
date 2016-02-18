@@ -165,7 +165,6 @@ var parseAndSave= function () {
                     console.log("Directors: " + Object.keys(Saver.Directors).length);
                     console.log("Movies: " + Object.keys(Saver.Movies).length);
 
-
                     //setTimeout(function (){  Saver.saveM();  }, 4000);                 
                     //setTimeout(function (){  Saver.saveMA();  }, 4000);                 
                     Saver.saveM();
