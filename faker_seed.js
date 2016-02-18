@@ -1,19 +1,23 @@
-'use strinct'
+"use strict";
 
-var util = require('./test/util.js'),
+var app = require('./app.js'),
+	mongoose = app.mongoose,
     SaverInterface = require("./models/save_interface.js"),
+    q = require('q'),
+    Movie0 = mongoose.model('Movie0'),
+    util = require('./test/util.js');
 
 
-var MOVIES_NUMBER = 1000000
-	ACTORS_NUMER = 500000
-	DIRECTORS_NUMBER = 300000
-	GENRES_NUMBER = 1000;
+var MOVIES_NUMBER = 10000,
+	ACTORS_NUMBER = 2000,
+	DIRECTORS_NUMBER = 3000,
+	GENRES_NUMBER = 100;
 
 var max_actor_movie = 15,
 	max_genre_movie = 5,
 	max_director_movie = 25;
 
-var _movies = [];
+var _movies = [],
 	_directors = [],
 	_actors = [],
 	_genres = [];
@@ -21,66 +25,60 @@ var _movies = [];
 var pick_random_element = function(elements, quantity, NUM_ELEMENTS){
 
 	var picked_element = [];
-	var index_random = Math.floor((Math.random() * NUM_ELEMENTS) + 1);
 
-	for( var i = 0; i <= quantity; i++ ){
+	for(var i = 0; i <= quantity; i++){
 
+		var index_random = Math.floor((Math.random() * NUM_ELEMENTS) + 1);
 		picked_element.push(elements[index_random]);
 	}
 
 	return picked_element;
 };
 
-var generate_movies = function(counter){
+var generate_movies = function(){
 
-	if(counter == MOVIES_NUMBER){
-		return util.fakeMovie();;
+	for(var i = 0; i <= MOVIES_NUMBER; i++){
+
+		_movies.push(util.fakeMovie());
 	}
 
-	counter += 1;
-    return movies.push(generate_movies(counter));
+	console.log("Movies length: " + _movies.length)
 }
 
-var generate_directors = function(counter){
+var generate_directors = function(){
 
-	if(counter == DIRECTORS_NUMBER){
-		return util.fakeDirector();;
+	for(var i = 0; i <= DIRECTORS_NUMBER; i++){
+
+		_directors.push(util.fakeDirector());
 	}
-
-	counter += 1;
-    return directors.push(generate_directors(counter));
-	
 }
 
-var generate_actors = function(counter){
+var generate_actors = function(){
 
-	if(counter == ACTORS_NUMER){
-		return util.fakeActor());;
+	for(var i = 0; i <= ACTORS_NUMBER; i++){
+
+		_actors.push(util.fakeActor());
 	}
-
-	counter += 1;
-    return actors.push(generate_actors(counter));
-	
 }
 
-var generate_genres = function(counter){
+var generate_genres = function(){
 
-	if(counter == GENRES_NUMBER){
-		return util.fakeGenre();;
+	for(var i = 0; i <= GENRES_NUMBER; i++){
+
+		_genres.push(util.fakeGenre());
 	}
-
-	counter += 1;
-    return genres.push(generate_genres(counter));
-	
 }
 
 var save_version0 = function(){
 
-	var versoion = 0;
+	var version = 0;
+	var i = 0;
+
+	console.log("Version 0...");
 
 	_movies.forEach(function(movie){
 
-		let data = {}
+		let data = {};
 
 		let quantity_actor = Math.floor((Math.random() * max_actor_movie) + 1);
 		let quantity_director = Math.floor((Math.random() * max_director_movie) + 1);
@@ -90,13 +88,17 @@ var save_version0 = function(){
 
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
-		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 		data.movie.directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
 		data.movie.genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
+
+		//console.log("Movie: " + i + " title:  " + data.movie.title + " actors length: " + 
+			//+ data.movie.actors.length + " directors length: " + data.movie.directors.length + " genres length: " + data.movie.genres.length);
 
 		SaverInterface.save(version, data);
 
 		movie = null;
+		i += 1;
 	});
 }
 
@@ -104,6 +106,8 @@ var save_version0 = function(){
 var save_version1 = function(){
 
 	var version = 1;
+
+	console.log("Version 1...");
 
 	_movies.forEach(function(movie){
 
@@ -122,11 +126,11 @@ var save_version1 = function(){
 		data.movie.directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
 		data.movie.genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
 		
-		actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 
 		actors.forEach(function(actor_elem){
 
-			data.actor = actor_elem;
+			data.actor.first_name = actor_elem;
 
 			SaverInterface.save(version, data);
 		});
@@ -159,7 +163,7 @@ var save_version2 = function(){
 		data.movie.genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
 
 		directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
-		actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 
 		actors.forEach(function(actor_elem){
 
@@ -195,7 +199,7 @@ var save_version3 = function(){
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
 		data.movie.genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
-		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 
 		directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
 
@@ -231,7 +235,7 @@ var save_version4 = function(){
 
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
-		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 		data.movie.directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
 
 		genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
@@ -270,7 +274,7 @@ var save_version5 = function(){
 
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
-		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		data.movie.actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 
 		directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
 		genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
@@ -313,7 +317,7 @@ var save_version6 = function(){
 		data.movie.title = movie.title;
 		data.movie.release_date = movie.release_date;
 
-		actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMER);
+		actors = pick_random_element(_actors, quantity_actor, ACTORS_NUMBER);
 		directors = pick_random_element(_directors, quantity_director, DIRECTORS_NUMBER);
 		genres = pick_random_element(_genres, quantity_genre, GENRES_NUMBER);
 
@@ -338,20 +342,19 @@ var seed = function(){
 
 	console.log("Generate Movie, Directors, Actors and Genres...")
 
-	generate_directors();
 	generate_movies();
+	generate_directors();
 	generate_actors();
 	generate_genres();
 
+	console.log("Movies: " + _movies.length + " Directors: " + _directors.length + " Actors: " + _actors.length + " Genres: " + _genres.length);
 	console.log("Start saving...")
 
-	console.log("Version 0...");
-	save_version0();
+	//save_version0();
 
-	console.log("Version 1...");
 	save_version1();
 
-	console.log("Version 2...");
+	/*console.log("Version 2...");
 	save_version2();
 
 	console.log("Version 3...");
@@ -364,7 +367,9 @@ var seed = function(){
 	save_version5();
 
 	console.log("Version 6...");
-	save_version6();
+	save_version6();*/
+
+	console.log("Finish saving...")
 
 }
 
@@ -373,6 +378,8 @@ module.exports = {
 	seed: seed
 }
 
+
+seed();
 
 
 

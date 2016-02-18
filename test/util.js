@@ -21,26 +21,19 @@ module.exports.fakeMovie = function () {
 }
 
 module.exports.fakeActor = function () {
-    return {
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
-        movies: []
-    }
+
+    return faker.name.firstName();
+        
 }
 
 module.exports.fakeDirector = function () {
-    return {
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
-        movies: []
-    }
+
+    return faker.name.firstName();
 }
 
 module.exports.fakeGenre = function () {
-    return {
-        name: faker.name.firstName(),
-        movies: []
-    }
+    
+    return faker.name.firstName();
 }
 
 module.exports.sameMovie = function () {
