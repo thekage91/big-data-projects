@@ -39,12 +39,12 @@ describe('Save interface', function () {
 
         describe('No existing data', function () {
 
-            /*afterEach('Clear database', function (done) {
+          /*  afterEach('Clear database', function (done) {
                 mongoose.connection.db.dropDatabase(function (err, ww) {
                     done();
                 })
-            });*/
-
+            });
+*/
 
             it('saves one movie', function (done) {
                 var movie_to_save = util.fakeMovie();
@@ -2392,16 +2392,23 @@ describe('Save interface', function () {
 
 
     describe('Massive Saving', function () {
-
-        describe('It saves  3500000 fake films', function () {
-                console.log('Sono nel test')
-                var current_movie;
+    this.timeout(100000000);
+        it(' saves  3500000 fake films', function (done) {
+                console.log('Sono nel test');
+                var current_movie,promises = [];
                 for(let i=0; i < 1000; i++) {
                     current_movie = util.fakeMovie();
-                    (new Movie0(current_movie)).save((err, movie) => {
+                    var curmovie = new Movie0(current_movie);
+                    promises.push(curmovie.save((err,movie) => {if(err) throw err; console.log(movie);}));
+
+
+                    /*promises.push(curmovie.save((err, movie) => {
                         if (err) throw new Error(err);
-                    });
+                        console.log('saved movie ' +movie.title)
+                    });*/
                 }
+            //done();
+            q.all(promises).then(() => {console.log('fatto'); done()});
             })
 
     })

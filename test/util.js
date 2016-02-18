@@ -3,7 +3,8 @@
  */
 var faker = require('faker');
 
-module.exports.fakeMovie = function () {
+module.exports.fakeMovie = function (actor,director) {
+
     return {
         title: faker.company.companyName(),
         release_date: faker.date.recent(),
@@ -12,11 +13,11 @@ module.exports.fakeMovie = function () {
         ratings: faker.name.findName(),
         certificate: faker.lorem.words(),
         country: faker.address.country(),
-        writers:  faker.lorem.words(),
+        writers: faker.lorem.words(),
         distributors: faker.lorem.words(),
-        genres : [],
-        directors : [],
-        actors : []
+        genres: [],
+        directors: [],
+        actors: []
     }
 }
 

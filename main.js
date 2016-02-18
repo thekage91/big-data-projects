@@ -20,29 +20,81 @@ var mongoose = app.mongoose;
 function printStats(version,query,elemNumber,totalTime) {
     console.log('Versione modello: ' + version);
     console.log('Query: ' + query);
-    console.log('Numero di elementi in output: ' + elemNumber);
+    console.log('Numero di elementi in output: ' + (elemNumber || 0));
     console.log('Tempo totale di elaborazione; ' + totalTime);
 
 }
 
 function profile_query (document,query_function, description) {
-    var actor = {name: 'pippo'};
-    var director = {name: 'prova'};
+    var actor = 'Graham';
+    var director = {name: 'Annett Paul'};
+    var end = q.defer();
 
-    for(let i=0;i<7;i++)
-        query_function(i, (document ==='actor' ? actor : director), function (err,response,time) {
-        printStats(i, description,response.length,time);
-    })
+       query_function.call(query_interface, 0, (document === 'actor' ? actor : director), function (err, response, time) {
+           printStats(0, description, response.length, time);
+           query_function.call(query_interface, 1, (document === 'actor' ? actor : director), function (err, response, time) {
+               printStats(1, description, response.length, time);
+               query_function.call(query_interface, 2, (document === 'actor' ? actor : director), function (err, response, time) {
+                   printStats(2, description, response.length, time);
+                   query_function.call(query_interface, 3, (document === 'actor' ? actor : director), function (err, response, time) {
+                       printStats(3, description, response.length, time);
+                       query_function.call(query_interface, 4, (document === 'actor' ? actor : director), function (err, response, time) {
+                           printStats(4, description, response.length, time);
+                           query_function.call(query_interface, 5, (document === 'actor' ? actor : director), function (err, response, time) {
+                               printStats(5, description, response.length, time);
+                               query_function.call(query_interface, 6, (document === 'actor' ? actor : director), function (err, response, time) {
+                                   printStats(6, description, response.length, time);
+                                    end.resolve();
+                               });
+                           });
+                       });
+                   });
+               });
+           });
+        });
+
+        return end.promise;
+
+    /*
+    query_function.call(query_interface, 0, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(0, description, response.length, time);
+    });
+    query_function.call(query_interface, 1, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(1, description, response.length, time);
+    });
+
+    query_function.call(query_interface, 2, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(2, description, response.length, time);
+    });
+    query_function.call(query_interface, 3, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(3, description, response.length, time);
+    });
+    query_function.call(query_interface, 4, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(4, description, response.length, time);
+    });
+    query_function.call(query_interface, 5, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(5, description, response.length, time);
+    });
+    query_function.call(query_interface, 6, (document === 'actor' ? actor : director), function (err, response, time) {
+        printStats(6, description, response.length, time);
+    });
+    /*query_interface.all_films_one_actor(0, (document ==='actor' ? actor : director), function (err,response,time) {
+        printStats(0, description,response.length,time);
+    })*/
 
 }
 
 
 (function () {
     console.log('Misurazione dei tempi di query per i vari modelli di aggregati ');
-    profile_query('actor',query_interface.all_films_one_actor,`Restituire tutti i film recitati da un dato attore`);
-    profile_query('director',query_interface.all_films_one_director,`Restituire tutti i film girati da un certo regista`);
-    profile_query('director',query_interface.top_5_actors_of_a_director,`Trovare per un certo regista i 5 attori con i quali ha fatto più film`);
-    profile_query('actor',query_interface.top_5_directors_of_an_actor,`Trovare per un attore i 5 Registi con i quali ha fatto più film                                      `);
+    profile_query('actor',query_interface.all_films_one_actor,`Restituire tutti i film recitati da un dato attore`)
+        .then( () => { profile_query('director',query_interface.all_films_one_director,`Restituire tutti i film girati da un certo regista`);})
+        .then( () => { profile_query('director',query_interface.top_5_actors_of_a_director,`Trovare per un certo regista i 5 attori con i quali ha fatto più film`);})
+        .then( () => { profile_query('actor',query_interface.top_5_directors_of_an_actor,`Trovare per un attore i 5 Registi con i quali ha fatto più film`);})
+
+    //
+   // profile_query('director',query_interface.top_5_actors_of_a_director,`Trovare per un certo regista i 5 attori con i quali ha fatto più film`);
+   // profile_query('actor',query_interface.top_5_directors_of_an_actor,`Trovare per un attore i 5 Registi con i quali ha fatto più film`);
 
 })();
 

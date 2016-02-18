@@ -20,18 +20,23 @@ module.exports = {
             case 4:
             case 5:
             case 0:
-               // console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
+                console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
                 var t1 = process.hrtime();
-                mongoose.model('Movie' + version)
+              /*  mongoose.model('Movie' + version)
                     .find({actors: {$elemMatch: actor}}).populate('directors').then(
-                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[0] + " ns"));
+                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[0] + " ns"));*/
+                mongoose.model('Movie' + version)
+                    .find({actors: actor}).populate('directors').then(
+                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));
                 break;
             case 1:
             case 2:
             case 6:
                 var t2 = process.hrtime();
-                query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
-                //console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
+                //query = mongoose.model('Actor' + version).find(actor, 'movies').populate('movies ');
+
+                query = mongoose.model('Actor' + version).find({first_name: actor}, 'movies').populate('movies ');
+                console.log(`query: Actor${version}.find(${JSON.stringify(query._conditions)})`);
 
                 let population = {};
                 if(version === 2) population = 'actors directors';
@@ -40,17 +45,18 @@ module.exports = {
 
                 query.exec((err, docs) => {
                     if (err) throw err;
-
+                    if (!docs.length)  return cb(new Error('Unable to find actor'), {},process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns");
+                    //console.log(`madonna: ${docs}`);
                     docs.forEach ( (doc) => {
                         //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
-
+                       // console.log('madonna1');
                         mongoose.model('Movie' + version).populate(doc.movies, population, (err, movies) => {
                             if(err) throw err;
                             //console.log('Populated');
                            // console.log(JSON.stringify(actor, null, 2));
                             if (actor === null)
                                 return cb('Error: query returned null');
-                            return cb(undefined, movies,process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[0] + " ns");
+                            return cb(undefined, movies,process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns");
                         })
                         });
                     });

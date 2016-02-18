@@ -37,14 +37,14 @@ var uristring_cluster =  `mongodb://${login_cluster}${config_cluster.host1}:${co
 `${config_cluster.host2}:${config_cluster.port},`+
 `${config_cluster.host3}:${config_cluster.port}/${config_cluster.db}?replicaSet=${config_cluster.rSet}&connectTimeoutMS=300000`;
 
-var mongoOptions = { db: { safe: true } };
-//var mongoOptions = {};
+//var mongoOptions = { db: { safe: true } };
+var mongoOptions = {};
 // Connect to Database
-console.log('connecting to: ' + uristring);
+console.log('connecting to: ' + uristring_cluster);
 
 //Usare variabile uristring_cluster per il cluster online
 //oppure uristring in locale
-mongoose.connect(uristring, mongoOptions, function (err, res) {
+mongoose.connect(uristring_cluster, mongoOptions, function (err, res) {
   if(err){
     console.log('ERROR connecting to: ' + uristring_cluster + '. ' + err);
   }else{
