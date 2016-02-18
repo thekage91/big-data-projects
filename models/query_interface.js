@@ -5,7 +5,8 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    q = require('q');
 
 module.exports = {
 
@@ -20,14 +21,19 @@ module.exports = {
             case 4:
             case 5:
             case 0:
-                console.log(`query: Movie${version}.find({actors : {$elemMatch : ${JSON.stringify(actor)} } } )`);
+                console.log(`query: Movie${version}.find({actors :${JSON.stringify(actor)}  } )`);
                 var t1 = process.hrtime();
               /*  mongoose.model('Movie' + version)
                     .find({actors: {$elemMatch: actor}}).populate('directors').then(
-                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[0] + " ns"));*/
+                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[0] + " ns"));
                 mongoose.model('Movie' + version)
                     .find({actors: actor}).populate('directors').then(
-                    (movies) => cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));
+                    (movies,err) =>
+                        cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));*/
+                mongoose.model('Movie' + version)
+                    .find({actors: actor}).then(
+                    (movies,err) =>
+                        cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));
                 break;
             case 1:
             case 2:
@@ -46,7 +52,14 @@ module.exports = {
                 query.exec((err, docs) => {
                     if (err) throw err;
                     if (!docs.length)  return cb(new Error('Unable to find actor'), {},process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns");
-                    //console.log(`madonna: ${docs}`);
+
+                    var deferreds = new Array(docs.length);
+                    deferreds.fill(1);
+                    deferreds = deferreds.map( (x) => q.defer())
+                    var promises = new Array(docs.length);
+                    promises.fill(1);
+                    var pro = promises.map( (x,i) => deferreds[i].promise);
+
                     docs.forEach ( (doc) => {
                         //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
                        // console.log('madonna1');
@@ -56,9 +69,23 @@ module.exports = {
                            // console.log(JSON.stringify(actor, null, 2));
                             if (actor === null)
                                 return cb('Error: query returned null');
-                            return cb(undefined, movies,process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns");
+                            deferreds.pop().resolve(movies);
+                           // return cb(undefined, movies,);
                         })
                         });
+
+                    q.all(pro).then(function () {
+
+                      /*  console.log('Finiti tutti. Risultati: ' + arguments.length)
+                        console.log(arguments);
+                        console.log(arguments[`0`])*/
+                        var elapsed_time = process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns";
+                        var result = [];
+                        arguments[`${0}`].forEach( function (movie) {result.push(movie)});
+                       // console.log(result);
+                        cb(undefined, result,elapsed_time);
+                    })
+
                     });
 
                 break;
@@ -76,15 +103,20 @@ module.exports = {
             case 4:
             case 1:
             case 0:
+                var t1 = process.hrtime();
                 //console.log(`query: Movie${version}.find({director : {$elemMatch : ${JSON.stringify(director)} } } )`);
+               /* mongoose.model('Movie' + version)
+                    .find({directors: director}).populate('actors').then((movies) => cb(undefined, movies));*/
                 mongoose.model('Movie' + version)
-                    .find({directors: {$elemMatch: director}}).populate('actors').then((movies) => cb(undefined, movies));
+                    .find({directors: director}).then((movies,err) =>
+                    cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));
                 break;
             case 3:
             case 2:
             case 6:
             case 5:
-                query = mongoose.model('Director' + version).find(director, 'movies').populate('movies ');
+                var t2 = process.hrtime();
+                query = mongoose.model('Director' + version).find({first_name: director}, 'movies').populate('movies ');
                 //console.log(`query: Director${version}.find(${JSON.stringify(query._conditions)})`);
 
                 let population = {};
@@ -96,6 +128,15 @@ module.exports = {
                 query.exec((err, directors) => {
                     if (err) throw err;
 
+
+                    var deferreds = new Array(directors.length);
+                    deferreds.fill(1);
+                    deferreds = deferreds.map( (x) => q.defer())
+                    var promises = new Array(directors.length);
+                    promises.fill(1);
+                    var pro = promises.map( (x,i) => deferreds[i].promise);
+
+
                     directors.forEach ( (director) => {
                         //console.log('processing movies: ' + JSON.stringify(doc.movies,null,2));
 
@@ -105,9 +146,22 @@ module.exports = {
                             // console.log(JSON.stringify(actor, null, 2));
                             if (movies === null)
                                 return cb('Error: query returned null');
-                            return cb(undefined, movies);
+                            deferreds.pop().resolve(movies);
                         })
                     });
+
+                    q.all(pro).then(function () {
+
+                        /*  console.log('Finiti tutti. Risultati: ' + arguments.length)
+                         console.log(arguments);
+                         console.log(arguments[`0`])*/
+                        var elapsed_time = process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns";
+                        var result = [];
+                        arguments[`${0}`].forEach( function (movie) {result.push(movie)});
+                        // console.log(result);
+                        cb(undefined, result,elapsed_time);
+                    })
+
                 });
 
                 break;

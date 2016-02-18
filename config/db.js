@@ -37,8 +37,8 @@ var uristring_cluster =  `mongodb://${login_cluster}${config_cluster.host1}:${co
 `${config_cluster.host2}:${config_cluster.port},`+
 `${config_cluster.host3}:${config_cluster.port}/${config_cluster.db}?replicaSet=${config_cluster.rSet}&connectTimeoutMS=300000`;
 
-//var mongoOptions = { db: { safe: true } };
-var mongoOptions = {};
+var mongoOptions = { db: { safe: true } };
+//var mongoOptions = {};
 // Connect to Database
 console.log('connecting to: ' + uristring_cluster);
 
