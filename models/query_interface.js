@@ -33,7 +33,7 @@ module.exports = {
                 mongoose.model('Movie' + version)
                     .find({actors: actor}).then(
                     (movies,err) =>
-                        cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));
+                        cb(undefined, movies,process.hrtime(t1)));
                 break;
             case 1:
             case 2:
@@ -79,7 +79,7 @@ module.exports = {
                       /*  console.log('Finiti tutti. Risultati: ' + arguments.length)
                         console.log(arguments);
                         console.log(arguments[`0`])*/
-                        var elapsed_time = process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns";
+                        var elapsed_time = process.hrtime(t2);
                         var result = [];
                         arguments[`${0}`].forEach( function (movie) {result.push(movie)});
                        // console.log(result);
@@ -109,7 +109,7 @@ module.exports = {
                     .find({directors: director}).populate('actors').then((movies) => cb(undefined, movies));*/
                 mongoose.model('Movie' + version)
                     .find({directors: director}).then((movies,err) =>
-                    cb(undefined, movies,process.hrtime(t1)[0] + " s, " + process.hrtime(t1)[1] + " ns"));
+                    cb(undefined, movies,process.hrtime(t1)));
                 break;
             case 3:
             case 2:
@@ -155,7 +155,7 @@ module.exports = {
                         /*  console.log('Finiti tutti. Risultati: ' + arguments.length)
                          console.log(arguments);
                          console.log(arguments[`0`])*/
-                        var elapsed_time = process.hrtime(t2)[0] + " s, " + process.hrtime(t2)[1] + " ns";
+                        var elapsed_time = process.hrtime(t2);
                         var result = [];
                         arguments[`${0}`].forEach( function (movie) {result.push(movie)});
                         // console.log(result);
@@ -169,6 +169,8 @@ module.exports = {
         //return result;
         //console.log(`movie: ${JSON.stringify(movies[i])}`)
     },
+
+
     top_5_actors_of_a_director: function (version, director, cb) {
         function getSorted (films) {
             var top5 = [films[0]];
@@ -195,35 +197,46 @@ module.exports = {
                 array1.push(elem);
         }
 
-        this.all_films_one_director( version, director, function (err,movies) {
+        this.all_films_one_director( version, director, function (err,movies,time) {
+            var time_current = process.hrtime(time);
             if(err) cb(err);
             if(!movies) cb(new Error('Director not film'));
 
-           /* console.log(movies);
-            console.log(`Found ${movies.length} movies`);*/
+            console.log(version + ' Qua sto')
+            if(version===2) console.log(movies);
+           // console.log(`Found ${movies.length} movies`);
 
             var counted = [], indexes = {}, current_movie, current_actor, position, current_actor_identifier;
             for(let i=0; i < movies.length; i++) {
-                current_movie = movies[i];
-
+                if( (version === 2) || (version === 3) || (version === 5) || (version === 6) )
+                    current_movie = movies[i][0];
+                else  current_movie = movies[i];
+              /*  if(version === 2) console.log(current_movie)
+                if(version === 2) console.log(version + ' Qua sdsssssssdddto')
+                if(version === 2) console.log(version + ' Qua sdssssssd == ' + current_movie.actors)*/
                 for( let j=0; j < current_movie.actors.length; j++) {
+                  //  console.log('In ciclo ' + j)
                     current_actor = current_movie.actors[j];
                     current_actor_identifier = '' + current_actor.first_name + current_actor.last_name;
                     position = indexes[current_actor_identifier];
-
+                    if(version === 2) console.log(version + ' Qua 1111sdsssssssdddto')
                     if (position===undefined) {
                         counted.push({id: current_actor_identifier, count: 1});
                         indexes[current_actor_identifier] = counted.length - 1;
                     }
                     else counted[position].count++;
                 }
+               // console.log('fuori dal ciclo')
             }
-
+            console.log(version + ' Qua sddddto')
             let sorted = getSorted(counted).slice(0,5);
-            cb(null, sorted);
+            console.log(sorted);
+            cb(null, sorted,process.hrtime(time_current));
         })
 
     },
+
+
     top_5_directors_of_an_actor: function (version, actor, cb) {
 
         function getSorted (films) {
@@ -250,32 +263,49 @@ module.exports = {
                 array1.push(elem);
         }
 
-        this.all_films_one_actor( version, actor, function (err,movies) {
+        this.all_films_one_actor( version, actor, function (err,movies,time) {
+            console.log(time);
+            console.log(time);
+            var currentime = process.hrtime(time);
             if(err) cb(err);
             if(!movies) return cb(new Error('Actor not film'));
-
-             //console.log(movies);
+           // if(version===1) console.log(movies);
              //console.log(`Found ${movies.length} movies`);
 
             var counted = [], indexes = {}, current_movie, current_directors, position, current_director_identifier;
             for(let i=0; i < movies.length; i++) {
-                current_movie = movies[i];
-
+               // console.log('nel ciclo ' + i)
+                if((version===1) || (version === 2) || (version===6)) current_movie = movies[i][0];
+                else current_movie = movies[i];
                 for( let j=0; j < current_movie.actors.length; j++) {
+                   // console.log('nel miniciclo');
                     current_directors = current_movie.directors[j];
-                    current_director_identifier = '' + current_directors.first_name + current_directors.last_name;
+                    if(!current_directors) continue;
+                  //  console.log('che non me lo vedo')
+                    //
+                    current_director_identifier = '' + (current_directors.first_name || 'John');
+                   // console.log('checcccc non me lo vedo')
+             //
                     position = indexes[current_director_identifier];
-
+                   // console.log('dsdsdsds')
                     if (position === undefined) {
+                       // console.log('position unefined');
                         counted.push({id: current_director_identifier, count: 1});
                         indexes[current_director_identifier] = counted.length - 1;
                     }
-                    else counted[position].count++;
+                    else {
+                       // console.log('else')
+                        counted[position].count++;
+                    }
                 }
+              /*  console.log('afori dal ciclo')
+                console.log(movies.length)
+                console.log(i)*/
             }
-
+           // console.log('Ma')
             let sorted = getSorted(counted).slice(0,5);
-            cb(null, sorted);
+            //console.log(sorted);
+            cb(null, sorted,process.hrtime(currentime));
         })
 
     }
